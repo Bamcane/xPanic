@@ -198,7 +198,7 @@ void CTurret::Fire()
 						if(g_Config.m_SvChatDestroyWall)
 						{
 							char aBuf[64];
-							str_format(aBuf, sizeof(aBuf), "%s destroyed turret wall hearted", Server()->ClientName(m_Owner));
+							str_format(aBuf, sizeof(aBuf), "%s摧毁了炮塔", Server()->ClientName(m_Owner));
 							GameServer()->SendChatTarget(-1, aBuf);
 						}
 					
@@ -259,7 +259,7 @@ void CTurret::ExperienceTAdd()
 			pPlayer->m_pAccount->Apply();
 
 		char SendExp[64];
-		str_format(SendExp, sizeof(SendExp), "Turret's Level-Up! Your turret's level now is: %d", pPlayer->m_AccData.m_TurretLevel);
+		str_format(SendExp, sizeof(SendExp), "炮塔等级提升! 你的炮塔等级是: %d", pPlayer->m_AccData.m_TurretLevel);
 		GameServer()->SendChatTarget(m_Owner, SendExp);
 	}
 }
