@@ -324,7 +324,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 		str_format(aBuf, sizeof(aBuf), "冰冻: %s", m_pPlayer->m_AccData.m_Freeze ? "yes" : "no");
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "你可以使用这个指令修改密码（全部不要输入"< >"）:");
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "你可以使用这个指令修改密码:");
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/password <新密码>");
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "~~~~~~~~ ! 你的账户明细 ! ~~~~~~~~");
 		return;
