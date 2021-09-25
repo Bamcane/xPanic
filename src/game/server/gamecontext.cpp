@@ -733,9 +733,9 @@ void CGameContext::OnClientEnter(int ClientID)
 		SendVoteSet(ClientID);
 
 	char Name[96];
-	SendChatTarget(ClientID, "Use /register <username> <password> to create an account");
-	SendChatTarget(ClientID, "Use /login <username> <password> to rejoin");
-	SendChatTarget(ClientID, "Use /cmdlist' for a list of commands");
+	SendChatTarget(ClientID, "输入/register 用户名 密码 注册");
+	SendChatTarget(ClientID, "输入/login 用户名 密码 登录");
+	SendChatTarget(ClientID, "输入/cmdlist获取指令列表");
 
 	m_pController->CheckZomb();
 	m_apPlayers[ClientID]->m_Authed = ((CServer*)Server())->m_aClients[ClientID].m_Authed;
@@ -782,8 +782,8 @@ void CGameContext::OnClientDrop(int ClientID, const char *pReason)
 
 void CGameContext::SendPM(int ClientID, int FromID, char *string)
 {
-	if(!m_apPlayers[FromID]) return SendChatTarget(ClientID, "No player with such id");
-	if(ClientID == FromID) return SendChatTarget(FromID, "Attempt to send a personal message to yourself -_-");
+	if(!m_apPlayers[FromID]) return SendChatTarget(ClientID, "没有玩家用这个ID");
+	if(ClientID == FromID) return SendChatTarget(FromID, "尝试给自己发消息 (-_-')");
 	if(Server()->ClientIngame(ClientID) && Server()->ClientIngame(FromID))
 	{
 		char aBuf[128];
@@ -862,13 +862,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			//if(pPlayer->GetTeam() == TEAM_SPECTATORS)
 			if(g_Config.m_SvSpectatorVotes == 0 && pPlayer->GetTeam() == TEAM_SPECTATORS)
 			{
-				SendChatTarget(ClientID, "Spectators aren't allowed to start a vote.");
+				SendChatTarget(ClientID, "没有登录不能投票");
 				return;
 			}
 
 			if(m_VoteCloseTime)
 			{
-				SendChatTarget(ClientID, "Wait for current vote to end before calling a new one.");
+				SendChatTarget(ClientID, "请等待当前投票结束");
 				return;
 			}
 
@@ -876,7 +876,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			if(pPlayer->m_LastVoteCall && Timeleft > 0)
 			{
 				char aChatmsg[512] = {0};
-				str_format(aChatmsg, sizeof(aChatmsg), "You must wait %d seconds before making another vote", (Timeleft/Server()->TickSpeed())+1);
+				str_format(aChatmsg, sizeof(aChatmsg), "你必须等待%d秒才能进行下一个投票 (Timeleft/Server()->TickSpeed())+1);
 				SendChatTarget(ClientID, aChatmsg);
 				return;
 			}
@@ -1242,13 +1242,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 							{
 								if (Collision()->IntersectLine(pChr->m_TurRifle, pChr->m_Pos, &pChr->m_Pos, 0,false))
 								{
-									SendChatTarget(ClientID, "With not the wall!");
+									SendChatTarget(ClientID, "离墙远点！");
 									pChr->m_TurRifle = vec2(0, 0);
 									return;
 								}
 								if (distance(pChr->m_TurRifle, pChr->m_Pos) < 50)
 								{
-									SendChatTarget(ClientID, "This Small distance!");
+									SendChatTarget(ClientID, "距离太靠近了！");
 									pChr->m_TurRifle = vec2(0, 0);
 									return;
 								}
@@ -1276,13 +1276,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 							{
 								if (Collision()->IntersectLine(pChr->m_TurGrenade, pChr->m_Pos, &pChr->m_Pos, 0,false))
 								{
-									SendChatTarget(ClientID, "With not the wall!");
+									SendChatTarget(ClientID, "离墙远点！");
 									pChr->m_TurGrenade = vec2(0, 0);
 									return;
 								}
 								if (distance(pChr->m_TurGrenade, pChr->m_Pos) < 50)
 								{
-									SendChatTarget(ClientID, "This Small distance!");
+									SendChatTarget(ClientID, "距离太靠近了！");
 									pChr->m_TurGrenade = vec2(0, 0);
 									return;
 								}
@@ -1417,7 +1417,7 @@ void CGameContext::ConTuneDumpZone(IConsole::IResult *pResult, void *pUserData)
 		{
 			float v;
 			pSelf->TuningList()[List].Get(i, &v);
-			str_format(aBuf, sizeof(aBuf), "zone %d: %s %.2f", List, pSelf->TuningList()[List].m_apNames[i], v);
+			str_format(aBuf, sizeof(aBuf), "区域 d: %s %.2f", List, pSelf->TuningList()[List].m_apNames[i], v);
 			pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "tuning", aBuf);
 		}
 	}
