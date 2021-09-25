@@ -1417,7 +1417,7 @@ void CGameContext::ConTuneDumpZone(IConsole::IResult *pResult, void *pUserData)
 		{
 			float v;
 			pSelf->TuningList()[List].Get(i, &v);
-			str_format(aBuf, sizeof(aBuf), "区域 d: %s %.2f", List, pSelf->TuningList()[List].m_apNames[i], v);
+			str_format(aBuf, sizeof(aBuf), "区域 %d: %s %.2f", List, pSelf->TuningList()[List].m_apNames[i], v);
 			pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "tuning", aBuf);
 		}
 	}
