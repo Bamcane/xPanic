@@ -1,5 +1,6 @@
 # xpanic
 
+中文版xPanic
 This xPanic remake was originally maintained by [@kurosio](https://github.com/kurosio) but the source is over 2 years old and does not compile. This repository is an effort to fix, maintain, and revitalize the game mode.
 
 NOTE: The source in this repository is based on a 2016 commit that *did* compile.
