@@ -876,7 +876,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			if(pPlayer->m_LastVoteCall && Timeleft > 0)
 			{
 				char aChatmsg[512] = {0};
-				str_format(aChatmsg, sizeof(aChatmsg), "你必须等待%d秒才能进行下一个投票 (Timeleft/Server()->TickSpeed())+1);
+				str_format(aChatmsg, sizeof(aChatmsg), "你必须等待%d秒才能进行下一个投票", (Timeleft/Server()->TickSpeed())+1);
 				SendChatTarget(ClientID, aChatmsg);
 				return;
 			}
