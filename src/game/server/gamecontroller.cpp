@@ -221,9 +221,9 @@ void IGameController::EndRound()
 
 						char aBuf[64];
 						GameServer()->SendChatTarget(-1, "----------------------------------");
-						str_format(aBuf, sizeof(aBuf), "Zombie: %s (WIN)", Server()->ClientName(m_LastZomb));
+						str_format(aBuf, sizeof(aBuf), "僵尸: %s (胜利)", Server()->ClientName(m_LastZomb));
 						GameServer()->SendChatTarget(-1, aBuf);
-						str_format(aBuf, sizeof(aBuf), "Win: %d / Lose: %d (%.1f)", GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Winner, GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Luser, kofs);
+						str_format(aBuf, sizeof(aBuf), "胜利: %d / 失败: %d (%.1f)", GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Winner, GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Luser, kofs);
 						GameServer()->SendChatTarget(-1, aBuf);
 						GameServer()->SendChatTarget(-1, "----------------------------------");
 					}
@@ -251,9 +251,9 @@ void IGameController::EndRound()
 
 						char aBuf[64];
 						GameServer()->SendChatTarget(-1, "----------------------------------");
-						str_format(aBuf, sizeof(aBuf), "Zombie: %s (LOSE)", Server()->ClientName(m_LastZomb));
+						str_format(aBuf, sizeof(aBuf), "僵尸: %s (失败)", Server()->ClientName(m_LastZomb));
 						GameServer()->SendChatTarget(-1, aBuf);
-						str_format(aBuf, sizeof(aBuf), "Win: %d / Lose: %d (%.1f)", GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Winner, GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Luser, kofs);
+						str_format(aBuf, sizeof(aBuf), "胜利: %d / 失败: %d (%.1f)", GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Winner, GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Luser, kofs);
 						GameServer()->SendChatTarget(-1, aBuf);
 						GameServer()->SendChatTarget(-1, "----------------------------------");
 					}
@@ -691,7 +691,7 @@ void IGameController::OnHoldpoint(int Index)
 
 	// issue "door open" message to clients
 	char aBuf[32];
-	str_format(aBuf, sizeof(aBuf), "%d seconds before door opens", doorTime);
+	str_format(aBuf, sizeof(aBuf), "将在%d秒后开门", doorTime);
 	GameServer()->SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 }
 
