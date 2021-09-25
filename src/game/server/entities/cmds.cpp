@@ -381,7 +381,6 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "~~~~~~~~ 欢迎来到服务器介绍 ~~~~~~~~");
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "管理员: FlowerFell-Sans,管理员QQ:1421709710");
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Panic mod by Kurosio, 翻译者: FlowerFell-Sans");
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "~~~~~~~~ 欢迎来到服务器介绍 ~~~~~~~~");
