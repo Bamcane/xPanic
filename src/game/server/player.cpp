@@ -113,7 +113,7 @@ void CPlayer::Tick()
 				m_pAccount->Apply();
 
 			char SendLVL[64];
-			str_format(SendLVL, sizeof(SendLVL), "Successfully! Your new level %d\n/ Upgrade counts %d", m_AccData.m_Level, m_AccData.m_Money);
+			str_format(SendLVL, sizeof(SendLVL), "完成！等级提升： %d\n/ 升级消耗 %d", m_AccData.m_Level, m_AccData.m_Money);
 			GameServer()->SendChatTarget(m_ClientID, SendLVL);
 		}
 	}
@@ -409,22 +409,22 @@ void CPlayer::SetTeam(int Team, bool DoChatMsg)
 		return;
 
 	if (!m_AccData.m_UserID)
-		return GameServer()->SendBroadcast("To start the game read /help.", m_ClientID);
+		return GameServer()->SendBroadcast("输入/help获取帮助.", m_ClientID);
 
 	if (m_Team == TEAM_RED && Team != TEAM_SPECTATORS) 
-		return GameServer()->SendBroadcast("Zombies can't change team.", m_ClientID);
+		return GameServer()->SendBroadcast("僵尸不能改团队.", m_ClientID);
 
 	if (GameServer()->m_pController->ZombStarted() && !GameServer()->m_pController->m_Warmup && Team == TEAM_BLUE)
-		return GameServer()->SendBroadcast("You only can join the human team when round hasn't started.", m_ClientID);
+		return GameServer()->SendBroadcast("你只能在游戏没开始的时候加入人类.", m_ClientID);
 	
 	if (Team == TEAM_RED && ((GameServer()->m_pController->ZombStarted() && GameServer()->m_pController->m_Warmup) || !GameServer()->m_pController->ZombStarted()))
-		return GameServer()->SendBroadcast("Zombie will be chosen randomly.", m_ClientID);
+		return GameServer()->SendBroadcast("僵尸会在开始时随机选择.", m_ClientID);
 
 	if (m_Team == TEAM_BLUE && GameServer()->m_pController->ZombStarted())
-		return GameServer()->SendBroadcast("You can't join the zombie team.", m_ClientID);
+		return GameServer()->SendBroadcast("你不能加入僵尸.", m_ClientID);
 	
 	if (m_Team == TEAM_RED && GameServer()->m_pController->NumZombs() < 2 && GameServer()->m_pController->ZombStarted())
-		return GameServer()->SendBroadcast("You are the only zombie.", m_ClientID);
+		return GameServer()->SendBroadcast("你是那唯一的僵尸.", m_ClientID);
 
 	char aBuf[64];
 	if(DoChatMsg)
@@ -575,7 +575,7 @@ void CPlayer::SetZomb(int From)
 		if (From == -1)
 		{
 			char aBuf[52];			
-			str_format(aBuf, sizeof(aBuf), "'%s' wants your brain! Run away.", Server()->ClientName(m_ClientID));
+			str_format(aBuf, sizeof(aBuf), "'%s' 想要你的脑子！快跑！", Server()->ClientName(m_ClientID));
 			GameServer()->SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 		}
 		m_LifeActives = false;
@@ -585,7 +585,7 @@ void CPlayer::SetZomb(int From)
 	m_pCharacter->SetZomb();
 	GameServer()->m_pController->OnPlayerInfoChange(GameServer()->m_apPlayers[m_ClientID]);
 	GameServer()->m_pController->CheckZomb();
-	GameServer()->SendChatTarget(m_ClientID, "You are now a zombie! Eat some brains.");
+	GameServer()->SendChatTarget(m_ClientID, "你是一个僵尸了！吃掉他们的脑子！.");
 }
 
 void CPlayer::ResetZomb()
