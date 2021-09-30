@@ -559,7 +559,7 @@ void CGameContext::OnTick()
 				Console()->ExecuteLine(m_aVoteCommand);
 				Server()->SetRconCID(IServer::RCON_CID_SERV);
 				EndVote();
-				SendChat(-1, CGameContext::CHAT_ALL, "Vote passed");
+				SendChat(-1, CGameContext::CHAT_ALL, "投票通过");
 
 				if(m_apPlayers[m_VoteCreator])
 					m_apPlayers[m_VoteCreator]->m_LastVoteCall = 0;
@@ -567,18 +567,18 @@ void CGameContext::OnTick()
 			else if(m_VoteEnforce == VOTE_ENFORCE_YES_ADMIN)
 			{
 				Console()->ExecuteLine(m_aVoteCommand, m_VoteEnforcer);
-				SendChat(-1, CGameContext::CHAT_ALL, "Vote passed enforced by server moderator");
+				SendChat(-1, CGameContext::CHAT_ALL, "不要脸的管理员强制通过投票，呸！");
 				EndVote();
 			}
 			else if(m_VoteEnforce == VOTE_ENFORCE_NO_ADMIN)
 			{
 				EndVote();
-				SendChat(-1, CGameContext::CHAT_ALL, "Vote failed enforced by server moderator");
+				SendChat(-1, CGameContext::CHAT_ALL, "不要脸的管理员强制拒绝投票，呸！");
 			}
 			else if(m_VoteEnforce == VOTE_ENFORCE_NO || (time_get() > m_VoteCloseTime && g_Config.m_SvVoteMajority))
 			{
 				EndVote();
-				SendChat(-1, CGameContext::CHAT_ALL, "Vote failed");
+				SendChat(-1, CGameContext::CHAT_ALL, "投票失败");
 			}
 			else if(m_VoteUpdate)
 			{
@@ -1173,7 +1173,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			if(str_comp(aOldName, Server()->ClientName(ClientID)) != 0)
 			{
 				char aChatText[256];
-				str_format(aChatText, sizeof(aChatText), "'%s' changed name to '%s'", aOldName, Server()->ClientName(ClientID));
+				str_format(aChatText, sizeof(aChatText), "'%s' 将名称改为 '吴彦祖'", aOldName);
 				SendChat(-1, CGameContext::CHAT_ALL, aChatText);
 			}
 			Server()->SetClientClan(ClientID, pMsg->m_pClan);
