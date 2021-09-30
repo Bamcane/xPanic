@@ -364,7 +364,7 @@ void CCharacter::FireWeapon()
 				if (m_RiflePos == m_Pos)
 				{
 					m_aWeapons[WEAPON_RIFLE].m_Ammo = 2;
-					GameServer()->SendChatTarget(m_pPlayer->GetCID(), "The second point can not be set here");
+					GameServer()->SendChatTarget(m_pPlayer->GetCID(), "第二个标点不能设置在这里.");
 					m_RiflePos = vec2(0, 0);
 					return;
 				}
@@ -522,7 +522,7 @@ void CCharacter::Tick()
 		IhammerTick--;
 
 		char aBuf[26];
-		str_format(aBuf, sizeof(aBuf), "\n\n\n\n\n\n\n\n\n\n\n\n\nInvis: %d.%d", IhammerTick/Server()->TickSpeed() , ITickSecond*2);
+		str_format(aBuf, sizeof(aBuf), "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n隐身: %d.%d", IhammerTick/Server()->TickSpeed() , ITickSecond*2);
 		GameServer()->SendBroadcast(aBuf, m_pPlayer->GetCID());
 		if (!IhammerTick)
 		{
@@ -670,7 +670,7 @@ void CCharacter::ExperienceAdd(int Exp, int ClientID)
 	else
 	{
 		char SendExp[64];
-		str_format(SendExp, sizeof(SendExp), "Exp %d/%d", pPlayer->m_AccData.m_Exp, pPlayer->m_AccData.m_Level);
+		str_format(SendExp, sizeof(SendExp), "经验 %d/%d", pPlayer->m_AccData.m_Exp, pPlayer->m_AccData.m_Level);
 		GameServer()->SendChatTarget(ClientID, SendExp);
 	}
 }
@@ -796,7 +796,7 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 	m_EmoteStop = Server()->Tick() + 500 * Server()->TickSpeed() / 1000;
 
 	char aBuf[32];
-	str_format(aBuf, sizeof(aBuf), "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHealth: %d", m_Health);
+	str_format(aBuf, sizeof(aBuf), "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n血量: %d", m_Health);
 	GameServer()->SendBroadcast(aBuf, m_pPlayer->GetCID());
 	return true;
 }
@@ -1111,7 +1111,7 @@ void CCharacter::HandleTiles(int Index)
 	// unlimited air jumps
 	if(((m_TileIndex == TILE_SUPER_START) || (m_TileFIndex == TILE_SUPER_START)) && !m_SuperJump)
 	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"You have unlimited air jumps");
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"你获得了无限的跳跃");
 		m_SuperJump = true;
 		if (m_Core.m_Jumps == 0)
 		{
@@ -1121,7 +1121,7 @@ void CCharacter::HandleTiles(int Index)
 	}
 	else if(((m_TileIndex == TILE_SUPER_END) || (m_TileFIndex == TILE_SUPER_END)) && m_SuperJump)
 	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You don't have unlimited air jumps");
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "你失去了无限跳.");
 		m_SuperJump = false;
 		if (m_Core.m_Jumps == 0)
 		{
