@@ -194,21 +194,27 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret info - 关于");
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret help - 帮助");
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret stats - 显示炮塔等级");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret speed - 升级炮塔攻速 (1 炮塔元)");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret dmg - 升级炮塔伤害 (1 炮塔元)");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret ammo - 升级炮塔子弹总数 (1 炮塔元)");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret ammoregen - 升级炮塔子弹恢复速度 (1 炮塔元)");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret range - 升级炮塔发射范围 (1 炮塔元)");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret speed - 升级炮塔攻速 (1 炮塔点)");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret dmg - 升级炮塔伤害 (1 炮塔点)");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret ammo - 升级炮塔子弹总数 (1 炮塔点)");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret ammoregen - 升级炮塔子弹恢复速度 (1 炮塔点)");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "/turret range - 升级炮塔发射范围 (1 炮塔点)");
 			return;
 		}			
 		else if(!strcmp(supgr, "help"))
 		{
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "使用表情（左Shift）鬼魂防止炮台");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "使用表情（左Shift）鬼魂防止炮塔");
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "炮塔有3种不一样的武器");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "炮塔是一种很有效的杀死僵尸的方式");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "拿不同的武器可以放置不同的炮塔");
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "手枪炮塔: 每秒射击一次敌人  朝任意方向开火（range）");
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "散弹枪炮塔: 每3秒射击一次  朝任意方向放置");
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "激光炮塔: 如果僵尸路过它瞄准的位置，瞬间放置墙挡住（捕捉）僵尸  一个地方放置，走到或跳到另一个无遮挡的地方朝向第一个点放置");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), 
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "榴弹炮塔: 在自己的线区不断放置榴弹，发送延迟由炮台speed（速度）属性控制  与激光炮塔的放置方法一样");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "*** 炮塔不包括地雷，但是以下是地雷介绍");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "*** 只有一个地雷，也只能放置一个");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "和炮塔的放置方法一样，放置的武器是锤子");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "地雷如果用的好将成为翻盘的关键点！");
 			return;
 		}
 		else if(!strcmp(supgr, "dmg"))
@@ -216,7 +222,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if(m_pPlayer->m_AccData.m_TurretDmg > 100)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "已达到炮塔最高伤害");		
 			if(m_pPlayer->m_AccData.m_TurretMoney <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "你没有足够的炮塔元");
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "你没有足够的炮塔点");
 			
 			m_pPlayer->m_AccData.m_TurretMoney--, m_pPlayer->m_AccData.m_TurretDmg++;
 			str_format(andg, sizeof(andg), "你的炮塔伤害增加了, 现在是: %d", m_pPlayer->m_AccData.m_TurretDmg);
@@ -242,7 +248,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_TurretAmmo >= 100)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "已达到炮塔最高子弹数");
 			if (m_pPlayer->m_AccData.m_TurretMoney <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "你没有足够的钱");
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "你没有足够的炮塔点");
 
 			m_pPlayer->m_AccData.m_TurretMoney--, m_pPlayer->m_AccData.m_TurretAmmo++;
 			str_format(andg, sizeof(andg), "你的炮塔枪升级了, 现在是: %d", m_pPlayer->m_AccData.m_TurretAmmo);
@@ -284,7 +290,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 			str_format(aBuf, sizeof(aBuf), "经验: %d", m_pPlayer->m_AccData.m_TurretExp);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
-			str_format(aBuf, sizeof(aBuf), "炮塔元: %d", m_pPlayer->m_AccData.m_TurretMoney);
+			str_format(aBuf, sizeof(aBuf), "炮塔点: %d", m_pPlayer->m_AccData.m_TurretMoney);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 			str_format(aBuf, sizeof(aBuf), "速度: %d", m_pPlayer->m_AccData.m_TurretSpeed);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
@@ -322,7 +328,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 		str_format(aBuf, sizeof(aBuf), "经验: %d/%d", m_pPlayer->m_AccData.m_Exp, m_pPlayer->m_AccData.m_Level);
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
-		str_format(aBuf, sizeof(aBuf), "钱数: %d", m_pPlayer->m_AccData.m_Money);
+		str_format(aBuf, sizeof(aBuf), "点数: %d", m_pPlayer->m_AccData.m_Money);
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 		str_format(aBuf, sizeof(aBuf), "冰冻: %s", m_pPlayer->m_AccData.m_Freeze ? "yes" : "no");
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
@@ -438,6 +444,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "我们有了全中文！");
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "拜X拉稀);
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/policehelp"))
