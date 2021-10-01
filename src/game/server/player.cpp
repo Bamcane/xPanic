@@ -304,7 +304,7 @@ void CPlayer::OnDisconnect(const char *pReason)
 		&& GameServer()->m_pController->ZombStarted() && !GameServer()->m_pController->m_Warmup)
 	{
 		char aBuf[128], aAddrStr[NETADDR_MAXSTRSIZE] = {0};
-		str_format(aBuf, sizeof(aBuf), "'%s' has left the game (banned 5 minutes last zombie)", Server()->ClientName(m_ClientID));
+		str_format(aBuf, sizeof(aBuf), "'%s' 被禁止进入这个世界 (应为作为唯一的僵尸退出，所以封禁5分钟)", Server()->ClientName(m_ClientID));
 		GameServer()->SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 		
 		Server()->GetClientAddr(m_ClientID, aAddrStr, sizeof(aAddrStr));
@@ -315,9 +315,9 @@ void CPlayer::OnDisconnect(const char *pReason)
 	{
 		char aBuf[96];
 		if(pReason && *pReason)
-			str_format(aBuf, sizeof(aBuf), "'%s' has left the game (%s)", Server()->ClientName(m_ClientID), pReason);
+			str_format(aBuf, sizeof(aBuf), "'%s' 被强制离开了这个世界 (%s)", Server()->ClientName(m_ClientID), pReason);
 		else
-			str_format(aBuf, sizeof(aBuf), "'%s' has left the game", Server()->ClientName(m_ClientID));
+			str_format(aBuf, sizeof(aBuf), "'%s' 离开了这个世界", Server()->ClientName(m_ClientID));
 		GameServer()->SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 
 		str_format(aBuf, sizeof(aBuf), "leave player='%d:%s'", m_ClientID, Server()->ClientName(m_ClientID));
