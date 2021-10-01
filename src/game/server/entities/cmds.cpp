@@ -92,7 +92,8 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		char supgr[256], andg[64];
 		if (sscanf(Msg->m_pMessage, "/upgr %s", supgr) != 1)
 		{
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "使用 /upgr <dmg>, <hp>, <handle>, <ammoregen>, <ammo>, <stats> 来给你的炮台升级");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "使用 /upgr <dmg>, <hp>, <handle>, <ammoregen>, <ammo>, <stats> 来给你升级");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "<dmg> 是攻击力, <hp>是血量, <handle>是攻速(必升 超神), <ammoregen>是子弹恢复速度, <ammo>是子弹总数, <stats>是显示当前全部等级");
 			return;
 		}
 		if (!strcmp(supgr, "handle"))
@@ -103,7 +104,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "金钱不足 (至少1元).");
 
 			m_pPlayer->m_AccData.m_Money--, m_pPlayer->m_AccData.m_Handle++;
-			str_format(andg, sizeof(andg), "当前攻速: %d, 当前钱数: %d", m_pPlayer->m_AccData.m_Handle, m_pPlayer->m_AccData.m_Money);
+			str_format(andg, sizeof(andg), "当前攻速: %d, 当前升级点: %d", m_pPlayer->m_AccData.m_Handle, m_pPlayer->m_AccData.m_Money);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), andg);
 			m_pPlayer->m_pAccount->Apply();
 			return;
