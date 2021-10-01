@@ -101,7 +101,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_Handle >= 300)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "已达到最高等级 (300).");
 			if (m_pPlayer->m_AccData.m_Money <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "金钱不足 (至少1元).");
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "升级点不足 (至少1点).");
 
 			m_pPlayer->m_AccData.m_Money--, m_pPlayer->m_AccData.m_Handle++;
 			str_format(andg, sizeof(andg), "当前攻速: %d, 当前升级点: %d", m_pPlayer->m_AccData.m_Handle, m_pPlayer->m_AccData.m_Money);
@@ -114,10 +114,10 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_Dmg >= 21)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "已经达到最高级 (21).");
 			if (m_pPlayer->m_AccData.m_Money <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "金钱不足 (至少1元).");
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "升级点不足 (至少1点).");
 
 			m_pPlayer->m_AccData.m_Money--, m_pPlayer->m_AccData.m_Dmg++;
-			str_format(andg, sizeof(andg), "当前伤害: %d, 当前钱数: %d", m_pPlayer->m_AccData.m_Dmg, m_pPlayer->m_AccData.m_Money);
+			str_format(andg, sizeof(andg), "当前伤害: %d, 当前升级点: %d", m_pPlayer->m_AccData.m_Dmg, m_pPlayer->m_AccData.m_Money);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), andg);
 			m_pPlayer->m_pAccount->Apply();
 			return;
@@ -127,10 +127,10 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_Health >= 100)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "已达到最高血量 (100).");
 			if (m_pPlayer->m_AccData.m_Money <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "金钱不足 (至少1元).");
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "升级点不足 (至少1点).");
 
 			m_pPlayer->m_AccData.m_Money--, m_pPlayer->m_AccData.m_Health++;
-			str_format(andg, sizeof(andg), "当前血量: %d, Maximum HP: %d, 当前钱数: %d", m_pPlayer->m_AccData.m_Health, 1000 + m_pPlayer->m_AccData.m_Health * 10 + m_pPlayer->m_AccData.m_Level * 20, m_pPlayer->m_AccData.m_Money);
+			str_format(andg, sizeof(andg), "当前血量: %d, 最高血量: %d, 当前升级点: %d", m_pPlayer->m_AccData.m_Health, 1000 + m_pPlayer->m_AccData.m_Health * 10 + m_pPlayer->m_AccData.m_Level * 20, m_pPlayer->m_AccData.m_Money);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), andg);
 			m_pPlayer->m_pAccount->Apply();
 			return;
@@ -140,10 +140,10 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_Ammoregen >= 60)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "子弹恢复已达到最高级 (60).");
 			if (m_pPlayer->m_AccData.m_Money <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "穷逼 (1元都出不起).");
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "穷逼 (1点都出不起).");
 
 			m_pPlayer->m_AccData.m_Money--, m_pPlayer->m_AccData.m_Ammoregen++;
-			str_format(andg, sizeof(andg), "当前子弹恢复等级: %d, 当前钱数: %d", m_pPlayer->m_AccData.m_Ammoregen, m_pPlayer->m_AccData.m_Money);
+			str_format(andg, sizeof(andg), "当前子弹恢复等级: %d, 当前升级点: %d", m_pPlayer->m_AccData.m_Ammoregen, m_pPlayer->m_AccData.m_Money);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), andg);
 			m_pPlayer->m_pAccount->Apply();
 			return;
@@ -153,10 +153,10 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_Ammo >= 20)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "已达到子弹最高数量 (20).");
 			if (m_pPlayer->m_AccData.m_Money < 10)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "金钱不足 (至少10元).");
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), "升级点不足 (至少10点).");
 
 			m_pPlayer->m_AccData.m_Money -= 10, m_pPlayer->m_AccData.m_Ammo++;
-			str_format(andg, sizeof(andg), "当前子弹数: %d, 当前钱数: %d", GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_mAmmo + m_pPlayer->m_AccData.m_Ammo, m_pPlayer->m_AccData.m_Money);
+			str_format(andg, sizeof(andg), "当前子弹数: %d, 当前升级点: %d", GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_mAmmo + m_pPlayer->m_AccData.m_Ammo, m_pPlayer->m_AccData.m_Money);
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), andg);
 			m_pPlayer->m_pAccount->Apply();
 			return;
@@ -205,9 +205,10 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		{
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "使用表情（左Shift）鬼魂防止炮台");
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "炮塔有3种不一样的武器");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "手枪炮塔: 每秒射击一次敌人");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "散弹枪炮塔: 每3秒射击一次");
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "激光炮塔: 如果僵尸路过它瞄准的位置，瞬间放置墙挡住（捕捉）僵尸");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "手枪炮塔: 每秒射击一次敌人  朝任意方向开火（range）");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "散弹枪炮塔: 每3秒射击一次  朝任意方向放置");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "激光炮塔: 如果僵尸路过它瞄准的位置，瞬间放置墙挡住（捕捉）僵尸  一个地方放置，走到或跳到另一个无遮挡的地方朝向第一个点放置");
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), 
 			return;
 		}
 		else if(!strcmp(supgr, "dmg"))
