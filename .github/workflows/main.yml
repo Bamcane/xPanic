@@ -15,16 +15,18 @@ jobs:
       
       - name: GetLibs
         run: |
-          sudo apt install git libfreetype6-dev libsdl2-dev libpnglite-dev libwavpack-dev python3 build-essential cmake
+          sudo apt update
+          sudo apt install git libfreetype6-dev libsdl2-dev libpnglite-dev libwavpack-dev python3 build-essential cmake -y
 
         
       - name: Install bam
         run: |
+            cd /home/runner/work/teeworlds-xPanic/teeworlds-xPanic/
             git clone https://github.com/teeworlds/bam
             cd bam
             git checkout v0.4.0
             ./make_unix.sh
-            mv bam ../teeworlds-xPanic/
+            mv bam ../
 
       - name: Compile binary server file
         run: ./bam server_release
