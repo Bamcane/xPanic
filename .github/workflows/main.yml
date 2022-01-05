@@ -22,5 +22,5 @@ jobs:
           cd bam
           git checkout v0.4.0
           ./make_unix.sh
-          mv bam ../
-          ./bam server_release
+          mv bam ../build
+          ./build server_release
