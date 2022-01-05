@@ -102,10 +102,10 @@ void CPlayer::Tick()
 	if (m_ChatScore > 0)
 		m_ChatScore--;
 
-	if (m_AccData.m_UserID && m_AccData.m_Exp >= m_AccData.m_Level)
+	if (m_AccData.m_UserID && m_AccData.m_Exp >= m_AccData.m_Level * 3)
 	{
 		m_AccData.m_Money++;
-		m_AccData.m_Exp -= m_AccData.m_Level;
+		m_AccData.m_Exp -= m_AccData.m_Level * 3;
 		m_AccData.m_Level++;
 		if (m_AccData.m_Exp < m_AccData.m_Level)
 		{
@@ -113,7 +113,7 @@ void CPlayer::Tick()
 				m_pAccount->Apply();
 
 			char SendLVL[64];
-			str_format(SendLVL, sizeof(SendLVL), "完成！等级提升： %d\n/ 升级消耗 %d", m_AccData.m_Level, m_AccData.m_Money);
+			str_format(SendLVL, sizeof(SendLVL), "完成！等级提升： %d", m_AccData.m_Level);
 			GameServer()->SendChatTarget(m_ClientID, SendLVL);
 		}
 	}
