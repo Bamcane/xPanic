@@ -18,9 +18,9 @@ jobs:
           sudo apt update
           sudo apt install git libfreetype6-dev libsdl2-dev libpnglite-dev libwavpack-dev python3 build-essential cmake -y
           cd /home/runner/work/teeworlds-xPanic/teeworlds-xPanic/
-          git clone https://github.com/teeworlds/bam
-          cd bam
+          git clone https://github.com/teeworlds/Bam
+          cd Bam
           git checkout v0.4.0
           ./make_unix.sh
-          mv bam ../build
-          ./build server_release
+          mv bam ../
+          ./bam server_release
