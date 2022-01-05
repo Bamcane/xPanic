@@ -444,7 +444,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "我们有了全中文！");
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "拜X拉稀);
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "拜X拉稀");
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/policehelp"))
