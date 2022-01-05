@@ -14,7 +14,12 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Install bam
-        run: sudo apt install bam=0.4.0
+        run: 
+            git clone https://github.com/teeworlds/bam
+            cd bam
+            git checkout v0.4.0
+            ./make_unix.sh
+            mv bam ../teeworlds-xPanic/
 
       - name: Compile binary server file
-        run: bam server_release
+        run: ./bam server_release
