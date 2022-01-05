@@ -13,6 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: GetLibs
+        run: |
+          sudo apt install git libfreetype6-dev libsdl2-dev libpnglite-dev libwavpack-dev python3 build-essential cmake
+
+        
       - name: Install bam
         run: |
             git clone https://github.com/teeworlds/bam
