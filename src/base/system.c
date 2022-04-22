@@ -2352,6 +2352,29 @@ static void str_byte_rewind(const char **ptr)
 	(*ptr)--;
 }
 
+//TeeOthers
+void str_append_num(char *dst, const char *src, int dst_size, int num)
+{
+	int s = strlen(dst);
+	int i = 0;
+	while(s < dst_size)
+	{
+		if(i>=num)
+		{
+			dst[s] = 0;
+			return;
+		}
+		
+		dst[s] = src[i];
+		if(!src[i]) /* check for null termination */
+			return;
+		s++;
+		i++;
+	}
+
+	dst[dst_size-1] = 0; /* assure null termination */
+}
+
 int str_utf8_decode(const char **ptr)
 {
 	// As per https://encoding.spec.whatwg.org/#utf-8-decoder.
