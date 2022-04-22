@@ -443,8 +443,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	else if (!strcmp(Msg->m_pMessage, "/news"))
 	{
 		LastChat();
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "我们有了全中文！");
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "拜X拉稀");
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Languages");
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/policehelp"))

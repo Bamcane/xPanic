@@ -42,6 +42,9 @@
 	#include <windows.h>
 #endif
 
+
+#include <teeothers/components/localization.h>
+
 static const char *StrLtrim(const char *pStr)
 {
 	while(*pStr)

@@ -18,6 +18,8 @@
 #include "gamemodes/DDRace.h"
 #include "entities/turret.h"
 #include <string.h>
+
+#include <teeothers/components/localization.h>
  
 enum
 {
@@ -230,16 +232,40 @@ void CGameContext::CallVote(int ClientID, const char *aDesc, const char *aCmd, c
 	pPlayer->m_LastVoteCall = Now;
 }
 
-void CGameContext::SendChatTarget(int To, const char *pText)
+void CGameContext::SendChatTarget(int To, const char *pText, ...)
 {
+
+	int Start = (To < 0 ? 0 : To);
+	int End = (To < 0 ? MAX_CLIENTS : To+1);
+	
+
 	CNetMsg_Sv_Chat Msg;
 	Msg.m_Team = 0;
 	Msg.m_ClientID = -1;
-	Msg.m_pMessage = pText;
-	if(g_Config.m_SvDemoChat)
-		Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, To);
-	else
-		Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, To);
+	
+	dynamic_string Buffer;
+
+	va_list VarArgs;
+	va_start(VarArgs, pText);
+
+	for(int i = Start; i < End; i++)
+	{
+		if(m_apPlayers[i])
+		{
+			Buffer.clear();
+			Server()->Localization()->Format_VL(Buffer, g_Config.m_SvLanguage, pText, VarArgs);
+			
+			Msg.m_pMessage = Buffer.buffer();
+		
+			if(g_Config.m_SvDemoChat)
+				Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, i);
+			else
+				Server()->SendPackMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, i);
+		}
+	}
+	
+	va_end(VarArgs);
+
 }
 
 void CGameContext::SendChatTeam(int Team, const char *pText)
@@ -335,7 +361,7 @@ void CGameContext::SendWeaponPickup(int ClientID, int Weapon)
 }
 
 
-void CGameContext::SendBroadcast(const char *pText, int ClientID)
+void CGameContext::SendBroadcast(const char *pText, int ClientID, ...)
 {
 	CNetMsg_Sv_Broadcast Msg;
 	Msg.m_pMessage = pText;
@@ -721,8 +747,7 @@ void CGameContext::OnClientEnter(int ClientID)
 	if(((CServer *) Server())->m_aPrevStates[ClientID] < CServer::CClient::STATE_INGAME)
 	{
 		char aBuf[96];
-		str_format(aBuf, sizeof(aBuf), "'%s' entered and joined the %s", Server()->ClientName(ClientID), m_pController->GetTeamName(m_apPlayers[ClientID]->GetTeam()));
-		SendChat(-1, CGameContext::CHAT_ALL, aBuf);
+		SendChatTarget(-1, "玩家'{str:PlayerName}' 加入了游戏", "PlayerName", Server()->ClientName(ClientID), NULL);
 		str_format(aBuf, sizeof(aBuf), "team_join player='%d:%s' team=%d", ClientID, Server()->ClientName(ClientID), m_apPlayers[ClientID]->GetTeam());
 
 		Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);

@@ -1,0 +1,14 @@
+{
+	"language indices": 
+	[	
+		{
+			"file": "cn",
+			"name": "English"
+		},
+		{
+			"file": "en",
+			"name": "English",
+			"parent": "cn"
+		}
+	]
+}
