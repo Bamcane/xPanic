@@ -44,6 +44,11 @@
 
 
 #include <teeothers/components/localization.h>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <cstring>
 
 static const char *StrLtrim(const char *pStr)
 {
