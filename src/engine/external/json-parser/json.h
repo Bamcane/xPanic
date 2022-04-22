@@ -31,12 +31,6 @@
 #ifndef _JSON_H
 #define _JSON_H
 
-#ifdef _MSC_VER
-   #define inline __inline
-#endif
-
-#include <string.h>
-
 #ifndef json_char
    #define json_char char
 #endif
@@ -145,7 +139,7 @@ typedef struct _json_value
          }
 
          inline const struct _json_value &operator [] (const char * index) const
-         {
+         { 
             if (type != json_object)
                return json_value_none;
 
@@ -157,7 +151,7 @@ typedef struct _json_value
          }
 
          inline operator const char * () const
-         {
+         {  
             switch (type)
             {
                case json_string:
@@ -188,18 +182,11 @@ json_value * json_parse_ex
 
 void json_value_free (json_value *);
 
-const struct _json_value *json_object_get (const json_value * object, const char * index);
-
-const struct _json_value *json_array_get (const json_value * array, int index);
-
-int json_array_length (const json_value * array);
-const char * json_string_get (const json_value * string);
-int json_int_get (const json_value * integer);
-int json_boolean_get(const json_value * boolean);
 
 #ifdef __cplusplus
    } /* extern "C" */
 #endif
 
 #endif
+
 
