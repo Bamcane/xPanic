@@ -444,7 +444,7 @@ function build(settings)
 		client_link_other, client_osxlaunch, jsonparser, libwebsockets, md5, client_notification)
 
 	server_exe = Link(server_settings, "xPanic-Server", engine, server,
-		game_shared, game_server, zlib, server_link_other, libwebsockets, md5, icu_depends, teeothers)
+		game_shared, game_server, zlib, server_link_other, libwebsockets, md5, icu_depends, teeothers, jsonparser)
 
 	serverlaunch = {}
 	if platform == "macosx" then
