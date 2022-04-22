@@ -1,10 +1,6 @@
 name: Compile server
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -16,11 +12,12 @@ jobs:
       - name: Build
         run: |
           sudo apt update
-          sudo apt install git libfreetype6-dev libsdl2-dev libpnglite-dev libwavpack-dev python3 build-essential cmake -y
+          sudo apt install git libfreetype6-dev libsdl2-dev libpnglite-dev libwavpack-dev python3 build-essential cmake libicu-dev -y
           cd /home/runner/work/teeworlds-xPanic/teeworlds-xPanic/
           git clone https://github.com/teeworlds/Bam
           cd Bam
           git checkout v0.4.0
           ./make_unix.sh
           mv bam ../
+          cd ..
           ./bam server_release
