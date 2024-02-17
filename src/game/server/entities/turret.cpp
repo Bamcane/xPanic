@@ -33,7 +33,7 @@ CTurret::CTurret(CGameWorld *pGameWorld, vec2 Pos, int Owner, int Type, vec2 Pos
 	GameWorld()->InsertEntity(this);
 }
 
-void CTurret::~CTurret()
+CTurret::~CTurret()
 {
 	Reset();
 }
