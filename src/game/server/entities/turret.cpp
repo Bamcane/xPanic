@@ -35,7 +35,6 @@ CTurret::CTurret(CGameWorld *pGameWorld, vec2 Pos, int Owner, int Type, vec2 Pos
 
 void CTurret::Reset() 
 {	
-	GameServer()->m_World.DestroyEntity(this);
 	for (unsigned i = 0; i < sizeof(m_inIDs) / sizeof(int); i ++)
 	{
 		if(m_inIDs[i])
@@ -58,6 +57,7 @@ void CTurret::Reset()
 		else if (m_Type == WEAPON_SHOTGUN)
 			GameServer()->GetPlayerChar(m_Owner)->m_TurretActive[1] = false;
 	}
+	GameServer()->m_World.DestroyEntity(this);
 }
 
 void CTurret::Tick() 
