@@ -25,12 +25,17 @@ CTurret::CTurret(CGameWorld *pGameWorld, vec2 Pos, int Owner, int Type, vec2 Pos
 	m_Ammo = 1+GameServer()->m_apPlayers[m_Owner]->m_AccData.m_TurretAmmo;	
    
 	for (unsigned i = 0; i < sizeof(m_inIDs) / sizeof(int); i ++)
-        m_inIDs[i] = Server()->SnapNewID();
+        	m_inIDs[i] = Server()->SnapNewID();
 
 	m_IDC = Server()->SnapNewID();
 	m_IDS = Server()->SnapNewID();
 	m_IDG = Server()->SnapNewID();
-	GameWorld()->InsertEntity(this);	
+	GameWorld()->InsertEntity(this);
+}
+
+void CTurret::~CTurret()
+{
+	Reset();
 }
 
 void CTurret::Reset() 
