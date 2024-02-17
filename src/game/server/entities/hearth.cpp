@@ -61,9 +61,6 @@ void CLifeHearth::Tick()
 		m_Pos = GameServer()->GetPlayerChar(m_Owner)->m_Pos;
 	}
 
-	if (GameServer()->Collision()->IsSolid(m_Pos.x, m_Pos.y))
-		return Reset();
-
 	if (!pTarget)
 	{
 		if (!StopTickLef)
@@ -90,7 +87,7 @@ void CLifeHearth::Tick()
 
 	if (distance(pTarget->m_Pos, m_Pos) < pTarget->m_ProximityRadius + 2.0f && GameServer()->m_apPlayers[m_Owner]->m_LifeActives)
 	{
-		pTarget->m_BurnTick = Server()->TickSpeed() * 2;
+		pTarget->m_BurnTick = Server()->TickSpeed() * 4;
 		return Reset();
 	}
 }

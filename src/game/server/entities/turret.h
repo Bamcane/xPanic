@@ -3,6 +3,8 @@
 
 #include <game/server/entity.h>
 
+static const int s_NumInIDs = 9;
+
 class CTurret : public CEntity
 {
 public:
@@ -19,7 +21,7 @@ public:
 	int m_Owner;
 	
 private:
-    int m_inIDs[9];
+    int m_inIDs[s_NumInIDs];
 	int m_IDC;
 	int m_IDG;
 	int m_IDS;
