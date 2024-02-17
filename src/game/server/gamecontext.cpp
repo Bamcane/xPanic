@@ -747,7 +747,7 @@ void CGameContext::OnClientEnter(int ClientID)
 	if(((CServer *) Server())->m_aPrevStates[ClientID] < CServer::CClient::STATE_INGAME)
 	{
 		char aBuf[96];
-		SendChatTarget(-1, "玩家'{str:PlayerName}' 加入了游戏", "PlayerName", Server()->ClientName(ClientID), NULL);
+		SendChatTarget(-1, _("玩家'{str:PlayerName}' 加入了游戏"), "PlayerName", Server()->ClientName(ClientID), NULL);
 		str_format(aBuf, sizeof(aBuf), "team_join player='%d:%s' team=%d", ClientID, Server()->ClientName(ClientID), m_apPlayers[ClientID]->GetTeam());
 
 		Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);
@@ -758,9 +758,9 @@ void CGameContext::OnClientEnter(int ClientID)
 		SendVoteSet(ClientID);
 
 	char Name[96];
-	SendChatTarget(ClientID, "输入/register 用户名 密码 注册");
-	SendChatTarget(ClientID, "输入/login 用户名 密码 登录");
-	SendChatTarget(ClientID, "输入/cmdlist获取指令列表");
+	SendChatTarget(ClientID, _("输入/register 用户名 密码 注册"));
+	SendChatTarget(ClientID, _("输入/login 用户名 密码 登录"));
+	SendChatTarget(ClientID, _("输入/cmdlist获取指令列表"));
 
 	m_pController->CheckZomb();
 	m_apPlayers[ClientID]->m_Authed = ((CServer*)Server())->m_aClients[ClientID].m_Authed;
@@ -807,8 +807,8 @@ void CGameContext::OnClientDrop(int ClientID, const char *pReason)
 
 void CGameContext::SendPM(int ClientID, int FromID, char *string)
 {
-	if(!m_apPlayers[FromID]) return SendChatTarget(ClientID, "没有玩家用这个ID");
-	if(ClientID == FromID) return SendChatTarget(FromID, "尝试给自己发消息 (-_-')");
+	if(!m_apPlayers[FromID]) return SendChatTarget(ClientID, _("没有玩家用这个ID"));
+	if(ClientID == FromID) return SendChatTarget(FromID, _("尝试给自己发消息 (-_-')"));
 	if(Server()->ClientIngame(ClientID) && Server()->ClientIngame(FromID))
 	{
 		char aBuf[128];
@@ -816,7 +816,7 @@ void CGameContext::SendPM(int ClientID, int FromID, char *string)
 		SendChatTarget(FromID, aBuf);
 		str_format(aBuf, sizeof(aBuf), "pm to '%s': %s", Server()->ClientName(FromID), string);
 		SendChatTarget(ClientID, aBuf);	
-	}	
+	}
 }
 
 void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
@@ -887,13 +887,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			//if(pPlayer->GetTeam() == TEAM_SPECTATORS)
 			if(g_Config.m_SvSpectatorVotes == 0 && pPlayer->GetTeam() == TEAM_SPECTATORS)
 			{
-				SendChatTarget(ClientID, "没有登录不能投票");
+				SendChatTarget(ClientID, _("没有登录不能投票"));
 				return;
 			}
 
 			if(m_VoteCloseTime)
 			{
-				SendChatTarget(ClientID, "请等待当前投票结束");
+				SendChatTarget(ClientID, _("请等待当前投票结束"));
 				return;
 			}
 
@@ -1267,13 +1267,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 							{
 								if (Collision()->IntersectLine(pChr->m_TurRifle, pChr->m_Pos, &pChr->m_Pos, 0,false))
 								{
-									SendChatTarget(ClientID, "离墙远点！");
+									SendChatTarget(ClientID, _("离墙远点！"));
 									pChr->m_TurRifle = vec2(0, 0);
 									return;
 								}
 								if (distance(pChr->m_TurRifle, pChr->m_Pos) < 50)
 								{
-									SendChatTarget(ClientID, "距离太靠近了！");
+									SendChatTarget(ClientID, _("距离太近了！"));
 									pChr->m_TurRifle = vec2(0, 0);
 									return;
 								}
@@ -1301,13 +1301,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 							{
 								if (Collision()->IntersectLine(pChr->m_TurGrenade, pChr->m_Pos, &pChr->m_Pos, 0,false))
 								{
-									SendChatTarget(ClientID, "离墙远点！");
+									SendChatTarget(ClientID, _("离墙远点！"));
 									pChr->m_TurGrenade = vec2(0, 0);
 									return;
 								}
 								if (distance(pChr->m_TurGrenade, pChr->m_Pos) < 50)
 								{
-									SendChatTarget(ClientID, "距离太靠近了！");
+									SendChatTarget(ClientID, _("距离太靠近了！"));
 									pChr->m_TurGrenade = vec2(0, 0);
 									return;
 								}

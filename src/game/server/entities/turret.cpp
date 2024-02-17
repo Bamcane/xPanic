@@ -38,23 +38,18 @@ void CTurret::Reset()
 	GameServer()->m_World.DestroyEntity(this);
 	for (unsigned i = 0; i < sizeof(m_inIDs) / sizeof(int); i ++)
 	{
-		if(m_inIDs[i] >= 0){
+		if(m_inIDs[i])
 			Server()->SnapFreeID(m_inIDs[i]);
-			m_inIDs[i] = -1;
-		}
 	}
-	if(m_IDS >= 0){
+
+	if(m_IDS)
 		Server()->SnapFreeID(m_IDS);
-		m_IDS = -1;
-	}
-	if(m_IDC >= 0){
+
+	if(m_IDC)
 		Server()->SnapFreeID(m_IDC);
-		m_IDC = -1;
-	}
-	if(m_IDG >= 0){
+
+	if(m_IDG)
 		Server()->SnapFreeID(m_IDG);
-		m_IDG = -1;
-	}
 
 	if (GameServer()->GetPlayerChar(m_Owner))
 	{
@@ -349,13 +344,12 @@ void CTurret::Snap(int SnappingClient)
 	else if (m_Type == WEAPON_GRENADE) pObj2->m_StartTick = Server()->Tick() - 2;
 	else pObj2->m_StartTick = Server()->Tick();
 	
-	//laserpos2
-	CNetObj_Laser *pObj3 = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, m_IDG, sizeof(CNetObj_Laser)));
-	if (!pObj3)
-		return;
-
 	if(m_Type == WEAPON_GRENADE)
 	{
+		// laserpos2
+		CNetObj_Laser *pObj3 = static_cast<CNetObj_Laser *>(Server()->SnapNewItem(NETOBJTYPE_LASER, m_IDG, sizeof(CNetObj_Laser)));
+		if (!pObj3)
+			return;
 
 		pObj3->m_X = (int)m_Pos2L.x;
 		pObj3->m_Y = (int)m_Pos2L.y;

@@ -84,6 +84,7 @@ public:
 
 	class CCmd *m_pChatCmd;
 	class CAccount *m_pAccount;
+	int ExpNeedToNextLvl() { return m_AccData.m_Level * 10; }
 
 	//
 	bool m_ActivesLife;

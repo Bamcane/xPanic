@@ -13,6 +13,7 @@
 #include "entities/zdoor.h"
 #include <game/layers.h>
 
+#include <teeothers/components/localization.h>
 
 IGameController::IGameController(class CGameContext *pGameServer)
 {
@@ -220,12 +221,12 @@ void IGameController::EndRound()
 						float kofs = (k / (k + d)) * 100;
 
 						char aBuf[64];
-						GameServer()->SendChatTarget(-1, "----------------------------------");
+						GameServer()->SendChatTarget(-1, _("----------------------------------"));
 						str_format(aBuf, sizeof(aBuf), "僵尸: %s (胜利)", Server()->ClientName(m_LastZomb));
 						GameServer()->SendChatTarget(-1, aBuf);
 						str_format(aBuf, sizeof(aBuf), "胜利: %d / 失败: %d (%.1f)", GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Winner, GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Luser, kofs);
 						GameServer()->SendChatTarget(-1, aBuf);
-						GameServer()->SendChatTarget(-1, "----------------------------------");
+						GameServer()->SendChatTarget(-1, _("----------------------------------"));
 					}
 				}
 			m_aTeamscore[TEAM_RED] = 100;
@@ -250,12 +251,12 @@ void IGameController::EndRound()
 						float kofs = (k / (k + d)) * 100;
 
 						char aBuf[64];
-						GameServer()->SendChatTarget(-1, "----------------------------------");
+						GameServer()->SendChatTarget(-1, _("----------------------------------"));
 						str_format(aBuf, sizeof(aBuf), "僵尸: %s (失败)", Server()->ClientName(m_LastZomb));
 						GameServer()->SendChatTarget(-1, aBuf);
 						str_format(aBuf, sizeof(aBuf), "胜利: %d / 失败: %d (%.1f)", GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Winner, GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Luser, kofs);
 						GameServer()->SendChatTarget(-1, aBuf);
-						GameServer()->SendChatTarget(-1, "----------------------------------");
+						GameServer()->SendChatTarget(-1, _("----------------------------------"));
 					}
 				}
 			m_aTeamscore[TEAM_BLUE] = 100;
@@ -367,12 +368,12 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 	if (GameServer()->m_apPlayers[BigLvlID] && pChr->GetPlayer()->GetCID() != BigLvlID)
 	{
 		if (GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level > pChr->GetPlayer()->m_AccData.m_Level && GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level > 20)
-			pChr->IncreaseHealth(700 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 50 + GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level * 5);
+			pChr->IncreaseHealth(70 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20 + GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level);
 		else
-			pChr->IncreaseHealth(200 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 50);
+			pChr->IncreaseHealth(20 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
 	}
 	else
-		pChr->IncreaseHealth(700 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 50);
+		pChr->IncreaseHealth(70 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
 
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->GiveWeapon(WEAPON_GUN, 10);

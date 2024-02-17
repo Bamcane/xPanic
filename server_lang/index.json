@@ -1,9 +1,8 @@
 {
-	"language indices": 
-	[	
+	"language indices": [
 		{
 			"file": "cn",
-			"name": "English"
+			"name": "中文"
 		},
 		{
 			"file": "en",
