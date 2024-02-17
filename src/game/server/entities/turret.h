@@ -7,6 +7,7 @@ class CTurret : public CEntity
 {
 public:
 	CTurret(CGameWorld *pGameWorld, vec2 Pos, int Owner, int Type, vec2 PosL1, vec2 PosL2);
+	~CTurret();
 
 	virtual void Reset();
 	virtual void Tick();
