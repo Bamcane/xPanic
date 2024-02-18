@@ -242,7 +242,7 @@ void CPlayer::Snap(int SnappingClient)
 			str_format(pSendName, sizeof(pSendName), "[%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
 
 		if (m_AccData.m_Freeze)
-			str_format(pSendName, sizeof(pSendName), "[F-%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
+			str_format(pSendName, sizeof(pSendName), "[BAN]%s", Server()->ClientName(m_ClientID));
 	}
 	StrToInts(&pClientInfo->m_Name0, 4, m_AccData.m_UserID ? pSendName : Server()->ClientName(m_ClientID));
 	StrToInts(&pClientInfo->m_Clan0, 3, Server()->ClientClan(m_ClientID));

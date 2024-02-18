@@ -149,7 +149,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_Ammoregen >= 60)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("子弹恢复已达到最高级 (60)."));
 			if (m_pPlayer->m_AccData.m_Money <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("穷逼 (1点都出不起)."));
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("哥们以为他真的有点数升级."));
 
 			m_pPlayer->m_AccData.m_Money--, m_pPlayer->m_AccData.m_Ammoregen++;
 			str_format(andg, sizeof(andg), "当前子弹恢复等级: %d, 当前升级点: %d", m_pPlayer->m_AccData.m_Ammoregen, m_pPlayer->m_AccData.m_Money);
@@ -246,7 +246,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			if (m_pPlayer->m_AccData.m_TurretSpeed >= 500)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("已达到炮塔最高速度"));
 			if (m_pPlayer->m_AccData.m_TurretMoney <= 0)
-				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你个穷逼"));
+				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("哥们以为他真的有点数升级"));
 
 			m_pPlayer->m_AccData.m_TurretMoney--, m_pPlayer->m_AccData.m_TurretSpeed++;
 			str_format(andg, sizeof(andg), "你的炮塔速度提升了, 现在是: %d", m_pPlayer->m_AccData.m_TurretSpeed);
@@ -522,33 +522,40 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能在活着的时候使用!"));
 		if (GameServer()->m_World.m_Paused)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("稍等片刻."));
-		if (m_pPlayer->m_Score < 3)
-			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (3分)."));
+		if (m_pPlayer->m_Score < 5)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (5分)."));
 
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("完成!"));
 		m_pPlayer->m_JumpsShop++;
-		m_pPlayer->m_Score -= 3;
+		m_pPlayer->m_Score -= 5;
 		GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_Core.m_Jumps += 1;
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/range"))
 	{
 		LastChat();
+
 		if (!m_pPlayer->m_AccData.m_UserID)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你还没有登录！"));
 
 		if (!GameServer()->GetPlayerChar(m_pPlayer->GetCID()))
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能活着的时候用!"));
+
 		if (GameServer()->m_World.m_Paused)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("等回合结束."));
+
 		if (m_pPlayer->GetTeam() != TEAM_RED)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能僵尸用!"));
-		if (m_pPlayer->m_Score < 10)
-			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (10分)."));
+
+		if (m_pPlayer->m_Score < 25)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (25分)."));
+
+		if (m_pPlayer->m_RangeShop)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能购买一次！(生效直到切换地图)"));
 
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("完成!"));
 		m_pPlayer->m_RangeShop = true;
-		m_pPlayer->m_Score -= 10;
+		m_pPlayer->m_Score -= 25;
 		return;
 	}
 	else if (!strncmp(Msg->m_pMessage, "/prefix", 7) && m_pPlayer->m_AccData.m_UserID &&
@@ -627,6 +634,22 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		GameServer()->SendChatTarget(cid2, _("Your turret money changed!'"));
 		GameServer()->m_apPlayers[cid2]->m_AccData.m_TurretMoney = size;
 		GameServer()->m_apPlayers[cid2]->m_pAccount->Apply();
+		return;
+	}
+	else if (!strncmp(Msg->m_pMessage, "/setscore", 9) && GameServer()->Server()->IsAuthed(m_pPlayer->GetCID()))
+	{
+		LastChat();
+		int id, size;
+		if ((sscanf(Msg->m_pMessage, "/setscore %d %d", &id, &size)) != 2)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Please use: /setscore <id> <score>"));
+
+		int cid2 = clamp(id, 0, (int)MAX_CLIENTS - 1);
+		if (!GameServer()->m_apPlayers[cid2])
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("There is no such player!'"));
+		if (!GameServer()->m_apPlayers[cid2]->m_AccData.m_UserID)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("The player is not logged in account!"));
+		GameServer()->SendChatTarget(cid2, _("Your score changed!'"));
+		GameServer()->m_apPlayers[cid2]->m_Score = size;
 		return;
 	}
 	else if (!strncmp(Msg->m_pMessage, "/freeze", 6) && (m_pPlayer->m_AccData.m_PlayerState == 1 || GameServer()->Server()->IsAuthed(m_pPlayer->GetCID())))

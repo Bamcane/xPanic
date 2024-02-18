@@ -274,6 +274,12 @@ void IGameController::EndRound()
 	GameServer()->m_World.m_Paused = true;
 	m_GameOverTick = Server()->Tick()+Server()->TickSpeed()*5;
 	m_SuddenDeath = 0;
+
+	for (int i = 0; i < MAX_CLIENTS; i++)
+	{
+		if(GameServer()->m_apPlayers[i])
+			GameServer()->m_apPlayers[i]->m_pAccount->Apply();
+	}
 }
 
 void IGameController::ResetGame() {
@@ -368,12 +374,12 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 	if (GameServer()->m_apPlayers[BigLvlID] && pChr->GetPlayer()->GetCID() != BigLvlID)
 	{
 		if (GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level > pChr->GetPlayer()->m_AccData.m_Level && GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level > 20)
-			pChr->IncreaseHealth(70 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20 + GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level);
+			pChr->IncreaseHealth(120 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20 + GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level);
 		else
-			pChr->IncreaseHealth(20 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
+			pChr->IncreaseHealth(90 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
 	}
 	else
-		pChr->IncreaseHealth(70 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
+		pChr->IncreaseHealth(120 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
 
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->GiveWeapon(WEAPON_GUN, 10);

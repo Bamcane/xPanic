@@ -78,9 +78,9 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 		m_Core.m_ActiveWeapon = WEAPON_GUN;
 
 	m_Core.m_Jumps = 2 + pPlayer->m_JumpsShop;
-	if (pPlayer->m_AccData.m_Level >= 50 && pPlayer->m_AccData.m_Level <= 99)
+	if (pPlayer->m_AccData.m_Level >= 10 && pPlayer->m_AccData.m_Level <= 20)
 		m_mAmmo = 20 + pPlayer->m_AccData.m_Ammo;
-	else if (pPlayer->m_AccData.m_Level >= 100)
+	else if (pPlayer->m_AccData.m_Level >= 20)
 		m_mAmmo = 30 + pPlayer->m_AccData.m_Ammo;
 	else
 		m_mAmmo = 10 + pPlayer->m_AccData.m_Ammo;
@@ -217,7 +217,7 @@ void CCharacter::FireWeapon()
 
 	bool FullAuto = false;
 	if (m_Core.m_ActiveWeapon == WEAPON_GRENADE || m_Core.m_ActiveWeapon == WEAPON_SHOTGUN || m_Core.m_ActiveWeapon == WEAPON_GUN ||
-		m_Core.m_ActiveWeapon == WEAPON_HAMMER && m_pPlayer->m_AccData.m_Level >= 10 || m_Core.m_ActiveWeapon == WEAPON_GUN)
+		m_Core.m_ActiveWeapon == WEAPON_HAMMER && m_pPlayer->m_AccData.m_Level >= 5 || m_Core.m_ActiveWeapon == WEAPON_GUN)
 		FullAuto = true;
 
 	// check if we gonna fire
@@ -279,7 +279,7 @@ void CCharacter::FireWeapon()
 			{
 				CCharacter *pTarget = apEnts[i];
 
-				if (pTarget == this || (pTarget->IsAlive() && GameServer()->Collision()->IntersectLine(ProjStartPos, pTarget->m_Pos, NULL, NULL, false)) || pTarget->m_pPlayer->GetTeam() == TEAM_RED)
+				if (pTarget == this || (pTarget->IsAlive() && GameServer()->Collision()->IntersectLine(ProjStartPos, pTarget->m_Pos, NULL, NULL, false) && !GetPlayer()->m_RangeShop) || pTarget->m_pPlayer->GetTeam() == TEAM_RED)
 					continue;
 
 				if (length(pTarget->m_Pos - ProjStartPos) > 0.0f)
@@ -333,10 +333,10 @@ void CCharacter::FireWeapon()
 
 	case WEAPON_SHOTGUN:
 	{
-		int ShotSpread = 5 + m_pPlayer->m_AccData.m_Level / 10;
+		int ShotSpread = 5 + m_pPlayer->m_AccData.m_Level / 4;
 		if (ShotSpread > 15)
 		{
-			ShotSpread = 15 + m_pPlayer->m_AccData.m_Level / 70;
+			ShotSpread = 15 + m_pPlayer->m_AccData.m_Level / 8;
 			if (ShotSpread > 36)
 				ShotSpread = 36;
 		}
@@ -798,7 +798,7 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 	{
 		if (From >= 0 && m_pPlayer->GetCID() != From && GameServer()->m_apPlayers[From])
 		{
-			ExperienceAdd(3 + m_pPlayer->m_AccData.m_Level / 40 * g_Config.m_SvExpBonus, From);
+			ExperienceAdd(3 + m_pPlayer->m_AccData.m_Level / 10 * g_Config.m_SvExpBonus, From);
 			GameServer()->m_apPlayers[From]->m_KillingSpree++;
 			if (GameServer()->m_apPlayers[From]->m_KillingSpree == g_Config.m_SvKillingSpree)
 			{

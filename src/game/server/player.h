@@ -23,8 +23,8 @@ public:
 	void Reset();
 	void TryRespawn();
 	void Respawn();
-	CCharacter* ForceSpawn(vec2 Pos); // required for loading savegames
-	void SetTeam(int Team, bool DoChatMsg=true);
+	CCharacter *ForceSpawn(vec2 Pos); // required for loading savegames
+	void SetTeam(int Team, bool DoChatMsg = true);
 	void SetZomb(int From);
 	void ResetZomb();
 	int GetTeam() const { return m_Team; };
@@ -76,7 +76,7 @@ public:
 		int m_TurretAmmo;
 		int m_TurretShotgun;
 		int m_TurretRange;
-		
+
 		int m_Freeze;
 		int m_Winner;
 		int m_Luser;
@@ -84,7 +84,19 @@ public:
 
 	class CCmd *m_pChatCmd;
 	class CAccount *m_pAccount;
-	int ExpNeedToNextLvl() { return m_AccData.m_Level * 10; }
+	int ExpNeedToNextLvl()
+	{
+		if (m_AccData.m_Level >= 50)
+			return m_AccData.m_Level * 20;
+		else if (m_AccData.m_Level >= 30)
+			return m_AccData.m_Level * 15;
+		else if (m_AccData.m_Level >= 20)
+			return m_AccData.m_Level * 12;
+		else if (m_AccData.m_Level >= 10)
+			return m_AccData.m_Level * 11;
+		else
+			return m_AccData.m_Level * 10;
+	}
 
 	//
 	bool m_ActivesLife;
@@ -153,7 +165,6 @@ private:
 	int m_ClientID;
 	int m_Team;
 
-
 	// DDRace
 
 public:
@@ -174,7 +185,7 @@ public:
 
 	int m_ChatScore;
 
-	bool AfkTimer(int new_target_x, int new_target_y); //returns true if kicked
+	bool AfkTimer(int new_target_x, int new_target_y); // returns true if kicked
 	void AfkVoteTimer(CNetObj_PlayerInput *NewTarget);
 	int64 m_LastPlaytime;
 	int64 m_LastEyeEmote;
