@@ -32,7 +32,7 @@ void CProjectile::Reset()
 	if(m_Type == WEAPON_GRENADE && GameServer()->m_pController->m_GrenadeLimit)
 		GameServer()->m_pController->m_GrenadeLimit--;
 	
-	GameServer()->m_World.DestroyEntity(this);
+	GameWorld()->DestroyEntity(this);
 }
 
 vec2 CProjectile::GetPos(float Time)

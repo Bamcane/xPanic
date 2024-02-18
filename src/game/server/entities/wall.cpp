@@ -16,11 +16,14 @@ CWall::CWall(CGameWorld *pGameWorld, vec2 From, vec2 To, int Owner, int Time)
 	m_ID2 = Server()->SnapNewID();
 	GameWorld()->InsertEntity(this);
 }
+CWall::~CWall()
+{
+	Server()->SnapFreeID(m_ID2);
+}
 
 void CWall::Reset()
 {
-	GameServer()->m_World.DestroyEntity(this);
-	Server()->SnapFreeID(m_ID2);
+	GameWorld()->DestroyEntity(this);
 }
 
 bool CWall::HitCharacter(CCharacter *Hit)
@@ -69,8 +72,10 @@ int CWall::FindCharacters(vec2 Pos0, vec2 Pos1, float Radius, CCharacter **ppCha
 
 void CWall::Tick()
 {
-	if (!GameServer()->GetPlayerChar(m_Owner) || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_RED 
-			|| GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_SPECTATORS || !m_Time) 
+	if(m_MarkedForDestroy)
+		return;
+
+	if (!GameServer()->GetPlayerChar(m_Owner) || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_RED || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_SPECTATORS || !m_Time)
 		return Reset();
 
 	m_Time--;

@@ -761,6 +761,7 @@ void CGameContext::OnClientEnter(int ClientID)
 	SendChatTarget(ClientID, _("输入/register 用户名 密码 注册"));
 	SendChatTarget(ClientID, _("输入/login 用户名 密码 登录"));
 	SendChatTarget(ClientID, _("输入/cmdlist获取指令列表"));
+	SendBroadcast(_("\n\n\n输入/register 用户名 密码注册账号\n输入/login 用户名 密码登录账号\n登录后方可进入游戏"), ClientID);
 
 	m_pController->CheckZomb();
 	m_apPlayers[ClientID]->m_Authed = ((CServer*)Server())->m_aClients[ClientID].m_Authed;
@@ -808,7 +809,7 @@ void CGameContext::OnClientDrop(int ClientID, const char *pReason)
 void CGameContext::SendPM(int ClientID, int FromID, char *string)
 {
 	if(!m_apPlayers[FromID]) return SendChatTarget(ClientID, _("没有玩家用这个ID"));
-	if(ClientID == FromID) return SendChatTarget(FromID, _("尝试给自己发消息 (-_-')"));
+	if(ClientID == FromID) return SendChatTarget(FromID, _("哥们以为能给自己发消息 (-_-')"));
 	if(Server()->ClientIngame(ClientID) && Server()->ClientIngame(FromID))
 	{
 		char aBuf[128];

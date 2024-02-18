@@ -25,8 +25,7 @@ void CMine::HitCharacter()
 		{
 			GameServer()->CreateSound(m_Pos, SOUND_GRENADE_EXPLODE);
 			apCloseCCharacters[i]->m_BurnTick = Server()->TickSpeed()*2.0f;
-			Reset();
-			return;
+			return Reset();
 		}
 	}
 }
@@ -37,9 +36,11 @@ void CMine::Reset()
 }
 
 void CMine::Tick()
-{	
-	if (!GameServer()->GetPlayerChar(m_Owner) || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_BLUE 
-			|| GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_SPECTATORS) 
+{
+	if(m_MarkedForDestroy)
+		return;
+
+	if (!GameServer()->GetPlayerChar(m_Owner) || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_BLUE || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_SPECTATORS)
 		return Reset();
 	
 	HitCharacter();

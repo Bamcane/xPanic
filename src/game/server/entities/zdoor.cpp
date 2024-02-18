@@ -25,16 +25,19 @@ CDrSz::CDrSz(CGameWorld *pGameWorld, int Index, int Time)
 void CDrSz::Reset()
 {
 	if(m_Index == -1)
-		GameServer()->m_World.DestroyEntity(this);
+		GameWorld()->DestroyEntity(this);
 }
 
 void CDrSz::Tick()
 {
+	if (m_MarkedForDestroy)
+		return;
+
 	if(m_Time > 0)
 	{
 		m_Time--;
 		if(!m_Time)
-			GameServer()->m_World.DestroyEntity(this);
+			GameWorld()->DestroyEntity(this);
 	}
 	if(m_Index > -1)
 		m_State = GameServer()->m_pController->DoorState(m_Index);

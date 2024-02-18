@@ -17,7 +17,7 @@ CLifeHearth::CLifeHearth(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 
 void CLifeHearth::Reset()
 {
-	GameServer()->m_World.DestroyEntity(this);
+	GameWorld()->DestroyEntity(this);
 }
 
 void CLifeHearth::Tick()

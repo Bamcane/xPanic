@@ -66,8 +66,11 @@ void CTurret::Reset()
 
 void CTurret::Tick()
 {
+	if (m_MarkedForDestroy)
+		return;
+
 	if (!GameServer()->GetPlayerChar(m_Owner) || !GameServer()->GetPlayerChar(m_Owner)->IsAlive() || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_RED || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_SPECTATORS)
-		Reset();
+		return Reset();
 
 	m_RegenTime--;
 	if (m_RegenTime < -1)
@@ -216,7 +219,7 @@ void CTurret::Fire()
 					GameServer()->CreateSound(m_Pos2L, 6);
 					GameServer()->m_apPlayers[pClosest->m_Owner]->m_LifeActives = false;
 					pClosest->Reset();
-					Reset();
+					return Reset();
 				}
 			}
 		}

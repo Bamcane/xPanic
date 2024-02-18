@@ -92,8 +92,13 @@ void CPlayer::Tick()
 			return;
 
 	if (!m_AccData.m_UserID)
+	{
 		m_Team = -1;
-
+		if (Server()->Tick() % 200 == 0)
+		{
+			GameServer()->SendBroadcast(_("\n\n\n输入/register 用户名 密码注册账号\n输入/login 用户名 密码登录账号\n登录后方可进入游戏"), GetCID());
+		}
+	}
 	if (m_KillMe != 0)
 	{
 		KillCharacter(m_KillMe);
