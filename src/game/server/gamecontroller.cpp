@@ -29,6 +29,7 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_GameOverTick = -1;
 	m_RoundStarted = false;
 	m_GrenadeLimit = 0;
+	m_RoundCount = 0;
 
 	m_SuddenDeath = 0;
 	m_aTeamscore[TEAM_RED] = m_aTeamscore[TEAM_BLUE] = 0;
@@ -540,7 +541,7 @@ void IGameController::Snap(int SnappingClient)
 	pGameInfoObj->m_TimeLimit = g_Config.m_SvTimelimit;
 
 	pGameInfoObj->m_RoundNum = (str_length(g_Config.m_SvMaprotation) && g_Config.m_SvRoundsPerMap) ? g_Config.m_SvRoundsPerMap : 0;
-	pGameInfoObj->m_RoundCurrent = 0;
+	pGameInfoObj->m_RoundCurrent = m_RoundCount + 1;
 
 	CNetObj_GameData *pGameDataObj = (CNetObj_GameData *)Server()->SnapNewItem(NETOBJTYPE_GAMEDATA, 0, sizeof(CNetObj_GameData));
 	if (!pGameDataObj)
