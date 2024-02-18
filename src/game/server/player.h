@@ -152,6 +152,14 @@ public:
 		int m_Max;
 	} m_Latency;
 
+	enum
+	{
+		ZOMB_DEFAULT = 1,
+		ZOMB_WITCH,
+	};
+
+	int m_ZombClass;
+
 private:
 	CCharacter *m_pCharacter;
 	int m_NumInputs;

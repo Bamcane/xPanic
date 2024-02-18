@@ -318,7 +318,7 @@ void IGameController::StartRound()
 
 void IGameController::ChangeMap(const char *pToMap)
 {
-	str_copy(g_Config.m_SvMap, pToMap, sizeof(m_aMapWish));
+	str_copy(m_aMapWish, pToMap, sizeof(m_aMapWish));
 	EndRound();
 }
 
@@ -442,9 +442,9 @@ void IGameController::Tick()
 		// game over.. wait for restart
 		if (Server()->Tick() > m_GameOverTick + Server()->TickSpeed() * 2)
 		{
+			m_RoundCount++;
 			CycleMap();
 			StartRound();
-			m_RoundCount++;
 		}
 	}
 
@@ -772,6 +772,9 @@ static bool IsSeparator(char c) { return c == ';' || c == ' ' || c == ',' || c =
 
 void IGameController::CycleMap()
 {
+	if (m_RoundCount < g_Config.m_SvRoundsPerMap)
+		return;
+
 	if (m_aMapWish[0] != 0)
 	{
 		char aBuf[256];
