@@ -93,3 +93,6 @@ access_level bans 1
 access_level bans_save 1
 access_level kick 1
 access_level force_vote 1
+
+sv_maprotation 4Ways Area-51 Beach-House china-town Depot2 Desert-panic Dio-House ExtPanic Final "Hallowen Castle" Ice-house littlePanic panic_minecraft Pharao-Pyramid "Shelter by Rio" THE_WORLD Tunnel xPanic-life Zombierunx15
+sv_rounds_per_map 6
