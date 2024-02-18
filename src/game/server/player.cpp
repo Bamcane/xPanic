@@ -29,12 +29,10 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	m_pCharacter = 0;
 	m_NumInputs = 0;
 	m_KillMe = 0;
+	mem_zero(&m_AccData, sizeof(m_AccData));
 
 	m_pAccount = new CAccount(this, m_pGameServer);
 	m_pChatCmd = new CCmd(this, m_pGameServer);
-
-	if (m_AccData.m_UserID)
-		m_pAccount->Apply();
 
 	Reset();
 }
@@ -113,7 +111,7 @@ void CPlayer::Tick()
 	{
 		m_AccData.m_Money++;
 		m_AccData.m_Exp -= ExpNeedToNextLvl();
-		m_AccData.m_Level += m_AccData.m_Level/4;
+		m_AccData.m_Level += m_AccData.m_Level / 4;
 		if (m_AccData.m_Exp < m_AccData.m_Level)
 		{
 			if (m_AccData.m_UserID)
