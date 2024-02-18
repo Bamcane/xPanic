@@ -33,11 +33,11 @@ IGameController::IGameController(class CGameContext *pGameServer)
 	m_SuddenDeath = 0;
 	m_aTeamscore[TEAM_RED] = m_aTeamscore[TEAM_BLUE] = 0;
 	m_aNumSpawnPoints[0] = m_aNumSpawnPoints[1] = m_aNumSpawnPoints[2] = 0;
-	m_aaOnTeamWinEvent[TEAM_RED][0] = m_aaOnTeamWinEvent[TEAM_BLUE][0] = m_aaOnTeamWinEvent[2][0] = 0; 
-	
-	for(int i = 0; i < 48; i++)
+	m_aaOnTeamWinEvent[TEAM_RED][0] = m_aaOnTeamWinEvent[TEAM_BLUE][0] = m_aaOnTeamWinEvent[2][0] = 0;
+
+	for (int i = 0; i < 48; i++)
 	{
-		if(i < 32)
+		if (i < 32)
 			m_Door[i].m_State = DOOR_CLOSED;
 		else
 			m_Door[i].m_State = DOOR_OPEN;
@@ -73,8 +73,8 @@ void IGameController::EvaluateSpawnType(CSpawnEval *pEval, int Type)
 	for (int i = 0; i < m_aNumSpawnPoints[Type]; i++)
 	{
 		CCharacter *aEnts[MAX_CLIENTS];
-		int Num = GameServer()->m_World.FindEntities(m_aaSpawnPoints[Type][i], 64, (CEntity**)aEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
-		vec2 Positions[5] = { vec2(0.0f, 0.0f), vec2(-32.0f, 0.0f), vec2(0.0f, -32.0f), vec2(32.0f, 0.0f), vec2(0.0f, 32.0f) };	// start, left, up, right, down
+		int Num = GameServer()->m_World.FindEntities(m_aaSpawnPoints[Type][i], 64, (CEntity **)aEnts, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
+		vec2 Positions[5] = {vec2(0.0f, 0.0f), vec2(-32.0f, 0.0f), vec2(0.0f, -32.0f), vec2(32.0f, 0.0f), vec2(0.0f, 32.0f)}; // start, left, up, right, down
 		int Result = -1;
 		for (int Index = 0; Index < 5 && Result == -1; ++Index)
 		{
@@ -134,7 +134,6 @@ bool IGameController::CanSpawn(int Team, vec2 *pOutPos)
 	return Eval.m_Got;
 }
 
-
 bool IGameController::OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Number)
 {
 	if (Index < 0)
@@ -155,7 +154,6 @@ bool IGameController::OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Nu
 	sides[5] = GameServer()->Collision()->Entity(x - 1, y - 1, Layer);
 	sides[6] = GameServer()->Collision()->Entity(x - 1, y, Layer);
 	sides[7] = GameServer()->Collision()->Entity(x - 1, y + 1, Layer);
-
 
 	if (Index == ENTITY_SPAWN_RED)
 		m_aaSpawnPoints[0][m_aNumSpawnPoints[0]++] = Pos;
@@ -181,9 +179,9 @@ bool IGameController::OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Nu
 		Type = POWERUP_WEAPON;
 		SubType = WEAPON_RIFLE;
 	}
-	else if((Index >= ENTITY_DOOR_BEGIN && Index <= ENTITY_DOOR_END) || (Index >= ENTITY_ZDOOR_BEGIN && Index <= ENTITY_ZDOOR_END))
+	else if ((Index >= ENTITY_DOOR_BEGIN && Index <= ENTITY_DOOR_END) || (Index >= ENTITY_ZDOOR_BEGIN && Index <= ENTITY_ZDOOR_END))
 	{
-		CDrSz *pDoor = new CDrSz(&GameServer()->m_World, Index-17, -1);
+		CDrSz *pDoor = new CDrSz(&GameServer()->m_World, Index - 17, -1);
 		pDoor->m_Pos = Pos;
 		return true;
 	}
@@ -204,14 +202,13 @@ void IGameController::EndRound()
 	if (!ZombStarted())
 		return;
 
-	if (!NumHumans() || !NumZombs() || (NumHumans() && (g_Config.m_SvTimelimit > 0 &&
-		(Server()->Tick() - m_RoundStartTick) >= g_Config.m_SvTimelimit*Server()->TickSpeed()) && !m_SuddenDeath))
+	if (!NumHumans() || !NumZombs() || (NumHumans() && (g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_RoundStartTick) >= g_Config.m_SvTimelimit * Server()->TickSpeed()) && !m_SuddenDeath))
 	{
 		m_aTeamscore[TEAM_RED] = m_aTeamscore[TEAM_BLUE] = 0;
 		if (!NumHumans())
 		{
 			if (GameServer()->GetPlayerChar(m_LastZomb))
-				if(GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_UserID)
+				if (GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_UserID)
 				{
 					GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Winner++, GameServer()->m_apPlayers[m_LastZomb]->m_pAccount->Apply();
 					if (g_Config.m_SvShowStatsEndRound)
@@ -232,16 +229,15 @@ void IGameController::EndRound()
 			m_aTeamscore[TEAM_RED] = 100;
 			for (int i = 0; i < MAX_CLIENTS; i++)
 			{
-				if(!GameServer()->m_World.m_Paused && GameServer()->GetPlayerChar(i))
+				if (!GameServer()->m_World.m_Paused && GameServer()->GetPlayerChar(i))
 					GameServer()->GetPlayerChar(i)->ExperienceAdd(1, i);
 			}
 		}
-		
-		if (!NumZombs() || (NumHumans() && (g_Config.m_SvTimelimit > 0 && 
-			(Server()->Tick() - m_RoundStartTick) >= g_Config.m_SvTimelimit*Server()->TickSpeed()) && !m_SuddenDeath))
+
+		if (!NumZombs() || (NumHumans() && (g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_RoundStartTick) >= g_Config.m_SvTimelimit * Server()->TickSpeed()) && !m_SuddenDeath))
 		{
 			if (GameServer()->GetPlayerChar(m_LastZomb))
-				if(GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_UserID)
+				if (GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_UserID)
 				{
 					GameServer()->m_apPlayers[m_LastZomb]->m_AccData.m_Luser++, GameServer()->m_apPlayers[m_LastZomb]->m_pAccount->Apply();
 					if (g_Config.m_SvShowStatsEndRound)
@@ -264,25 +260,26 @@ void IGameController::EndRound()
 			{
 				if (GameServer()->m_apPlayers[i] && GameServer()->m_apPlayers[i]->GetTeam() == TEAM_BLUE)
 					GameServer()->m_apPlayers[i]->m_Score += 10;
-				
-				if(!GameServer()->m_World.m_Paused && GameServer()->GetPlayerChar(i))
-					GameServer()->GetPlayerChar(i)->ExperienceAdd(5, i);
+
+				if (!GameServer()->m_World.m_Paused && GameServer()->GetPlayerChar(i))
+					GameServer()->GetPlayerChar(i)->ExperienceAdd(3 + g_Config.m_SvExpBonus, i);
 			}
 		}
 	}
 
 	GameServer()->m_World.m_Paused = true;
-	m_GameOverTick = Server()->Tick()+Server()->TickSpeed()*5;
+	m_GameOverTick = Server()->Tick() + Server()->TickSpeed() * 5;
 	m_SuddenDeath = 0;
 
 	for (int i = 0; i < MAX_CLIENTS; i++)
 	{
-		if(GameServer()->m_apPlayers[i])
+		if (GameServer()->m_apPlayers[i])
 			GameServer()->m_apPlayers[i]->m_pAccount->Apply();
 	}
 }
 
-void IGameController::ResetGame() {
+void IGameController::ResetGame()
+{
 	GameServer()->m_World.m_ResetRequested = true;
 }
 
@@ -290,8 +287,10 @@ const char *IGameController::GetTeamName(int Team)
 {
 	if (IsTeamplay())
 	{
-		if (Team == TEAM_RED) return "zombie team";
-		else if (Team == TEAM_BLUE) return "human team";
+		if (Team == TEAM_RED)
+			return "zombie team";
+		else if (Team == TEAM_BLUE)
+			return "human team";
 	}
 	return "spectators";
 }
@@ -312,7 +311,7 @@ void IGameController::StartRound()
 	StartZomb(false), CheckZomb();
 
 	char aBuf[64];
-	str_format(aBuf, sizeof(aBuf), "start round type='%s' teamplay='%d'", m_pGameType, m_GameFlags&GAMEFLAG_TEAMS);
+	str_format(aBuf, sizeof(aBuf), "start round type='%s' teamplay='%d'", m_pGameType, m_GameFlags & GAMEFLAG_TEAMS);
 	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);
 }
 
@@ -337,7 +336,7 @@ void IGameController::PostReset()
 
 void IGameController::OnPlayerInfoChange(class CPlayer *pP)
 {
-	const int aTeamColors[2] = { 65387, 10223467 };
+	const int aTeamColors[2] = {65387, 10223467};
 	if (IsTeamplay())
 	{
 		pP->m_TeeInfos.m_UseCustomColor = 1;
@@ -350,9 +349,12 @@ void IGameController::OnPlayerInfoChange(class CPlayer *pP)
 
 int IGameController::OnCharacterDeath(class CCharacter *pVictim, class CPlayer *pKiller, int Weapon)
 {
-	if (!pKiller || Weapon == WEAPON_GAME) return 0;
-	if (pKiller != pVictim->GetPlayer()) pKiller->m_Score++;
-	if (Weapon == WEAPON_SELF) pVictim->GetPlayer()->m_RespawnTick = Server()->Tick() + Server()->TickSpeed()*3.0f;
+	if (!pKiller || Weapon == WEAPON_GAME)
+		return 0;
+	if (pKiller != pVictim->GetPlayer())
+		pKiller->m_Score++;
+	if (Weapon == WEAPON_SELF)
+		pVictim->GetPlayer()->m_RespawnTick = Server()->Tick() + Server()->TickSpeed() * 3.0f;
 
 	return 0;
 }
@@ -364,9 +366,8 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 	{
 		if (GameServer()->m_apPlayers[i] && GameServer()->m_apPlayers[BigLvlID])
 		{
-			if(GameServer()->m_apPlayers[i]->m_AccData.m_UserID && GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_UserID)
-				if (GameServer()->m_apPlayers[i]->GetTeam() == TEAM_BLUE && GameServer()->m_apPlayers[i]->m_AccData.m_Level > GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level
-					&& pChr->GetPlayer()->GetCID() != BigLvlID)
+			if (GameServer()->m_apPlayers[i]->m_AccData.m_UserID && GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_UserID)
+				if (GameServer()->m_apPlayers[i]->GetTeam() == TEAM_BLUE && GameServer()->m_apPlayers[i]->m_AccData.m_Level > GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level && pChr->GetPlayer()->GetCID() != BigLvlID)
 					BigLvlID = i;
 		}
 	}
@@ -387,8 +388,10 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 
 void IGameController::DoWarmup(int Seconds)
 {
-	if (Seconds < 0) m_Warmup = 0;
-	else m_Warmup = Seconds*Server()->TickSpeed();
+	if (Seconds < 0)
+		m_Warmup = 0;
+	else
+		m_Warmup = Seconds * Server()->TickSpeed();
 }
 
 bool IGameController::IsFriendlyFire(int ClientID1, int ClientID2)
@@ -424,7 +427,7 @@ void IGameController::Tick()
 				for (; ZAtStart; ZAtStart--)
 				{
 					RandomZomb(-1);
-					if(NumPlayers() >= g_Config.m_SvTwoZombie && g_Config.m_SvTwoZombie)
+					if (NumPlayers() >= g_Config.m_SvTwoZombie && g_Config.m_SvTwoZombie)
 						RandomZomb(-1);
 				}
 			}
@@ -435,67 +438,72 @@ void IGameController::Tick()
 
 	if (m_GameOverTick != -1)
 	{
-		if (Server()->Tick() > m_GameOverTick)
+		// game over.. wait for restart
+		if (Server()->Tick() > m_GameOverTick + Server()->TickSpeed() * 2)
+		{
+			CycleMap();
 			StartRound();
+			m_RoundCount++;
+		}
 	}
 
-	if(GameServer()->m_World.m_Paused)
+	if (GameServer()->m_World.m_Paused)
 		++m_RoundStartTick;
-	
+
 	if (g_Config.m_SvInactiveKickTime > 0)
 	{
 		for (int i = 0; i < MAX_CLIENTS; ++i)
 		{
-			#ifdef CONF_DEBUG
+#ifdef CONF_DEBUG
 			if (g_Config.m_DbgDummies)
 			{
 				if (i >= MAX_CLIENTS - g_Config.m_DbgDummies)
 					break;
 			}
-			#endif
+#endif
 			if (GameServer()->m_apPlayers[i] && GameServer()->m_apPlayers[i]->GetTeam() != TEAM_SPECTATORS && !Server()->IsAuthed(i))
 			{
-				if (Server()->Tick() > GameServer()->m_apPlayers[i]->m_LastActionTick + g_Config.m_SvInactiveKickTime*Server()->TickSpeed() * 60)
+				if (Server()->Tick() > GameServer()->m_apPlayers[i]->m_LastActionTick + g_Config.m_SvInactiveKickTime * Server()->TickSpeed() * 60)
 					GameServer()->m_apPlayers[i]->SetTeam(TEAM_SPECTATORS);
 			}
 		}
 	}
-	
+
 	if (!ZombStarted() || GameServer()->m_World.m_Paused)
 		return;
 
 	DoWincheck();
-	
-	for(int i = 0; i < 48; i++)
+
+	for (int i = 0; i < 48; i++)
 	{
-		if(m_Door[i].m_Tick > 0)
+		if (m_Door[i].m_Tick > 0)
 		{
-			if(m_Door[i].m_State == DOOR_CLOSED)
+			if (m_Door[i].m_State == DOOR_CLOSED)
 			{
-				if(m_Door[i].m_Tick <= Server()->Tick())
+				if (m_Door[i].m_Tick <= Server()->Tick())
 				{
 					SetDoorState(i, DOOR_OPEN);
 					m_Door[i].m_Tick = 0;
 				}
 			}
-			else if(m_Door[i].m_Tick <= Server()->Tick())
+			else if (m_Door[i].m_Tick <= Server()->Tick())
 			{
-				if(m_Door[i].m_State == DOOR_ZCLOSING && i < 32)
+				if (m_Door[i].m_State == DOOR_ZCLOSING && i < 32)
 				{
 					SetDoorState(i, DOOR_ZCLOSED);
-					m_Door[i].m_Tick = Server()->Tick() + Server()->TickSpeed()*GetDoorTime(i);
+					m_Door[i].m_Tick = Server()->Tick() + Server()->TickSpeed() * GetDoorTime(i);
 				}
-				else if(m_Door[i].m_State == DOOR_ZCLOSED && i < 32)
+				else if (m_Door[i].m_State == DOOR_ZCLOSED && i < 32)
 				{
 					SetDoorState(i, DOOR_REOPENED);
 					m_Door[i].m_Tick = 0;
 				}
-				else if(m_Door[i].m_State == DOOR_ZCLOSING && i >= 32)
+				else if (m_Door[i].m_State == DOOR_ZCLOSING && i >= 32)
 				{
 					SetDoorState(i, DOOR_ZCLOSED);
-					m_Door[i].m_Tick = Server()->Tick() + Server()->TickSpeed()*GetDoorTime(i);
+					m_Door[i].m_Tick = Server()->Tick() + Server()->TickSpeed() * GetDoorTime(i);
 				}
-				else if(m_Door[i].m_State == DOOR_ZCLOSED && i >= 32)
+				else if (m_Door[i].m_State == DOOR_ZCLOSED && i >= 32)
 				{
 					SetDoorState(i, DOOR_REOPENED);
 					m_Door[i].m_Tick = 0;
@@ -505,8 +513,9 @@ void IGameController::Tick()
 	}
 }
 
-bool IGameController::IsTeamplay() const {
-	return m_GameFlags&GAMEFLAG_TEAMS;
+bool IGameController::IsTeamplay() const
+{
+	return m_GameFlags & GAMEFLAG_TEAMS;
 }
 
 void IGameController::Snap(int SnappingClient)
@@ -537,11 +546,12 @@ void IGameController::Snap(int SnappingClient)
 	if (!pGameDataObj)
 		return;
 
-	if(m_aTeamscore[TEAM_RED] >= 100 || m_aTeamscore[TEAM_BLUE] >= 100)
+	if (m_aTeamscore[TEAM_RED] >= 100 || m_aTeamscore[TEAM_BLUE] >= 100)
 	{
 		pGameDataObj->m_TeamscoreRed = m_aTeamscore[TEAM_RED];
 		pGameDataObj->m_TeamscoreBlue = m_aTeamscore[TEAM_BLUE];
-	} else
+	}
+	else
 	{
 		pGameDataObj->m_TeamscoreRed = NumZombs();
 		pGameDataObj->m_TeamscoreBlue = NumHumans();
@@ -553,8 +563,10 @@ int IGameController::GetAutoTeam(int NotThisID)
 	if (g_Config.m_DbgStress)
 		return 0;
 
-	if (ZombStarted() && !m_Warmup) return TEAM_RED;
-	else return TEAM_BLUE;
+	if (ZombStarted() && !m_Warmup)
+		return TEAM_RED;
+	else
+		return TEAM_BLUE;
 }
 
 bool IGameController::CanJoinTeam(int Team, int NotThisID)
@@ -562,7 +574,7 @@ bool IGameController::CanJoinTeam(int Team, int NotThisID)
 	if (Team == TEAM_SPECTATORS || (GameServer()->m_apPlayers[NotThisID] && GameServer()->m_apPlayers[NotThisID]->GetTeam() != TEAM_SPECTATORS))
 		return true;
 
-	int aNumplayers[2] = { 0,0 };
+	int aNumplayers[2] = {0, 0};
 	for (int i = 0; i < MAX_CLIENTS; i++)
 	{
 		if (GameServer()->m_apPlayers[i] && i != NotThisID)
@@ -576,7 +588,7 @@ bool IGameController::CanJoinTeam(int Team, int NotThisID)
 
 void IGameController::DoWincheck()
 {
-	if (g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_RoundStartTick) >= g_Config.m_SvTimelimit*Server()->TickSpeed() * 60)
+	if (g_Config.m_SvTimelimit > 0 && (Server()->Tick() - m_RoundStartTick) >= g_Config.m_SvTimelimit * Server()->TickSpeed() * 60)
 		EndRound();
 }
 
@@ -600,13 +612,15 @@ void IGameController::ResetZ()
 	ResetDoors();
 }
 
-bool IGameController::ZombStarted(){
+bool IGameController::ZombStarted()
+{
 	return m_RoundStarted;
 }
 
 void IGameController::StartZomb(bool Value)
 {
-	if (!Value) ResetZ();
+	if (!Value)
+		ResetZ();
 	m_RoundStarted = Value;
 }
 
@@ -620,7 +634,7 @@ void IGameController::CheckZomb()
 		m_LastZomb = m_LastZomb2 = -1;
 		return;
 	}
-	
+
 	m_SuddenDeath = 0;
 	if (!m_RoundStarted && !m_Warmup && g_Config.m_SvZombieRatio)
 	{
@@ -668,8 +682,8 @@ void IGameController::RandomZomb(int Mode)
 {
 	int ZombCID = rand() % MAX_CLIENTS, WTF = 250;
 	while (!GameServer()->m_apPlayers[ZombCID] || (GameServer()->m_apPlayers[ZombCID] && GameServer()->m_apPlayers[ZombCID]->GetTeam() == TEAM_SPECTATORS) ||
-		m_LastZomb == ZombCID || (NumPlayers() > 2 && m_LastZomb2 == ZombCID) || !GameServer()->m_apPlayers[ZombCID]->GetCharacter() ||
-			(GameServer()->m_apPlayers[ZombCID]->GetCharacter() && !GameServer()->m_apPlayers[ZombCID]->GetCharacter()->IsAlive()))
+		   m_LastZomb == ZombCID || (NumPlayers() > 2 && m_LastZomb2 == ZombCID) || !GameServer()->m_apPlayers[ZombCID]->GetCharacter() ||
+		   (GameServer()->m_apPlayers[ZombCID]->GetCharacter() && !GameServer()->m_apPlayers[ZombCID]->GetCharacter()->IsAlive()))
 	{
 		ZombCID = rand() % MAX_CLIENTS;
 		WTF--;
@@ -688,13 +702,13 @@ void IGameController::RandomZomb(int Mode)
 
 void IGameController::OnHoldpoint(int Index)
 {
-	if(m_Door[Index].m_Tick || !(m_Door[Index].m_State == DOOR_CLOSED) || !ZombStarted() || GetDoorTime(Index) == -1)
+	if (m_Door[Index].m_Tick || !(m_Door[Index].m_State == DOOR_CLOSED) || !ZombStarted() || GetDoorTime(Index) == -1)
 		return;
 
 	int const doorTime = GetDoorTime(Index);
 
 	// -1: if doortime is 5 we get a doublemessage (but srsly a 5 seconds door?)
-	m_Door[Index].m_Tick = Server()->Tick() + Server()->TickSpeed()*doorTime-1;
+	m_Door[Index].m_Tick = Server()->Tick() + Server()->TickSpeed() * doorTime - 1;
 
 	// issue "door open" message to clients
 	char aBuf[32];
@@ -704,46 +718,122 @@ void IGameController::OnHoldpoint(int Index)
 
 void IGameController::OnZHoldpoint(int Index)
 {
-	if(m_Door[Index].m_State > DOOR_OPEN || !ZombStarted() || GetDoorTime(Index) == -1)
+	if (m_Door[Index].m_State > DOOR_OPEN || !ZombStarted() || GetDoorTime(Index) == -1)
 		return;
 
 	SetDoorState(Index, DOOR_ZCLOSING);
-	m_Door[Index].m_Tick = Server()->Tick() + Server()->TickSpeed()*GetDoorTime(Index);
+	m_Door[Index].m_Tick = Server()->Tick() + Server()->TickSpeed() * GetDoorTime(Index);
 }
 
 void IGameController::OnZStop(int Index)
 {
-	if(m_Door[Index].m_State > DOOR_OPEN || !ZombStarted() || GetDoorTime(Index) == -1)
+	if (m_Door[Index].m_State > DOOR_OPEN || !ZombStarted() || GetDoorTime(Index) == -1)
 		return;
 
 	SetDoorState(Index, DOOR_ZCLOSING);
-	m_Door[Index].m_Tick = Server()->Tick() + Server()->TickSpeed()*GetDoorTime(Index);
+	m_Door[Index].m_Tick = Server()->Tick() + Server()->TickSpeed() * GetDoorTime(Index);
 }
-
 
 void IGameController::ResetDoors()
 {
-	for(int i = 0; i < 48; i++)
+	for (int i = 0; i < 48; i++)
 	{
-		if(i < 32)	m_Door[i].m_State = DOOR_CLOSED;
-		else m_Door[i].m_State = DOOR_OPEN;
+		if (i < 32)
+			m_Door[i].m_State = DOOR_CLOSED;
+		else
+			m_Door[i].m_State = DOOR_OPEN;
 		m_Door[i].m_Tick = 0;
 	}
 }
 
-int IGameController::DoorState(int Index){
+int IGameController::DoorState(int Index)
+{
 	return m_Door[Index].m_State;
 }
 
-void IGameController::SetDoorState(int Index, int State){
+void IGameController::SetDoorState(int Index, int State)
+{
 	m_Door[Index].m_State = State;
 }
 
 int IGameController::GetDoorTime(int Index)
 {
-	if(m_Door[Index].m_State == DOOR_CLOSED) return m_Door[Index].m_OpenTime;
-	else if(m_Door[Index].m_State == DOOR_ZCLOSING || m_Door[Index].m_State == DOOR_OPEN) return m_Door[Index].m_CloseTime;
-	else if(m_Door[Index].m_State == DOOR_ZCLOSED) return m_Door[Index].m_ReopenTime;
+	if (m_Door[Index].m_State == DOOR_CLOSED)
+		return m_Door[Index].m_OpenTime;
+	else if (m_Door[Index].m_State == DOOR_ZCLOSING || m_Door[Index].m_State == DOOR_OPEN)
+		return m_Door[Index].m_CloseTime;
+	else if (m_Door[Index].m_State == DOOR_ZCLOSED)
+		return m_Door[Index].m_ReopenTime;
 	return 0;
 }
 
+static bool IsSeparator(char c) { return c == ';' || c == ' ' || c == ',' || c == '\t'; }
+
+void IGameController::CycleMap()
+{
+	if (m_aMapWish[0] != 0)
+	{
+		char aBuf[256];
+		str_format(aBuf, sizeof(aBuf), "rotating map to %s", m_aMapWish);
+		GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);
+		str_copy(g_Config.m_SvMap, m_aMapWish, sizeof(g_Config.m_SvMap));
+		m_aMapWish[0] = 0;
+		m_RoundCount = 0;
+		return;
+	}
+	if (!str_length(g_Config.m_SvMaprotation))
+		return;
+
+	// handle maprotation
+	const char *pMapRotation = g_Config.m_SvMaprotation;
+	const char *pCurrentMap = g_Config.m_SvMap;
+
+	int CurrentMapLen = str_length(pCurrentMap);
+	const char *pNextMap = pMapRotation;
+	while (*pNextMap)
+	{
+		int WordLen = 0;
+		while (pNextMap[WordLen] && !IsSeparator(pNextMap[WordLen]))
+			WordLen++;
+
+		if (WordLen == CurrentMapLen && str_comp_num(pNextMap, pCurrentMap, CurrentMapLen) == 0)
+		{
+			// map found
+			pNextMap += CurrentMapLen;
+			while (*pNextMap && IsSeparator(*pNextMap))
+				pNextMap++;
+
+			break;
+		}
+
+		pNextMap++;
+	}
+
+	// restart rotation
+	if (pNextMap[0] == 0)
+		pNextMap = pMapRotation;
+
+	// cut out the next map
+	char aBuf[512] = {0};
+	for (int i = 0; i < 511; i++)
+	{
+		aBuf[i] = pNextMap[i];
+		if (IsSeparator(pNextMap[i]) || pNextMap[i] == 0)
+		{
+			aBuf[i] = 0;
+			break;
+		}
+	}
+
+	// skip spaces
+	int i = 0;
+	while (IsSeparator(aBuf[i]))
+		i++;
+
+	m_RoundCount = 0;
+
+	char aBufMsg[256];
+	str_format(aBufMsg, sizeof(aBufMsg), "rotating map to %s", &aBuf[i]);
+	GameServer()->Console()->Print(IConsole::OUTPUT_LEVEL_DEBUG, "game", aBuf);
+	str_copy(g_Config.m_SvMap, &aBuf[i], sizeof(g_Config.m_SvMap));
+}

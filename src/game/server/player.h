@@ -86,14 +86,10 @@ public:
 	class CAccount *m_pAccount;
 	int ExpNeedToNextLvl()
 	{
-		if (m_AccData.m_Level >= 50)
-			return m_AccData.m_Level * 20;
-		else if (m_AccData.m_Level >= 30)
-			return m_AccData.m_Level * 15;
-		else if (m_AccData.m_Level >= 20)
-			return m_AccData.m_Level * 12;
-		else if (m_AccData.m_Level >= 10)
-			return m_AccData.m_Level * 11;
+		if (m_AccData.m_Level >= 50) return m_AccData.m_Level * 20;
+		else if (m_AccData.m_Level >= 30) return m_AccData.m_Level * 15;
+		else if (m_AccData.m_Level >= 20) return m_AccData.m_Level * 12;
+		else if (m_AccData.m_Level >= 10) return m_AccData.m_Level * 11;
 		else
 			return m_AccData.m_Level * 10;
 	}

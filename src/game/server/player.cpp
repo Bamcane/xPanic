@@ -573,9 +573,9 @@ void CPlayer::SetZomb(int From)
 		Msg.m_Killer = From;
 		Msg.m_Victim = m_ClientID;
 		Msg.m_Weapon = WEAPON_HAMMER;
-		GameServer()->m_apPlayers[From]->m_Score++;
+		GameServer()->m_apPlayers[From]->m_Score += 3;
 		if (GameServer()->GetPlayerChar(From) && From != m_ClientID)
-			GameServer()->GetPlayerChar(From)->ExperienceAdd(g_Config.m_SvExpBonus, From);
+			GameServer()->GetPlayerChar(From)->ExperienceAdd(3, From);
 	}
 	Msg.m_ModeSpecial = 0;
 	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, -1);

@@ -17,6 +17,7 @@
 #include <engine/server/server.h>
 #include "gamemodes/DDRace.h"
 #include "entities/turret.h"
+#include "entities/mine.h"
 #include <string.h>
 
 #include <teeothers/components/localization.h>
@@ -974,14 +975,15 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 								char chatmsg[512] = {0};
 								str_format(chatmsg, sizeof(chatmsg), "There's a %d second delay between map-votes, please wait %d seconds.", g_Config.m_SvVoteMapTimeDelay, ((m_LastMapVote + (g_Config.m_SvVoteMapTimeDelay * time_freq())) / time_freq()) - (time_get() / time_freq()));
 								SendChatTarget(ClientID, chatmsg);
+								return;
 							}
 							else if (!m_pController->m_Warmup)
 							{
 								char chatmsg[512] = {0};
 								str_format(chatmsg, sizeof(chatmsg), "请在游戏开始前换图，中途换图会引起众怒(");
 								SendChatTarget(ClientID, chatmsg);
+								return;
 							}
-							return;
 						}
 
 						str_format(aChatmsg, sizeof(aChatmsg), "'%s' called vote to change server option '%s' (%s)", Server()->ClientName(ClientID),
@@ -1270,7 +1272,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			SendEmoticon(ClientID, pMsg->m_Emoticon);
 
 			CCharacter *pChr = pPlayer->GetCharacter();
-			if (pChr && pPlayer->m_EyeEmote && pPlayer->GetTeam() == TEAM_BLUE && !pPlayer->m_AccData.m_Freeze)
+			if (pChr && pPlayer->m_EyeEmote && !pPlayer->m_AccData.m_Freeze)
 			{
 				switch (pMsg->m_Emoticon)
 				{
@@ -1343,7 +1345,10 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 					}
 					if (pChr->m_Core.m_ActiveWeapon == WEAPON_HAMMER && !pChr->m_TurretActive[3])
 					{
-						new CTurret(&m_World, pChr->m_Pos, ClientID, WEAPON_HAMMER, vec2(0, 0), vec2(0, 0));
+						if (pChr->GetPlayer()->GetTeam() == TEAM_BLUE)
+							new CTurret(&m_World, pChr->m_Pos, ClientID, WEAPON_HAMMER, vec2(0, 0), vec2(0, 0));
+						else
+							new CMine(&m_World, pChr->m_Pos, ClientID);
 						pChr->m_TurretActive[3] = true;
 					}
 					if (pChr->m_Core.m_ActiveWeapon == WEAPON_GRENADE && !pChr->m_TurretActive[4])

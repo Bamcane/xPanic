@@ -214,7 +214,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		}
 		else if (!strcmp(supgr, "help"))
 		{
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("使用表情（左Shift）鬼魂防止炮塔"));
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("使用表情（左Shift）鬼放置炮塔"));
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("炮塔有3种不一样的武器"));
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("炮塔是一种很有效的杀死僵尸的方式"));
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("拿不同的武器可以放置不同的炮塔"));
@@ -447,9 +447,9 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("----- 商店 -----"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/range [10 分数] - 购买大范围僵尸锤"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/heart [20 score] - 在僵尸阵营购买一滴血"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/jump [3 score] - 购买一次多余的跳跃"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/range [25 分数] - 购买大范围僵尸锤"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/heart [20 分数] - 购买自动跟踪人类的地雷"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/jump [5 分数] - 购买一次多余的跳跃"));
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/news"))

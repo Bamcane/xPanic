@@ -46,6 +46,7 @@ protected:
 	void EvaluateSpawnType(CSpawnEval *pEval, int Type);
 	bool EvaluateSpawn(class CPlayer *pP, vec2 *pPos);
 
+	void CycleMap();
 	void ResetGame();
 
 	char m_aMapWish[128];
