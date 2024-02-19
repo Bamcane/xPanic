@@ -111,7 +111,7 @@ void CPlayer::Tick()
 	{
 		m_AccData.m_Money++;
 		m_AccData.m_Exp -= ExpNeedToNextLvl();
-		m_AccData.m_Level += m_AccData.m_Level / 4;
+		m_AccData.m_Level++;
 		if (m_AccData.m_Exp < m_AccData.m_Level)
 		{
 			if (m_AccData.m_UserID)
