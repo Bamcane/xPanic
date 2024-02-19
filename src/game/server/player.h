@@ -98,6 +98,20 @@ public:
 			return m_AccData.m_Level * 10;
 	}
 
+	int TExpNeedToNextLvl()
+	{
+		if (m_AccData.m_TurretLevel >= 50)
+			return m_AccData.m_TurretLevel * 20;
+		else if (m_AccData.m_TurretLevel >= 30)
+			return m_AccData.m_TurretLevel * 15;
+		else if (m_AccData.m_TurretLevel >= 20)
+			return m_AccData.m_TurretLevel * 12;
+		else if (m_AccData.m_TurretLevel >= 10)
+			return m_AccData.m_TurretLevel * 11;
+		else
+			return m_AccData.m_TurretLevel * 10;
+	}
+
 	//
 	bool m_ActivesLife;
 	bool m_RangeShop;

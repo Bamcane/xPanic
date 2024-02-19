@@ -256,8 +256,9 @@ void CTurret::Fire()
 void CTurret::ExperienceTAdd()
 {
 	CPlayer *pPlayer = GameServer()->m_apPlayers[m_Owner];
+	pPlayer->m_ExpGiven++;
 	pPlayer->m_AccData.m_TurretExp += rand() % 3 + 1;
-	if (pPlayer && pPlayer->m_AccData.m_TurretExp >= pPlayer->m_AccData.m_TurretLevel)
+	if (pPlayer && pPlayer->m_AccData.m_TurretExp >= pPlayer->TExpNeedToNextLvl())
 	{
 		pPlayer->m_AccData.m_TurretLevel++;
 		pPlayer->m_AccData.m_TurretExp = 0;

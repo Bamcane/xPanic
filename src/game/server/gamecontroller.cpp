@@ -536,7 +536,7 @@ void IGameController::Tick()
 		}
 	}
 
-	if ((Server()->Tick() - m_RoundStartTick) >= (g_Config.m_SvTimelimit - 1) * Server()->TickSpeed() * 60)
+	if ((Server()->Tick() - m_RoundStartTick) >= (g_Config.m_SvTimelimit - 1) * Server()->TickSpeed() * 60 && m_TankSpawn < g_Config.m_SvNumTank)
 	{
 		int ZombCID = rand() % MAX_CLIENTS, WTF = 50;
 		while (!GameServer()->m_apPlayers[ZombCID] || (GameServer()->m_apPlayers[ZombCID] && GameServer()->m_apPlayers[ZombCID]->GetTeam() == TEAM_SPECTATORS) || !GameServer()->m_apPlayers[ZombCID]->GetCharacter() ||
