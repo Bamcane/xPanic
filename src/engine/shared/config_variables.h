@@ -310,6 +310,9 @@ MACRO_CONFIG_INT(ClConfigVersion, cl_config_version, 0, 0, 0, CFGFLAG_CLIENT|CFG
 // demo editor
 MACRO_CONFIG_INT(ClDemoSliceBegin, cl_demo_slice_begin, -1, 0, 0, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Begin marker for demo slice")
 MACRO_CONFIG_INT(ClDemoSliceEnd, cl_demo_slice_end, -1, 0, 0, CFGFLAG_SAVE|CFGFLAG_CLIENT, "End marer for demo slice")
-MACRO_CONFIG_INT(ClDemoShowSpeed, cl_demo_show_speed, 0, 0, 1, CFGFLAG_SAVE|CFGFLAG_CLIENT, "Show speed meter on change")
+MACRO_CONFIG_INT(ClDemoShowSpeed, cl_demo_show_speed, 0, 0, 1, CFGFLAG_SAVE | CFGFLAG_CLIENT, "Show speed meter on change")
+
+MACRO_CONFIG_INT(SvNumWitch, cl_demo_show_speed, 1, 0, 64, CFGFLAG_SERVER, "Num witch.")
+MACRO_CONFIG_INT(SvNumTank, cl_demo_show_speed, 1, 0, 64, CFGFLAG_SERVER, "Num tank.")
 
 #endif

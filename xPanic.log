@@ -1,0 +1,34 @@
+[24-02-19 21:56:55][server]: starting...
+[24-02-19 21:56:55][datafile]: loading. filename='maps/xPanic life.map'
+[24-02-19 21:56:55][datafile]: allocsize=4148
+[24-02-19 21:56:55][datafile]: readsize=3844
+[24-02-19 21:56:55][datafile]: swaplen=3864
+[24-02-19 21:56:55][datafile]: item_size=3420
+[24-02-19 21:56:55][datafile]: loading done. datafile='maps/xPanic life.map'
+[24-02-19 21:56:55][server]: maps/xPanic life.map crc is 20031473
+[24-02-19 21:56:55][server]: server name is 'Server name'
+[24-02-19 21:56:55][datafile]: loading data index=20 size=1333 uncompressed=47680
+[24-02-19 21:56:55][console]: failed to open 'reset.cfg'
+[24-02-19 21:56:55][console]: executing 'maps/xPanic life.map.cfg'
+[24-02-19 21:56:55][server]: version 0.6 626fce9a778df4d4
+[24-02-19 21:56:55][engine/mastersrv]: refreshing master server addresses
+[24-02-19 21:56:55][register]: refreshing ip addresses
+[24-02-19 21:56:55][host lookup]: host='master1.teeworlds.com' port=0 3
+[24-02-19 21:56:55][host lookup]: host='master2.teeworlds.com' port=0 3
+[24-02-19 21:56:55][host lookup]: host='master3.teeworlds.com' port=0 3
+[24-02-19 21:56:55][host lookup]: host='master4.teeworlds.com' port=0 3
+[24-02-19 21:56:55][engine/mastersrv]: saving addresses
+[24-02-19 21:56:55][register]: fetching server counts
+[24-02-19 21:56:56][server]: player is ready. ClientID=0 addr=192.168.1.9:8977 secure=yes
+[24-02-19 21:56:56][server]: 'Flower' -> 'Flower'
+[24-02-19 21:56:56][server]: player has entered the game. ClientID=0 addr=192.168.1.9:8977
+[24-02-19 21:56:56][game]: team_join player='0:Flower' team=-1
+[24-02-19 21:56:57][chat]: *** 'Flower' joined the human team
+[24-02-19 21:56:57][game]: team_join player='0:Flower' m_Team=1
+[24-02-19 21:56:58][register]: chose 'master3.teeworlds.com' as master, sending heartbeats
+[24-02-19 21:56:58][server]: player is ready. ClientID=1 addr=192.168.1.9:60287 secure=yes
+[24-02-19 21:56:58][server]: 'brainless tee' -> 'brainless tee'
+[24-02-19 21:56:58][server]: player has entered the game. ClientID=1 addr=192.168.1.9:60287
+[24-02-19 21:56:58][game]: team_join player='1:brainless tee' team=-1
+[24-02-19 21:57:00][chat]: *** 'brainless tee' joined the human team
+[24-02-19 21:57:00][game]: team_join player='1:brainless tee' m_Team=1

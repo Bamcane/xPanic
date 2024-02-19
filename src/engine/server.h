@@ -167,6 +167,7 @@ public:
 	virtual void GetClientAddr(int ClientID, NETADDR *pAddr) = 0;
 
 	virtual int* GetIdMap(int ClientID) = 0;
+	virtual int GetClientNbRound(int ClientID) = 0;
 };
 
 class IGameServer : public IInterface

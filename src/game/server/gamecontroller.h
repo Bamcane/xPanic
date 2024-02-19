@@ -33,7 +33,7 @@ protected:
 		{
 			m_Got = false;
 			m_FriendlyTeam = -1;
-			m_Pos = vec2(100,100);
+			m_Pos = vec2(100, 100);
 		}
 
 		vec2 m_Pos;
@@ -52,11 +52,11 @@ protected:
 	char m_aMapWish[128];
 	int m_RoundStartTick;
 	int m_GameOverTick;
-	
-	int m_LastZomb, m_LastZomb2;		
-	int m_GameFlags; 
-	int m_SuddenDeath; 
-	int m_RoundCount; 
+
+	int m_LastZomb, m_LastZomb2;
+	int m_GameFlags;
+	int m_SuddenDeath;
+	int m_RoundCount;
 	int m_aTeamscore[2];
 
 public:
@@ -67,7 +67,7 @@ public:
 	int m_Warmup;
 	unsigned int m_GrenadeLimit;
 	bool m_RoundStarted;
-	
+
 	struct CDoor
 	{
 		int m_State;
@@ -76,7 +76,7 @@ public:
 		int m_CloseTime;
 		int m_ReopenTime;
 	} m_Door[48];
-	
+
 	IGameController(class CGameContext *pGameServer);
 	virtual ~IGameController();
 
@@ -92,7 +92,7 @@ public:
 	virtual void Tick();
 	virtual void Snap(int SnappingClient);
 	virtual bool OnEntity(int Index, vec2 Pos, int Layer, int Flags, int Number = 0);
-	
+
 	virtual void OnCharacterSpawn(class CCharacter *pChr);
 	virtual int OnCharacterDeath(class CCharacter *pVictim, class CPlayer *pKiller, int Weapon);
 	virtual bool CanSpawn(int Team, vec2 *pPos);
@@ -117,6 +117,9 @@ public:
 	virtual int DoorState(int Index);
 	virtual void SetDoorState(int Index, int State);
 	virtual int GetDoorTime(int Index);
+
+	int m_TankSpawn;
+	int m_WitchSpawn;
 };
 
 #endif

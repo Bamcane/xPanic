@@ -156,9 +156,13 @@ public:
 	{
 		ZOMB_DEFAULT = 1,
 		ZOMB_WITCH,
+		ZOMB_TANK,
 	};
 
 	int m_ZombClass;
+	int m_ExpGiven;
+
+	void SetClass(int Class);
 
 private:
 	CCharacter *m_pCharacter;

@@ -87,7 +87,7 @@ void CLifeHearth::Tick()
 
 	if (distance(pTarget->m_Pos, m_Pos) < pTarget->m_ProximityRadius + 2.0f && GameServer()->m_apPlayers[m_Owner]->m_LifeActives)
 	{
-		pTarget->m_BurnTick = Server()->TickSpeed() * 10;
+		pTarget->m_BurnTick = Server()->TickSpeed() * 30;
 		return Reset();
 	}
 }

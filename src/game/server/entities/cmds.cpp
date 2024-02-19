@@ -568,7 +568,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
 		return;
 	}
-	else if (!strncmp(Msg->m_pMessage, "/w", 3))
+	else if (!strncmp(Msg->m_pMessage, "/w", 2))
 	{
 		LastChat();
 		int id;

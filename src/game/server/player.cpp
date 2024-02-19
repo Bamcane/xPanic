@@ -34,6 +34,9 @@ CPlayer::CPlayer(CGameContext *pGameServer, int ClientID, int Team)
 	m_pAccount = new CAccount(this, m_pGameServer);
 	m_pChatCmd = new CCmd(this, m_pGameServer);
 
+	m_ExpGiven = 0;
+	m_ZombClass = ZOMB_DEFAULT;
+
 	Reset();
 }
 
@@ -604,4 +607,14 @@ void CPlayer::ResetZomb()
 	m_Team = TEAM_BLUE;
 	m_KillingSpree = m_JumpsShop = m_RangeShop = 0;
 	GameServer()->m_pController->OnPlayerInfoChange(GameServer()->m_apPlayers[m_ClientID]);
+	m_ZombClass = ZOMB_DEFAULT;
+}
+
+void CPlayer::SetClass(int Class)
+{
+	if(rand()%2 == 0)
+		GameServer()->CreateDeath(GetCharacter()->m_Pos, GetCID());
+	else
+		GameServer()->CreatePlayerSpawn(GetCharacter()->m_Pos);
+	m_ZombClass = Class;
 }

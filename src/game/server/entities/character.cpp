@@ -268,7 +268,11 @@ void CCharacter::FireWeapon()
 
 						GameServer()->CreateHammerHit(pClosest->m_Pos);
 						pClosest->Reset();
-						ExperienceAdd(1, m_pPlayer->GetCID());
+						if (GetPlayer()->m_ExpGiven < 2)
+						{
+							ExperienceAdd(1, m_pPlayer->GetCID());
+							GetPlayer()->m_ExpGiven++;
+						}
 					}
 				}
 				pClosest = (CTurret *)pClosest->TypeNext();
@@ -755,6 +759,9 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 
 	if (m_pPlayer->GetTeam() == TEAM_BLUE)
 		return false;
+
+	if (GetPlayer()->m_ZombClass == CPlayer::ZOMB_TANK)
+		Force /= 10.f;
 
 	if (Weapon == WEAPON_SHOTGUN)
 		m_Core.m_Vel += Force * 3.60f;

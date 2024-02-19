@@ -50,6 +50,7 @@ void CGameContext::Construct(int Resetting)
 	}
 	m_ChatResponseTargetID = -1;
 	m_aDeleteTempfile[0] = 0;
+	m_WitchCallSpawn = -1;
 }
 
 CGameContext::CGameContext(int Resetting)
@@ -652,6 +653,9 @@ void CGameContext::OnTick()
 		}
 	}
 #endif
+
+	if (m_WitchCallTick)
+		m_WitchCallTick--;
 }
 
 // Server hooks
@@ -1292,6 +1296,29 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 					pChr->SetEmoteType(EMOTE_HAPPY);
 					break;
 				case EMOTICON_OOP:
+				{
+					if (m_pController->m_WitchSpawn)
+					{
+						if (pChr->GetPlayer()->m_ZombClass == CPlayer::ZOMB_WITCH)
+						{
+							if (m_WitchCallTick <= 0)
+							{
+								m_WitchCallSpawn = pChr->GetPlayer()->GetCID();
+								SendChatTarget(-1, _("女巫'{str:name}'呼唤僵尸们传送到她的位置！发送表情'OOOP!'传送！"), "name", Server()->ClientName(pChr->GetPlayer()->GetCID()));
+							}
+							m_WitchCallTick = 50;
+						}
+						else if (pChr && GetPlayerChar(m_WitchCallSpawn) && pChr->GetPlayer()->GetTeam() == TEAM_RED)
+						{
+							vec2 TelePos = vec2(m_apPlayers[m_WitchCallSpawn]->m_ViewPos.x, m_apPlayers[m_WitchCallSpawn]->m_ViewPos.y - 4.f);
+							pChr->Core()->m_Pos = TelePos;
+							pChr->m_Pos = TelePos;
+							pChr->m_PrevPos = TelePos;
+							CreateDeath(pChr->m_Pos, pChr->GetPlayer()->GetCID());
+						}
+					}
+				}
+				break;
 				case EMOTICON_SORRY:
 					break;
 				case EMOTICON_SUSHI:

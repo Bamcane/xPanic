@@ -21,7 +21,7 @@ class CSnapIDPool
 {
 	enum
 	{
-		MAX_IDS = 16*1024,
+		MAX_IDS = 16 * 1024,
 	};
 
 	class CID
@@ -41,7 +41,6 @@ class CSnapIDPool
 	int m_InUsage;
 
 public:
-
 	CSnapIDPool();
 
 	void Reset();
@@ -51,17 +50,17 @@ public:
 	void FreeID(int ID);
 };
 
-
 class CServerBan : public CNetBan
 {
 	class CServer *m_pServer;
 
-	template<class T> int BanExt(T *pBanPool, const typename T::CDataType *pData, int Seconds, const char *pReason);
+	template <class T>
+	int BanExt(T *pBanPool, const typename T::CDataType *pData, int Seconds, const char *pReason);
 
 public:
 	class CServer *Server() const { return m_pServer; }
 
-	void InitServerBan(class IConsole *pConsole, class IStorage *pStorage, class CServer* pServer);
+	void InitServerBan(class IConsole *pConsole, class IStorage *pStorage, class CServer *pServer);
 
 	virtual int BanAddr(const NETADDR *pAddr, int Seconds, const char *pReason);
 	virtual int BanRange(const CNetRange *pRange, int Seconds, const char *pReason);
@@ -69,12 +68,12 @@ public:
 	static void ConBanExt(class IConsole::IResult *pResult, void *pUser);
 };
 
-
 class CServer : public IServer
 {
 	class IGameServer *m_pGameServer;
 	class IConsole *m_pConsole;
 	class IStorage *m_pStorage;
+
 public:
 	class IGameServer *GameServer() { return m_pGameServer; }
 	class IConsole *Console() { return m_pConsole; }
@@ -82,18 +81,17 @@ public:
 
 	enum
 	{
-		AUTHED_NO=0,
+		AUTHED_NO = 0,
 		AUTHED_HELPER,
 		AUTHED_MOD,
 		AUTHED_ADMIN,
 
-		MAX_RCONCMD_SEND=16,
+		MAX_RCONCMD_SEND = 16,
 	};
 
 	class CClient
 	{
 	public:
-
 		enum
 		{
 			STATE_EMPTY = 0,
@@ -102,7 +100,7 @@ public:
 			STATE_READY,
 			STATE_INGAME,
 
-			SNAPRATE_INIT=0,
+			SNAPRATE_INIT = 0,
 			SNAPRATE_FULL,
 			SNAPRATE_RECOVER
 		};
@@ -145,6 +143,8 @@ public:
 		// DDRace
 
 		NETADDR m_Addr;
+
+		int m_NbRound;
 	};
 
 	CClient m_aClients[MAX_CLIENTS];
@@ -160,7 +160,7 @@ public:
 	IEngineMap *m_pMap;
 
 	int64 m_GameStartTime;
-	//int m_CurrentGameTick;
+	// int m_CurrentGameTick;
 	int m_RunServer;
 	int m_MapReload;
 	bool m_ReloadedWhenEmpty;
@@ -169,7 +169,7 @@ public:
 	int m_PrintCBIndex;
 
 	int64 m_Lastheartbeat;
-	//static NETADDR4 master_server;
+	// static NETADDR4 master_server;
 
 	char m_aCurrentMap[64];
 	unsigned m_CurrentMapCrc;
@@ -178,7 +178,7 @@ public:
 
 	int m_GeneratedRconPassword;
 
-	CDemoRecorder m_aDemoRecorder[MAX_CLIENTS+1];
+	CDemoRecorder m_aDemoRecorder[MAX_CLIENTS + 1];
 	CRegister m_Register;
 	CMapChecker m_MapChecker;
 
@@ -198,9 +198,9 @@ public:
 	void DemoRecorder_HandleAutoStart();
 	bool DemoRecorder_IsRecording();
 
-	//int Tick()
+	// int Tick()
 	int64 TickStartTime(int Tick);
-	//int TickSpeed()
+	// int TickSpeed()
 
 	int Init();
 
@@ -238,7 +238,7 @@ public:
 
 	void ProcessClientPacket(CNetChunk *pPacket);
 
-	void SendServerInfo(const NETADDR *pAddr, int Token, bool Extended=false, int Offset=0);
+	void SendServerInfo(const NETADDR *pAddr, int Token, bool Extended = false, int Offset = 0);
 	void UpdateServerInfo();
 
 	void PumpNetwork();
@@ -274,7 +274,6 @@ public:
 
 	void RegisterCommands();
 
-
 	virtual int SnapNewID();
 	virtual void SnapFreeID(int ID);
 	virtual void *SnapNewItem(int Type, int ID, int Size);
@@ -288,7 +287,8 @@ public:
 	unsigned m_AnnouncementLastLine;
 	void RestrictRconOutput(int ClientID) { m_RconRestrict = ClientID; }
 
-	virtual int* GetIdMap(int ClientID);
+	virtual int *GetIdMap(int ClientID);
+	virtual int GetClientNbRound(int ClientID);
 };
 
 #endif

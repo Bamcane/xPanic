@@ -18,10 +18,10 @@ sv_rcon_helper_password "HELPER_PASSWORD"
 sv_exp_bonus 5
 sv_emoticon_delay 0
 sv_test_cmds 1
-sv_warmup 15
+sv_warmup 1
 sv_inactivekick 4
 sv_spectator_votes 0
-sv_timelimit 5
+sv_timelimit 1
 sv_new_hearth 0
 logfile "autoexec_server.log"
 sv_motd "Register with /register - PASSWORDS ARE STORED IN PLAINTEXT. DO NOT USE ANY PASSWORD YOU HAVE USED FOR OTHER SERVICES."

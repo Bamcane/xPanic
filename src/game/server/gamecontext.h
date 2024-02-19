@@ -274,6 +274,9 @@ public:
 
 	int m_ChatResponseTargetID;
 	int m_ChatPrintCBIndex;
+
+	int m_WitchCallSpawn;
+	int m_WitchCallTick;
 };
 
 inline int64_t CmaskAll() { return -1LL; }

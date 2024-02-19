@@ -47,6 +47,9 @@ IGameController::IGameController(class CGameContext *pGameServer)
 		m_Door[i].m_CloseTime = 3;
 		m_Door[i].m_ReopenTime = 10;
 	}
+
+	m_WitchSpawn = false;
+	m_TankSpawn = false;
 }
 
 IGameController::~IGameController()
@@ -274,9 +277,15 @@ void IGameController::EndRound()
 
 	for (int i = 0; i < MAX_CLIENTS; i++)
 	{
-		if (GameServer()->m_apPlayers[i] && GameServer()->m_apPlayers[i]->m_AccData.m_UserID)
-			GameServer()->m_apPlayers[i]->m_pAccount->Apply();
+		if (GameServer()->m_apPlayers[i])
+		{
+			GameServer()->m_apPlayers[i]->m_ExpGiven = 0;
+			if (GameServer()->m_apPlayers[i]->m_AccData.m_UserID)
+				GameServer()->m_apPlayers[i]->m_pAccount->Apply();
+		}
 	}
+	m_WitchSpawn = false;
+	m_TankSpawn = false;
 }
 
 void IGameController::ResetGame()
@@ -318,7 +327,7 @@ void IGameController::StartRound()
 
 void IGameController::ChangeMap(const char *pToMap)
 {
-	str_copy(m_aMapWish, pToMap, sizeof(m_aMapWish));
+	str_copy(g_Config.m_SvMap, pToMap, sizeof(m_aMapWish));
 	EndRound();
 }
 
@@ -376,12 +385,26 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 	if (GameServer()->m_apPlayers[BigLvlID] && pChr->GetPlayer()->GetCID() != BigLvlID)
 	{
 		if (GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level > pChr->GetPlayer()->m_AccData.m_Level && GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level > 20)
-			pChr->IncreaseHealth(120 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20 + GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level);
+			pChr->IncreaseHealth(250 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20 + GameServer()->m_apPlayers[BigLvlID]->m_AccData.m_Level);
 		else
-			pChr->IncreaseHealth(90 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
+			pChr->IncreaseHealth(150 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
 	}
 	else
-		pChr->IncreaseHealth(120 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
+		pChr->IncreaseHealth(250 + pChr->GetPlayer()->m_AccData.m_Level * 10 + pChr->GetPlayer()->m_AccData.m_Health * 20);
+
+	switch (pChr->GetPlayer()->m_ZombClass)
+	{
+	case CPlayer::ZOMB_WITCH:
+		pChr->IncreaseHealth(1000);
+		break;
+
+	case CPlayer::ZOMB_TANK:
+		pChr->IncreaseHealth(5000);
+		break;
+
+	default:
+		break;
+	}
 
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->GiveWeapon(WEAPON_GUN, 10);
@@ -511,6 +534,23 @@ void IGameController::Tick()
 				}
 			}
 		}
+	}
+
+	if ((Server()->Tick() - m_RoundStartTick) >= (g_Config.m_SvTimelimit - 1) * Server()->TickSpeed() * 60)
+	{
+		int ZombCID = rand() % MAX_CLIENTS, WTF = 50;
+		while (!GameServer()->m_apPlayers[ZombCID] || (GameServer()->m_apPlayers[ZombCID] && GameServer()->m_apPlayers[ZombCID]->GetTeam() == TEAM_SPECTATORS) || !GameServer()->m_apPlayers[ZombCID]->GetCharacter() ||
+			   (GameServer()->m_apPlayers[ZombCID]->GetCharacter() && !GameServer()->m_apPlayers[ZombCID]->GetCharacter()->IsAlive()) || (GameServer()->m_apPlayers[ZombCID] && GameServer()->m_apPlayers[ZombCID]->GetTeam() == TEAM_BLUE))
+		{
+			ZombCID = rand() % MAX_CLIENTS;
+			WTF--;
+			if (!WTF)
+				return;
+		}
+		m_TankSpawn++;
+		GameServer()->m_apPlayers[ZombCID]->SetClass(CPlayer::ZOMB_TANK);
+		GameServer()->SendChatTarget(-1, _("'{str:name}'被选中成为TANK！"), "name", Server()->ClientName(ZombCID));
+		GameServer()->CreateSoundGlobal(SOUND_CTF_CAPTURE);
 	}
 }
 
@@ -696,6 +736,9 @@ void IGameController::RandomZomb(int Mode)
 	}
 
 	GameServer()->m_apPlayers[ZombCID]->SetZomb(Mode);
+	GameServer()->m_apPlayers[ZombCID]->m_ZombClass = CPlayer::ZOMB_WITCH;
+	m_WitchSpawn = true;
+	GameServer()->SendChatTarget(ZombCID, _("你被选中成为女巫！发送表情'OOOP!'来呼唤场中的僵尸！"));
 	StartZomb(true);
 	m_LastZomb2 = m_LastZomb;
 	m_LastZomb = ZombCID;
