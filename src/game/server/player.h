@@ -100,12 +100,11 @@ public:
 
 	int TExpNeedToNextLvl()
 	{
-		if (m_AccData.m_TurretLevel >= 50)
-			return m_AccData.m_TurretLevel * 20;
+		if (m_AccData.m_TurretLevel >= 50) return m_AccData.m_TurretLevel * 15;
 		else if (m_AccData.m_TurretLevel >= 30)
-			return m_AccData.m_TurretLevel * 15;
+			return m_AccData.m_TurretLevel * 14;
 		else if (m_AccData.m_TurretLevel >= 20)
-			return m_AccData.m_TurretLevel * 12;
+			return m_AccData.m_TurretLevel * 13;
 		else if (m_AccData.m_TurretLevel >= 10)
 			return m_AccData.m_TurretLevel * 11;
 		else

@@ -103,7 +103,7 @@ void CAccount::Login(char *Username, char *Password)
 			m_pPlayer->SetTeam(TEAM_BLUE);
 	}
 
-	GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("登录成功！祝您玩的开心！"));
+	GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("登录成功! 祝您玩的开心! "));
 }
 
 void CAccount::Register(char *Username, char *Password)
@@ -119,7 +119,7 @@ void CAccount::Register(char *Username, char *Password)
 	char *p = strpbrk(Username, Filter);
 	if (!p)
 	{
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("请使用以下字符注册用户名！"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("请使用以下字符注册用户名! "));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("A - Z, a - z, 0 - 9, . - _"));
 		return;
 	}
@@ -260,7 +260,7 @@ void CAccount::NewPassword(char *NewPassword)
 	char *p = strpbrk(NewPassword, Filter);
 	if (!p)
 	{
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("请使用以下字符作为注册密码！"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("请使用以下字符作为注册密码! "));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("A - Z, a - z, 0 - 9, . - _"));
 		return;
 	}

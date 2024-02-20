@@ -602,16 +602,9 @@ void CGameContext::OnTick()
 					m_apPlayers[m_VoteCreator]->m_LastVoteCall = 0;
 			}
 			else if (m_VoteEnforce == VOTE_ENFORCE_YES_ADMIN)
-			{
 				Console()->ExecuteLine(m_aVoteCommand, m_VoteEnforcer);
-				SendChat(-1, CGameContext::CHAT_ALL, "不要脸的管理员强制通过投票，呸！");
-				EndVote();
-			}
 			else if (m_VoteEnforce == VOTE_ENFORCE_NO_ADMIN)
-			{
 				EndVote();
-				SendChat(-1, CGameContext::CHAT_ALL, "不要脸的管理员强制拒绝投票，呸！");
-			}
 			else if (m_VoteEnforce == VOTE_ENFORCE_NO || (time_get() > m_VoteCloseTime && g_Config.m_SvVoteMajority))
 			{
 				EndVote();
@@ -1255,7 +1248,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			if (str_comp(aOldName, Server()->ClientName(ClientID)) != 0)
 			{
 				char aChatText[256];
-				str_format(aChatText, sizeof(aChatText), "'%s' 将名称改为 '吴彦祖'", aOldName);
+				str_format(aChatText, sizeof(aChatText), "'%s' 将名称改为 '%s'", aOldName, Server()->ClientName(ClientID));
 				SendChat(-1, CGameContext::CHAT_ALL, aChatText);
 			}
 			Server()->SetClientClan(ClientID, pMsg->m_pClan);
@@ -1304,16 +1297,19 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 							if (m_WitchCallTick <= 0)
 							{
 								m_WitchCallSpawn = pChr->GetPlayer()->GetCID();
-								SendChatTarget(-1, _("女巫'{str:name}'呼唤僵尸们传送到她的位置！发送表情'OOOP!'传送！"), "name", Server()->ClientName(pChr->GetPlayer()->GetCID()));
+								SendChatTarget(-1, _("女巫'{str:name}'呼唤僵尸们传送到她的位置! 发送表情'OOOP!'传送! "), "name", Server()->ClientName(pChr->GetPlayer()->GetCID()));
 							}
 							m_WitchCallTick = 50;
 						}
 						else if (pChr && GetPlayerChar(m_WitchCallSpawn) && pChr->GetPlayer()->GetTeam() == TEAM_RED)
 						{
-							vec2 TelePos = vec2(m_apPlayers[m_WitchCallSpawn]->m_ViewPos.x, m_apPlayers[m_WitchCallSpawn]->m_ViewPos.y - 4.f);
+							vec2 TelePos = m_apPlayers[m_WitchCallSpawn]->m_ViewPos;
 							pChr->Core()->m_Pos = TelePos;
 							pChr->m_Pos = TelePos;
 							pChr->m_PrevPos = TelePos;
+							pChr->m_Core.m_Vel = vec2(0, 0);
+							pChr->m_Core.m_HookedPlayer = -1;
+							pChr->m_Core.m_HookState = HOOK_IDLE;
 							CreateDeath(pChr->m_Pos, pChr->GetPlayer()->GetCID());
 						}
 					}
@@ -1347,13 +1343,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 						{
 							if (Collision()->IntersectLine(pChr->m_TurRifle, pChr->m_Pos, &pChr->m_Pos, 0, false))
 							{
-								SendChatTarget(ClientID, _("离墙远点！"));
+								SendChatTarget(ClientID, _("离墙远点! "));
 								pChr->m_TurRifle = vec2(0, 0);
 								return;
 							}
 							if (distance(pChr->m_TurRifle, pChr->m_Pos) < 50)
 							{
-								SendChatTarget(ClientID, _("距离太近了！"));
+								SendChatTarget(ClientID, _("距离太近了! "));
 								pChr->m_TurRifle = vec2(0, 0);
 								return;
 							}
@@ -1384,13 +1380,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 						{
 							if (Collision()->IntersectLine(pChr->m_TurGrenade, pChr->m_Pos, &pChr->m_Pos, 0, false))
 							{
-								SendChatTarget(ClientID, _("离墙远点！"));
+								SendChatTarget(ClientID, _("离墙远点! "));
 								pChr->m_TurGrenade = vec2(0, 0);
 								return;
 							}
 							if (distance(pChr->m_TurGrenade, pChr->m_Pos) < 50)
 							{
-								SendChatTarget(ClientID, _("距离太靠近了！"));
+								SendChatTarget(ClientID, _("距离太靠近了! "));
 								pChr->m_TurGrenade = vec2(0, 0);
 								return;
 							}

@@ -268,7 +268,7 @@ void CCharacter::FireWeapon()
 
 						GameServer()->CreateHammerHit(pClosest->m_Pos);
 						pClosest->Reset();
-						if (GetPlayer()->m_ExpGiven < 2)
+						if (GetPlayer()->m_ExpGiven < g_Config.m_SvExpARound)
 						{
 							ExperienceAdd(1, m_pPlayer->GetCID());
 							GetPlayer()->m_ExpGiven++;
@@ -337,10 +337,10 @@ void CCharacter::FireWeapon()
 
 	case WEAPON_SHOTGUN:
 	{
-		int ShotSpread = 5 + m_pPlayer->m_AccData.m_Level / 4;
+		int ShotSpread = 5 + m_pPlayer->m_AccData.m_Level / 8;
 		if (ShotSpread > 15)
 		{
-			ShotSpread = 15 + m_pPlayer->m_AccData.m_Level / 8;
+			ShotSpread = 15 + m_pPlayer->m_AccData.m_Level / 14;
 			if (ShotSpread > 36)
 				ShotSpread = 36;
 		}

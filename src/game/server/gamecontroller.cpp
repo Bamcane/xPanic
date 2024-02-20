@@ -11,6 +11,8 @@
 
 #include "entities/projectile.h"
 #include "entities/zdoor.h"
+#include "entities/hearth.h"
+
 #include <game/layers.h>
 
 #include <teeothers/components/localization.h>
@@ -234,7 +236,7 @@ void IGameController::EndRound()
 			for (int i = 0; i < MAX_CLIENTS; i++)
 			{
 				if (!GameServer()->m_World.m_Paused && GameServer()->GetPlayerChar(i))
-					GameServer()->GetPlayerChar(i)->ExperienceAdd(1, i);
+					GameServer()->GetPlayerChar(i)->ExperienceAdd(g_Config.m_SvExpBonus, i);
 			}
 		}
 
@@ -263,10 +265,10 @@ void IGameController::EndRound()
 			for (int i = 0; i < MAX_CLIENTS; i++)
 			{
 				if (GameServer()->m_apPlayers[i] && GameServer()->m_apPlayers[i]->GetTeam() == TEAM_BLUE)
-					GameServer()->m_apPlayers[i]->m_Score += 10;
+					GameServer()->m_apPlayers[i]->m_Score += 50;
 
 				if (!GameServer()->m_World.m_Paused && GameServer()->GetPlayerChar(i))
-					GameServer()->GetPlayerChar(i)->ExperienceAdd(3 + g_Config.m_SvExpBonus, i);
+					GameServer()->GetPlayerChar(i)->ExperienceAdd(4 + g_Config.m_SvExpBonus, i);
 			}
 		}
 	}
@@ -280,6 +282,7 @@ void IGameController::EndRound()
 		if (GameServer()->m_apPlayers[i])
 		{
 			GameServer()->m_apPlayers[i]->m_ExpGiven = 0;
+			GameServer()->m_apPlayers[i]->m_ZombClass = CPlayer::ZOMB_DEFAULT;
 			if (GameServer()->m_apPlayers[i]->m_AccData.m_UserID)
 				GameServer()->m_apPlayers[i]->m_pAccount->Apply();
 		}
@@ -314,6 +317,7 @@ void IGameController::StartRound()
 	m_Warmup = m_SuddenDeath = 0;
 	m_GameOverTick = -1;
 
+	GameServer()->m_WitchCallSpawn = -1;
 	GameServer()->m_World.m_Paused = false;
 	m_aTeamscore[TEAM_RED] = m_aTeamscore[TEAM_BLUE] = 0;
 	Server()->DemoRecorder_HandleAutoStart();
@@ -549,8 +553,29 @@ void IGameController::Tick()
 		}
 		m_TankSpawn++;
 		GameServer()->m_apPlayers[ZombCID]->SetClass(CPlayer::ZOMB_TANK);
-		GameServer()->SendChatTarget(-1, _("'{str:name}'被选中成为TANK！"), "name", Server()->ClientName(ZombCID));
+		GameServer()->SendChatTarget(-1, _("'{str:name}'被选中成为TANK!"), "name", Server()->ClientName(ZombCID));
 		GameServer()->CreateSoundGlobal(SOUND_CTF_CAPTURE);
+	}
+
+	for (int i = 0; i < MAX_CLIENTS; i++)
+	{
+		if (!GameServer()->m_apPlayers[i])
+			continue;
+
+		if (!GameServer()->GetPlayerChar(i))
+			continue;
+
+		if (!GameServer()->IsClientPlayer(i))
+			continue;
+
+		if (!GameServer()->m_apPlayers[i]->m_ZombClass == CPlayer::ZOMB_WITCH)
+			continue;
+
+		if (Server()->Tick() % (Server()->TickSpeed() * 20) == 0)
+		{
+			new CLifeHearth(&GameServer()->m_World, GameServer()->GetPlayerChar(i)->m_Pos, i);
+			GameServer()->m_apPlayers[i]->m_ActivesLife = true;
+		}
 	}
 }
 
@@ -738,7 +763,7 @@ void IGameController::RandomZomb(int Mode)
 	GameServer()->m_apPlayers[ZombCID]->SetZomb(Mode);
 	GameServer()->m_apPlayers[ZombCID]->m_ZombClass = CPlayer::ZOMB_WITCH;
 	m_WitchSpawn = true;
-	GameServer()->SendChatTarget(ZombCID, _("你被选中成为女巫！发送表情'OOOP!'来呼唤场中的僵尸！"));
+	GameServer()->SendChatTarget(ZombCID, _("你被选中成为女巫! 发送表情'OOOP!'来呼唤场中的僵尸! "));
 	StartZomb(true);
 	m_LastZomb2 = m_LastZomb;
 	m_LastZomb = ZombCID;

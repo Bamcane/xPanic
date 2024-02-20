@@ -115,13 +115,13 @@ void CPlayer::Tick()
 		m_AccData.m_Money++;
 		m_AccData.m_Exp -= ExpNeedToNextLvl();
 		m_AccData.m_Level++;
-		if (m_AccData.m_Exp < m_AccData.m_Level)
+		if (m_AccData.m_Exp < ExpNeedToNextLvl())
 		{
 			if (m_AccData.m_UserID)
 				m_pAccount->Apply();
 
 			char SendLVL[64];
-			str_format(SendLVL, sizeof(SendLVL), "完成！等级提升： %d", m_AccData.m_Level);
+			str_format(SendLVL, sizeof(SendLVL), "完成! 等级提升： %d", m_AccData.m_Level);
 			GameServer()->SendChatTarget(m_ClientID, SendLVL);
 		}
 	}
@@ -576,7 +576,7 @@ void CPlayer::SetZomb(int From)
 		Msg.m_Weapon = WEAPON_HAMMER;
 		GameServer()->m_apPlayers[From]->m_Score += 3;
 		if (GameServer()->GetPlayerChar(From) && From != m_ClientID)
-			GameServer()->GetPlayerChar(From)->ExperienceAdd(3, From);
+			GameServer()->GetPlayerChar(From)->ExperienceAdd(g_Config.m_SvExpBonus, From);
 	}
 	Msg.m_ModeSpecial = 0;
 	Server()->SendPackMsg(&Msg, MSGFLAG_VITAL, -1);
@@ -586,7 +586,7 @@ void CPlayer::SetZomb(int From)
 		if (From == -1)
 		{
 			char aBuf[52];
-			str_format(aBuf, sizeof(aBuf), "'%s' 想要你的脑子！快跑！", Server()->ClientName(m_ClientID));
+			str_format(aBuf, sizeof(aBuf), "'%s' 想要你的脑子! 快跑! ", Server()->ClientName(m_ClientID));
 			GameServer()->SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 		}
 		m_LifeActives = false;
@@ -596,7 +596,7 @@ void CPlayer::SetZomb(int From)
 	m_pCharacter->SetZomb();
 	GameServer()->m_pController->OnPlayerInfoChange(GameServer()->m_apPlayers[m_ClientID]);
 	GameServer()->m_pController->CheckZomb();
-	GameServer()->SendChatTarget(m_ClientID, _("你被感染成了僵尸！吃掉他们的脑子！."));
+	GameServer()->SendChatTarget(m_ClientID, _("你被感染成了僵尸! 吃掉他们的脑子! ."));
 }
 
 void CPlayer::ResetZomb()
@@ -612,7 +612,7 @@ void CPlayer::ResetZomb()
 
 void CPlayer::SetClass(int Class)
 {
-	if(rand()%2 == 0)
+	if (rand() % 2 == 0)
 		GameServer()->CreateDeath(GetCharacter()->m_Pos, GetCID());
 	else
 		GameServer()->CreatePlayerSpawn(GetCharacter()->m_Pos);

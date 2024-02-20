@@ -18,13 +18,14 @@ void CMine::HitCharacter()
 	int Num = GameServer()->m_World.FindEntities(m_Pos, 8.0f, (CEntity**)apCloseCCharacters, MAX_CLIENTS, CGameWorld::ENTTYPE_CHARACTER);
 	for(int i = 0; i < Num; i++)
 	{
-		if(apCloseCCharacters[i]->GetPlayer()->GetTeam() == TEAM_RED)
-            return;
-		float Len = distance(apCloseCCharacters[i]->m_Pos, m_Pos);
-		if(Len < apCloseCCharacters[i]->m_ProximityRadius+2.0f)
+		int z = rand() % Num;
+		if (apCloseCCharacters[z]->GetPlayer()->GetTeam() == TEAM_RED)
+			return;
+		float Len = distance(apCloseCCharacters[z]->m_Pos, m_Pos);
+		if(Len < apCloseCCharacters[z]->m_ProximityRadius+2.0f)
 		{
 			GameServer()->CreateSound(m_Pos, SOUND_GRENADE_EXPLODE);
-			apCloseCCharacters[i]->m_BurnTick = Server()->TickSpeed()*2.0f;
+			apCloseCCharacters[z]->m_BurnTick = Server()->TickSpeed()*2.0f;
 			return Reset();
 		}
 	}

@@ -205,7 +205,7 @@ void CTurret::Fire()
 					if (g_Config.m_SvChatDestroyWall)
 					{
 						char aBuf[64];
-						str_format(aBuf, sizeof(aBuf), "%s摧毁了炮塔", Server()->ClientName(m_Owner));
+						str_format(aBuf, sizeof(aBuf), "%s摧毁了炮塔", Server()->ClientName(pClosest->m_Owner));
 						GameServer()->SendChatTarget(-1, aBuf);
 					}
 
@@ -256,8 +256,10 @@ void CTurret::Fire()
 void CTurret::ExperienceTAdd()
 {
 	CPlayer *pPlayer = GameServer()->m_apPlayers[m_Owner];
+	if (pPlayer->m_ExpGiven > g_Config.m_SvExpARound)
+		return;
 	pPlayer->m_ExpGiven++;
-	pPlayer->m_AccData.m_TurretExp += rand() % 3 + 1;
+	pPlayer->m_AccData.m_TurretExp += rand() % 30 + 1;
 	if (pPlayer && pPlayer->m_AccData.m_TurretExp >= pPlayer->TExpNeedToNextLvl())
 	{
 		pPlayer->m_AccData.m_TurretLevel++;
