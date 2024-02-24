@@ -112,7 +112,7 @@ void CPlayer::Tick()
 
 	if (m_AccData.m_UserID && m_AccData.m_Exp >= ExpNeedToNextLvl())
 	{
-		m_AccData.m_Money++;
+		m_AccData.m_Money += 1 * (VIPLevel() + 1);
 		m_AccData.m_Exp -= ExpNeedToNextLvl();
 		m_AccData.m_Level++;
 		if (m_AccData.m_Exp < ExpNeedToNextLvl())
@@ -235,7 +235,7 @@ void CPlayer::Snap(int SnappingClient)
 			str_format(pSendName, sizeof(pSendName), "[A]%s", Server()->ClientName(m_ClientID));
 		else if (m_AccData.m_PlayerState == 1)
 			str_format(pSendName, sizeof(pSendName), "[P-%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
-		else if (m_AccData.m_PlayerState == 2 && m_Prefix)
+		else if (IsVIP() && m_Prefix)
 			str_format(pSendName, sizeof(pSendName), "[VIP]%s", Server()->ClientName(m_ClientID));
 		else if (m_AccData.m_PlayerState == 3)
 			str_format(pSendName, sizeof(pSendName), "[H-%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
@@ -594,6 +594,8 @@ void CPlayer::SetZomb(int From)
 		m_pCharacter->Die(m_ClientID, WEAPON_WORLD);
 	}
 	m_pCharacter->SetZomb();
+	if (GameServer()->m_apPlayers[m_ClientID]->IsSVIP() && GameServer()->m_apPlayers[m_ClientID]->m_ZombClass != CPlayer::ZOMB_WITCH)
+		GameServer()->m_apPlayers[m_ClientID]->m_ZombClass = CPlayer::ZOMB_TANK;
 	GameServer()->m_pController->OnPlayerInfoChange(GameServer()->m_apPlayers[m_ClientID]);
 	GameServer()->m_pController->CheckZomb();
 	GameServer()->SendChatTarget(m_ClientID, _("你被感染成了僵尸! 吃掉他们的脑子! ."));
@@ -606,6 +608,8 @@ void CPlayer::ResetZomb()
 
 	m_Team = TEAM_BLUE;
 	m_KillingSpree = m_JumpsShop = m_RangeShop = 0;
+	if(IsSVIP())
+		m_JumpsShop = 2;
 	GameServer()->m_pController->OnPlayerInfoChange(GameServer()->m_apPlayers[m_ClientID]);
 	m_ZombClass = ZOMB_DEFAULT;
 }

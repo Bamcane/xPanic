@@ -86,6 +86,7 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 		m_mAmmo = 10 + pPlayer->m_AccData.m_Ammo;
 
 	GameServer()->SendBroadcast("", pPlayer->GetCID());
+	m_Infects = 0;
 	return true;
 }
 
@@ -292,8 +293,21 @@ void CCharacter::FireWeapon()
 					GameServer()->CreateHammerHit(ProjStartPos, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 
 				if (!pTarget->IhammerTick)
-					pTarget->m_pPlayer->SetZomb(m_pPlayer->GetCID());
-
+				{
+					if (pTarget->m_pPlayer->IsSVIP())
+					{
+						pTarget->m_Infects++;
+						if (pTarget->m_Infects > 2)
+							pTarget->m_pPlayer->SetZomb(m_pPlayer->GetCID());
+						else
+						{
+							pTarget->IhammerTick += Server()->TickSpeed() * 3;
+							pTarget->IhammerRelTick = 0;
+						}
+					}
+					else
+						pTarget->m_pPlayer->SetZomb(m_pPlayer->GetCID());
+				}
 				Hits++;
 			}
 		}
@@ -302,7 +316,7 @@ void CCharacter::FireWeapon()
 			if (!IhammerRelTick)
 			{
 				GameServer()->CreatePlayerSpawn(m_Pos);
-				IhammerTick = 5 * Server()->TickSpeed();
+				IhammerTick += 5 * Server()->TickSpeed();
 				IhammerRelTick = 30 * Server()->TickSpeed();
 			}
 
@@ -384,7 +398,7 @@ void CCharacter::FireWeapon()
 				m_RiflePos = vec2(0, 0);
 				return;
 			}
-			new CWall(GameWorld(), m_RiflePos, m_Pos, m_pPlayer->GetCID(), 8);
+			new CWall(GameWorld(), m_RiflePos, m_Pos, m_pPlayer->GetCID(), 8 * (GetPlayer()->IsFSVIP() + 1));
 		}
 		else
 			m_RiflePos = m_Pos;
@@ -560,7 +574,7 @@ void CCharacter::Tick()
 			if (m_BurnTick % 20 == 0)
 			{
 				GameServer()->CreateExplosion(m_Core.m_Pos, m_pPlayer->GetCID(), WEAPON_GRENADE, true, -1, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
-				TakeDamage(vec2(0, 0), 1, m_BurnedFrom, WEAPON_GRENADE);
+				TakeDamage(vec2(0, 0), 4, m_BurnedFrom, WEAPON_GRENADE);
 			}
 		}
 	}

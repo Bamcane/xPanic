@@ -111,6 +111,13 @@ public:
 			return m_AccData.m_TurretLevel * 10;
 	}
 
+	int VIPLevel() {
+		return IsVIP() + IsSVIP() + IsFSVIP();
+	}
+	bool IsVIP() { return (m_AccData.m_PlayerState == 2) || IsSVIP(); }
+	bool IsSVIP() { return (m_AccData.m_PlayerState == 4) || IsFSVIP(); }
+	bool IsFSVIP() { return m_AccData.m_PlayerState == 5; }
+
 	//
 	bool m_ActivesLife;
 	bool m_RangeShop;

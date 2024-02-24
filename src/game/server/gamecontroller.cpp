@@ -265,7 +265,14 @@ void IGameController::EndRound()
 			for (int i = 0; i < MAX_CLIENTS; i++)
 			{
 				if (GameServer()->m_apPlayers[i] && GameServer()->m_apPlayers[i]->GetTeam() == TEAM_BLUE)
-					GameServer()->m_apPlayers[i]->m_Score += 50;
+				{
+					if (GameServer()->m_apPlayers[i]->IsVIP())
+					{
+						GameServer()->GetPlayerChar(i)->ExperienceAdd(g_Config.m_SvExpBonus * GameServer()->m_apPlayers[i]->VIPLevel(), i);
+						GameServer()->m_apPlayers[i]->m_Score += 5;
+					}
+					GameServer()->m_apPlayers[i]->m_Score += 10;
+				}
 
 				if (!GameServer()->m_World.m_Paused && GameServer()->GetPlayerChar(i))
 					GameServer()->GetPlayerChar(i)->ExperienceAdd(4 + g_Config.m_SvExpBonus, i);

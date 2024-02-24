@@ -1341,13 +1341,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 					{
 						if (pChr->m_TurRifle != vec2(0, 0))
 						{
-							if (Collision()->IntersectLine(pChr->m_TurRifle, pChr->m_Pos, &pChr->m_Pos, 0, false))
+							if (Collision()->IntersectLine(pChr->m_TurRifle, pChr->m_Pos, &pChr->m_Pos, 0, false) && !pChr->GetPlayer()->IsFSVIP())
 							{
 								SendChatTarget(ClientID, _("离墙远点! "));
 								pChr->m_TurRifle = vec2(0, 0);
 								return;
 							}
-							if (distance(pChr->m_TurRifle, pChr->m_Pos) < 50)
+							if (distance(pChr->m_TurRifle, pChr->m_Pos) < 50 && !pChr->GetPlayer()->IsFSVIP())
 							{
 								SendChatTarget(ClientID, _("距离太近了! "));
 								pChr->m_TurRifle = vec2(0, 0);
@@ -1378,13 +1378,13 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 					{
 						if (pChr->m_TurGrenade != vec2(0, 0))
 						{
-							if (Collision()->IntersectLine(pChr->m_TurGrenade, pChr->m_Pos, &pChr->m_Pos, 0, false))
+							if (Collision()->IntersectLine(pChr->m_TurGrenade, pChr->m_Pos, &pChr->m_Pos, 0, false) && !pChr->GetPlayer()->IsFSVIP())
 							{
 								SendChatTarget(ClientID, _("离墙远点! "));
 								pChr->m_TurGrenade = vec2(0, 0);
 								return;
 							}
-							if (distance(pChr->m_TurGrenade, pChr->m_Pos) < 50)
+							if (distance(pChr->m_TurGrenade, pChr->m_Pos) < 50 && !pChr->GetPlayer()->IsFSVIP())
 							{
 								SendChatTarget(ClientID, _("距离太靠近了! "));
 								pChr->m_TurGrenade = vec2(0, 0);

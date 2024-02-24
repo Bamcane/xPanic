@@ -230,6 +230,8 @@ public:
 	bool IsAlive() { return m_Alive; };
 	void SetEmoteType(int EmoteType) { m_EmoteType = EmoteType; };
 	void SetEmoteStop(int EmoteStop) { m_EmoteStop = EmoteStop; };
+
+	int m_Infects;
 };
 
 #endif

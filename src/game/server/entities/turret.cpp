@@ -56,6 +56,9 @@ CTurret::~CTurret()
 			GameServer()->GetPlayerChar(m_Owner)->m_TurretActive[0] = false;
 		else if (m_Type == WEAPON_SHOTGUN)
 			GameServer()->GetPlayerChar(m_Owner)->m_TurretActive[1] = false;
+
+		if (GameServer()->m_apPlayers[m_Owner]->IsFSVIP())
+			GameServer()->GetPlayerChar(m_Owner)->m_TurretActive[m_Type] = false;
 	}
 }
 
@@ -185,7 +188,7 @@ void CTurret::Fire()
 		{
 			if (pTargetChr->GetPlayer()->GetTeam() == TEAM_RED)
 			{
-				new CWall(GameWorld(), m_Pos1L, m_Pos2L, m_Owner, 7);
+				new CWall(GameWorld(), m_Pos1L, m_Pos2L, m_Owner, 7 * (pTargetChr->GetPlayer()->IsFSVIP() + 1));
 				GameServer()->CreateSound(m_Pos, 8);
 				m_ReloadTick = 1800;
 			}
@@ -256,7 +259,7 @@ void CTurret::Fire()
 void CTurret::ExperienceTAdd()
 {
 	CPlayer *pPlayer = GameServer()->m_apPlayers[m_Owner];
-	if (pPlayer->m_ExpGiven > g_Config.m_SvExpARound)
+	if (pPlayer->m_ExpGiven > g_Config.m_SvExpARound * (pPlayer->VIPLevel() + 1))
 		return;
 	pPlayer->m_ExpGiven++;
 	pPlayer->m_AccData.m_TurretExp += rand() % 30 + 1;
@@ -264,7 +267,7 @@ void CTurret::ExperienceTAdd()
 	{
 		pPlayer->m_AccData.m_TurretLevel++;
 		pPlayer->m_AccData.m_TurretExp = 0;
-		pPlayer->m_AccData.m_TurretMoney++;
+		pPlayer->m_AccData.m_TurretMoney += 1 * (pPlayer->VIPLevel() + 1);
 
 		if (pPlayer->m_AccData.m_UserID)
 			pPlayer->m_pAccount->Apply();

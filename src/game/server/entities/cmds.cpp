@@ -379,14 +379,33 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	else if (!strcmp(Msg->m_pMessage, "/vip"))
 	{
 		LastChat();
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- 购买VIP？ ---"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("===== 购买VIP？ ====="));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- VIP功能 ---"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 升级时获得的技能/炮塔点翻倍"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 获取的经验值翻倍"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 价格: 17元"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- SVIP功能 ---"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 被感染后一定会成为TANK或女巫"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 被僵尸打中三次后才会死亡"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 被僵尸打中后无敌隐身3秒"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 增加跳跃次数(无法重复购买)"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 价格: 24元"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- FSVIP功能 ---"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 炮塔能够穿墙放置"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 任何炮塔被摧毁后都可以重复放置"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 激光墙停留时间翻倍"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 价格: 34元"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("SVIP包含VIP所有功能，FSVIP包含SVIP和VIP的所有功能"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("获得的技能/炮塔点和经验值随着VIP等级增加而增加"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("联系QQ：1562151175购买"));
+
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/donate"))
 	{
 		LastChat();
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- 购买游戏点数？ ---"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- 购买经验值？ ---"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("1元 = 10经验"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("联系QQ：1562151175购买"));
 		return;
 	}
@@ -394,6 +413,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- 购买炮塔点数？ ---"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("2元 = 3炮塔点"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("联系QQ：1562151175购买"));
 		return;
 	}
@@ -417,7 +437,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/pm - 给别人发送私信"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/cmdlist - 查看服务器指令列表"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/vip - 购买VIP"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/donate - 购买点数"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/donate - 购买经验值"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/tdonate - 购买炮塔点"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/turret info - 关于炮台"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/levels - 关于等级"));
@@ -487,8 +507,8 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("1. 不要刷经验 (冻结账号)"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("2. 不要骂人 (禁言/封禁 1-7天)"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("3. 不要使用机器人 (永封)"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("4. 不要自杀 (跟刷经验一样)"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("3. 不要使用外挂启动其 (永封)"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("4. 不要故意被僵尸感染 (类刷经验,冻结账号)"));
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/heart"))
@@ -521,12 +541,14 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能在活着的时候使用!"));
 		if (GameServer()->m_World.m_Paused)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("稍等片刻."));
+		if (GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_Core.m_Jumps >= 3)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你最多只能买3个."));
 		if (m_pPlayer->m_Score < 5)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (5分)."));
 
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("完成!"));
 		m_pPlayer->m_JumpsShop++;
-		m_pPlayer->m_Score -= 5;
+		m_pPlayer->m_Score -= 10;
 		GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_Core.m_Jumps += 1;
 		return;
 	}
@@ -651,6 +673,38 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		GameServer()->m_apPlayers[cid2]->m_Score = size;
 		return;
 	}
+	else if (!strncmp(Msg->m_pMessage, "/addexp", 7) && GameServer()->Server()->IsAuthed(m_pPlayer->GetCID()))
+	{
+		LastChat();
+		int id, size;
+		if ((sscanf(Msg->m_pMessage, "/addexp %d %d", &id, &size)) != 2)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Please use: /addscore <id> <exp>"));
+
+		int cid2 = clamp(id, 0, (int)MAX_CLIENTS - 1);
+		if (!GameServer()->m_apPlayers[cid2])
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("There is no such player!'"));
+		if (!GameServer()->m_apPlayers[cid2]->m_AccData.m_UserID)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("The player is not logged in account!"));
+		GameServer()->SendChatTarget(cid2, _("Your exp added!'"));
+		GameServer()->m_apPlayers[cid2]->m_AccData.m_Exp += size;
+		return;
+	}
+	else if (!strncmp(Msg->m_pMessage, "/addtm", 6) && GameServer()->Server()->IsAuthed(m_pPlayer->GetCID()))
+	{
+		LastChat();
+		int id, size;
+		if ((sscanf(Msg->m_pMessage, "/addtm %d %d", &id, &size)) != 2)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Please use: /addtm <id> <money>"));
+
+		int cid2 = clamp(id, 0, (int)MAX_CLIENTS - 1);
+		if (!GameServer()->m_apPlayers[cid2])
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("There is no such player!'"));
+		if (!GameServer()->m_apPlayers[cid2]->m_AccData.m_UserID)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("The player is not logged in account!"));
+		GameServer()->SendChatTarget(cid2, _("Your turret money added!'"));
+		GameServer()->m_apPlayers[cid2]->m_AccData.m_TurretMoney += size;
+		return;
+	}
 	else if (!strncmp(Msg->m_pMessage, "/setclass", 9) && GameServer()->Server()->IsAuthed(m_pPlayer->GetCID()))
 	{
 		LastChat();
@@ -722,7 +776,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			return;
 		}
 		int cid2 = clamp(id, 0, (int)MAX_CLIENTS - 1);
-		char gname[4][12] = {"", "police", "vip", "helper"}, aBuf[64];
+		char gname[6][24] = {"", "警察", "VIP", "小管理", "SVIP", "FSVIP"}, aBuf[64];
 
 		if (!GameServer()->m_apPlayers[cid2])
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("There is no such player!"));
@@ -749,7 +803,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			GameServer()->m_apPlayers[cid2]->m_AccData.m_PlayerState = size;
 			str_format(aBuf, sizeof(aBuf), "Set group %s for player '%s'", gname[GameServer()->m_apPlayers[cid2]->m_AccData.m_PlayerState], GameServer()->Server()->ClientName(cid2));
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), aBuf);
-			str_format(aBuf, sizeof(aBuf), "Your group set %s!", gname[GameServer()->m_apPlayers[cid2]->m_AccData.m_PlayerState]);
+			str_format(aBuf, sizeof(aBuf), "你现在是%s了!", gname[GameServer()->m_apPlayers[cid2]->m_AccData.m_PlayerState]);
 			GameServer()->SendChatTarget(cid2, aBuf);
 			break;
 		}
