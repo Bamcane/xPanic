@@ -237,6 +237,10 @@ void CPlayer::Snap(int SnappingClient)
 			str_format(pSendName, sizeof(pSendName), "[P-%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
 		else if (IsVIP() && m_Prefix)
 			str_format(pSendName, sizeof(pSendName), "[VIP]%s", Server()->ClientName(m_ClientID));
+		else if (IsSVIP() && m_Prefix)
+			str_format(pSendName, sizeof(pSendName), "[SVIP]%s", Server()->ClientName(m_ClientID));
+		else if (IsFSVIP() && m_Prefix)
+			str_format(pSendName, sizeof(pSendName), "[FSVIP]%s", Server()->ClientName(m_ClientID));
 		else if (m_AccData.m_PlayerState == 3)
 			str_format(pSendName, sizeof(pSendName), "[H-%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
 		else

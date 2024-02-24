@@ -772,7 +772,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		if (sscanf(Msg->m_pMessage, "/setgroup %d %d", &id, &size) != 2)
 		{
 			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Please use: /setgroup <id> <groupid>"));
-			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Group ID: 0 - Removed, 1 - Police, 2 - VIP, 3 - Helper"));
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Group ID: 0 - Removed, 1 - Police, 2 - VIP, 3 - Helper, 4 - SVIP, 5 - FSVIP"));
 			return;
 		}
 		int cid2 = clamp(id, 0, (int)MAX_CLIENTS - 1);
@@ -798,7 +798,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 				GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("This player already no in group!"));
 			break;
 		default:
-			if (size > 3 || size < 0)
+			if (size < 0)
 				return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Group ID not found!"));
 			GameServer()->m_apPlayers[cid2]->m_AccData.m_PlayerState = size;
 			str_format(aBuf, sizeof(aBuf), "Set group %s for player '%s'", gname[GameServer()->m_apPlayers[cid2]->m_AccData.m_PlayerState], GameServer()->Server()->ClientName(cid2));
