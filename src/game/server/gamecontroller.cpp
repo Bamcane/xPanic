@@ -416,6 +416,12 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 	default:
 		break;
 	}
+	if (pChr->GetPlayer()->IsVIP())
+		pChr->IncreaseHealth(1000);
+	if (pChr->GetPlayer()->IsSVIP())
+		pChr->IncreaseHealth(3000);
+	if(pChr->GetPlayer()->IsFSVIP())
+		pChr->IncreaseHealth(6000);
 
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
 	pChr->GiveWeapon(WEAPON_GUN, 10);
