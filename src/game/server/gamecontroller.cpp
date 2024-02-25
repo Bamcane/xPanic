@@ -578,7 +578,7 @@ void IGameController::Tick()
 		if (!GameServer()->m_apPlayers[i]->m_ZombClass == CPlayer::ZOMB_WITCH)
 			continue;
 
-		if (Server()->Tick() % (Server()->TickSpeed() * 20) == 0)
+		if (Server()->Tick() % (Server()->TickSpeed() * 40) == 0)
 		{
 			new CLifeHearth(&GameServer()->m_World, GameServer()->GetPlayerChar(i)->m_Pos, i);
 			GameServer()->m_apPlayers[i]->m_ActivesLife = true;

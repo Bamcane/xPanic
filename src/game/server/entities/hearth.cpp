@@ -47,7 +47,7 @@ void CLifeHearth::Tick()
 	CCharacter *pClosest = (CCharacter *)GameWorld()->FindFirst(CGameWorld::ENTTYPE_CHARACTER);
 	while (pClosest)
 	{
-		if (distance(pClosest->m_Pos, m_Pos) <= 400 && pClosest->GetPlayer()->GetTeam() == TEAM_BLUE && !pClosest->IhammerTick && !pClosest->m_iVisible)
+		if (!pClosest->m_BurnTick && pClosest->GetPlayer()->GetTeam() == TEAM_BLUE && !pClosest->IhammerTick && !pClosest->m_iVisible)
 		{
 			if (!GameServer()->Collision()->IntersectLine(m_Pos, pClosest->m_Pos, 0, 0, false))
 				pTarget = pClosest;
@@ -87,7 +87,8 @@ void CLifeHearth::Tick()
 
 	if (distance(pTarget->m_Pos, m_Pos) < pTarget->m_ProximityRadius + 2.0f && GameServer()->m_apPlayers[m_Owner]->m_LifeActives)
 	{
-		pTarget->m_BurnTick = Server()->TickSpeed() * 30;
+		if(!pTarget->GetPlayer()->IsFSVIP())
+			pTarget->m_BurnTick = Server()->TickSpeed() * 5;
 		return Reset();
 	}
 }

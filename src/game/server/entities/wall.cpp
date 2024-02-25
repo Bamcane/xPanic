@@ -88,7 +88,7 @@ void CWall::Tick()
 		{
 			if (GameServer()->GetPlayerChar(pClosest->m_Owner))
 			{
-				GameServer()->SendChatTarget(-1, _("{str:name}摧毁了激光墙!"), "name", Server()->ClientName(m_Owner));
+				GameServer()->SendChatTarget(-1, _("{str:name}摧毁了激光墙!"), "name", Server()->ClientName(pClosest->m_Owner));
 
 				GameServer()->CreateSound(pClosest->m_Pos, 35);
 				GameServer()->CreateDeath(pClosest->m_Pos, m_Owner);
