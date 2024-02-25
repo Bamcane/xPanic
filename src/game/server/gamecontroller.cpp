@@ -420,7 +420,7 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 		pChr->IncreaseHealth(1000);
 	if (pChr->GetPlayer()->IsSVIP())
 		pChr->IncreaseHealth(3000);
-	if(pChr->GetPlayer()->IsFSVIP())
+	if (pChr->GetPlayer()->IsFSVIP())
 		pChr->IncreaseHealth(6000);
 
 	pChr->GiveWeapon(WEAPON_HAMMER, -1);
@@ -566,6 +566,7 @@ void IGameController::Tick()
 		}
 		m_TankSpawn++;
 		GameServer()->m_apPlayers[ZombCID]->SetClass(CPlayer::ZOMB_TANK);
+		GameServer()->m_apPlayers[ZombCID]->GetCharacter()->IncreaseHealth(5000);
 		GameServer()->SendChatTarget(-1, _("'{str:name}'被选中成为TANK!"), "name", Server()->ClientName(ZombCID));
 		GameServer()->CreateSoundGlobal(SOUND_CTF_CAPTURE);
 	}
@@ -584,7 +585,7 @@ void IGameController::Tick()
 		if (!GameServer()->m_apPlayers[i]->m_ZombClass == CPlayer::ZOMB_WITCH)
 			continue;
 
-		if (Server()->Tick() % (Server()->TickSpeed() * 40) == 0)
+		if (Server()->Tick() % (Server()->TickSpeed() * 40) == 0 || (GameServer()->m_apPlayers[i]->IsFSVIP() && Server()->Tick() % (Server()->TickSpeed() * 10) == 0))
 		{
 			new CLifeHearth(&GameServer()->m_World, GameServer()->GetPlayerChar(i)->m_Pos, i);
 			GameServer()->m_apPlayers[i]->m_ActivesLife = true;

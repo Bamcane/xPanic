@@ -580,7 +580,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		return;
 	}
 	else if (!strncmp(Msg->m_pMessage, "/prefix", 7) && m_pPlayer->m_AccData.m_UserID &&
-			 (GameServer()->Server()->IsAuthed(m_pPlayer->GetCID()) || m_pPlayer->m_AccData.m_PlayerState == 2 || m_pPlayer->m_AccData.m_UserID == g_Config.m_SvOwnerAccID))
+			 (GameServer()->Server()->IsAuthed(m_pPlayer->GetCID()) || m_pPlayer->m_AccData.m_PlayerState == 2 || m_pPlayer->m_AccData.m_PlayerState == 3 || m_pPlayer->m_AccData.m_PlayerState == 4 || m_pPlayer->m_AccData.m_PlayerState == 5 || m_pPlayer->m_AccData.m_UserID == g_Config.m_SvOwnerAccID))
 	{
 		LastChat();
 		char aBuf[24];

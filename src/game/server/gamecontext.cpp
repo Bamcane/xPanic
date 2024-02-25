@@ -1384,7 +1384,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 								pChr->m_TurGrenade = vec2(0, 0);
 								return;
 							}
-							if (distance(pChr->m_TurGrenade, pChr->m_Pos) < 50 && !pChr->GetPlayer()->IsFSVIP())
+							if (distance(pChr->m_TurGrenade, pChr->m_Pos) < 50)
 							{
 								SendChatTarget(ClientID, _("距离太靠近了! "));
 								pChr->m_TurGrenade = vec2(0, 0);
