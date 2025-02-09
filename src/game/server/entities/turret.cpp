@@ -7,7 +7,7 @@
 #include "turret.h"
 #include "projectile.h"
 #include "wall.h"
-#include "hearth.h"
+#include "health.h"
 
 CTurret::CTurret(CGameWorld *pGameWorld, vec2 Pos, int Owner, int Type, vec2 PosL1, vec2 PosL2)
 	: CEntity(pGameWorld, CGameWorld::ENTTYPE_TURRET)
@@ -194,8 +194,8 @@ void CTurret::Fire()
 			}
 		}
 
-		CLifeHearth *pClosest = (CLifeHearth *)GameWorld()->FindFirst(CGameWorld::ENTTYPE_FLAG);
-		for (; pClosest; pClosest = (CLifeHearth *)pClosest->TypeNext())
+		CLifeHealth *pClosest = (CLifeHealth *)GameWorld()->FindFirst(CGameWorld::ENTTYPE_FLAG);
+		for (; pClosest; pClosest = (CLifeHealth *)pClosest->TypeNext())
 		{
 			vec2 IntersectPoss = closest_point_on_line(m_Pos1L, m_Pos2L, pClosest->m_Pos);
 			if (distance(pClosest->m_Pos, IntersectPoss) < 50)

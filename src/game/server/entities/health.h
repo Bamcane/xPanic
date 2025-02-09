@@ -1,12 +1,12 @@
-#ifndef GAME_SERVER_ENTITIES_HEARTHS_H
-#define GAME_SERVER_ENTITIES_HEARTHS_H
+#ifndef GAME_SERVER_ENTITIES_HEALTHS_H
+#define GAME_SERVER_ENTITIES_HEALTHS_H
 
 #include <game/server/entity.h>
 
-class CLifeHearth : public CEntity
+class CLifeHealth : public CEntity
 {
 public:
-	CLifeHearth(CGameWorld *pGameWorld, vec2 Pos, int Owner);
+	CLifeHealth(CGameWorld *pGameWorld, vec2 Pos, int Owner);
 
 	virtual void Reset();
 	virtual void Tick();

@@ -129,7 +129,7 @@ MACRO_CONFIG_INT(SvKillingSpree, sv_killing_spree, 5, 0, 50, CFGFLAG_SERVER, "Ki
 MACRO_CONFIG_INT(SvGrenadeLifeRem, sv_grenade_liferem, 10, 0, 5000, CFGFLAG_SERVER, "Warning Grenade Limit")
 MACRO_CONFIG_INT(SvGrenadeWarningLimit, sv_grenade_warning, 100, 0, 5000, CFGFLAG_SERVER, "Warning Grenade Limit")
 MACRO_CONFIG_INT(SvGrenadeLimit, sv_grenade_limit, 600, 0, 5000, CFGFLAG_SERVER, "Grenade Limit")
-MACRO_CONFIG_INT(SvNewHearth, sv_new_hearth, 1, 0, 1, CFGFLAG_SERVER, "New hearth type")
+MACRO_CONFIG_INT(SvNewHealth, sv_new_health, 1, 0, 1, CFGFLAG_SERVER, "New health type")
 MACRO_CONFIG_INT(SvTwoZombie, sv_num_twozomb, 8, 0, 64, CFGFLAG_SERVER, "Num for two zombie")
 MACRO_CONFIG_INT(SvJumpGrenadeHuman, sv_grenade_jump, 1, 0, 1, CFGFLAG_SERVER, "Grenade jump for human")
 MACRO_CONFIG_INT(SvZombieRatio, sv_zombie_ratio, 16, 0, MAX_CLIENTS, CFGFLAG_SERVER, "Infection rate on start")

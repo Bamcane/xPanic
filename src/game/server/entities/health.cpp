@@ -1,11 +1,11 @@
-#include "hearth.h"
+#include "health.h"
 #include <engine/shared/config.h>
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 
 #define M_PI 3.14159265358979323846
 
-CLifeHearth::CLifeHearth(CGameWorld *pGameWorld, vec2 Pos, int Owner)
+CLifeHealth::CLifeHealth(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 	: CEntity(pGameWorld, CGameWorld::ENTTYPE_FLAG)
 {
 	m_Pos = Pos;
@@ -15,12 +15,12 @@ CLifeHearth::CLifeHearth(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 	Fistheart = false;
 }
 
-void CLifeHearth::Reset()
+void CLifeHealth::Reset()
 {
 	GameWorld()->DestroyEntity(this);
 }
 
-void CLifeHearth::Tick()
+void CLifeHealth::Tick()
 {
 	if (!GameServer()->m_apPlayers[m_Owner] || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_BLUE || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_SPECTATORS)
 		return Reset();
@@ -35,7 +35,7 @@ void CLifeHearth::Tick()
 
 	if (!GameServer()->m_apPlayers[m_Owner]->m_LifeActives)
 	{
-		if (GameServer()->GetPlayerChar(m_Owner)->m_TypeHealthCh && g_Config.m_SvNewHearth)
+		if (GameServer()->GetPlayerChar(m_Owner)->m_TypeHealthCh && g_Config.m_SvNewHealth)
 			m_Pos = GameServer()->GetPlayerChar(m_Owner)->m_Pos;
 		else
 			m_Pos = GameServer()->GetPlayerChar(m_Owner)->m_Pos + normalize(GetDir(pi / 180 * ((Server()->Tick() + (360) % 360 + 1) * 6))) * (m_ProximityRadius + 36);
@@ -55,7 +55,7 @@ void CLifeHearth::Tick()
 		pClosest = (CCharacter *)pClosest->TypeNext();
 	}
 
-	if (!g_Config.m_SvNewHearth && !Fistheart)
+	if (!g_Config.m_SvNewHealth && !Fistheart)
 	{
 		Fistheart = true;
 		m_Pos = GameServer()->GetPlayerChar(m_Owner)->m_Pos;
@@ -93,7 +93,7 @@ void CLifeHearth::Tick()
 	}
 }
 
-void CLifeHearth::Snap(int SnappingClient)
+void CLifeHealth::Snap(int SnappingClient)
 {
 	if (NetworkClipped(SnappingClient))
 		return;

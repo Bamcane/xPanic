@@ -11,7 +11,7 @@
 
 #include "entities/projectile.h"
 #include "entities/zdoor.h"
-#include "entities/hearth.h"
+#include "entities/health.h"
 
 #include <game/layers.h>
 
@@ -587,7 +587,7 @@ void IGameController::Tick()
 
 		if (Server()->Tick() % (Server()->TickSpeed() * 40) == 0 || (GameServer()->m_apPlayers[i]->IsFSVIP() && Server()->Tick() % (Server()->TickSpeed() * 10) == 0))
 		{
-			new CLifeHearth(&GameServer()->m_World, GameServer()->GetPlayerChar(i)->m_Pos, i);
+			new CLifeHealth(&GameServer()->m_World, GameServer()->GetPlayerChar(i)->m_Pos, i);
 			GameServer()->m_apPlayers[i]->m_ActivesLife = true;
 		}
 	}

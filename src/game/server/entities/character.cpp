@@ -166,7 +166,7 @@ void CCharacter::HandleWeaponSwitch()
 	{
 		while (Next) // Next Weapon selection
 		{
-			if (!m_pPlayer->m_LifeActives && m_pPlayer->GetTeam() == TEAM_RED && g_Config.m_SvNewHearth)
+			if (!m_pPlayer->m_LifeActives && m_pPlayer->GetTeam() == TEAM_RED && g_Config.m_SvNewHealth)
 				m_TypeHealthCh = true;
 
 			WantedWeapon = (WantedWeapon + 1) % NUM_WEAPONS;
@@ -179,7 +179,7 @@ void CCharacter::HandleWeaponSwitch()
 	{
 		while (Prev) // Prev Weapon selection
 		{
-			if (!m_pPlayer->m_LifeActives && m_pPlayer->GetTeam() == TEAM_RED && g_Config.m_SvNewHearth)
+			if (!m_pPlayer->m_LifeActives && m_pPlayer->GetTeam() == TEAM_RED && g_Config.m_SvNewHealth)
 				m_TypeHealthCh = false;
 
 			WantedWeapon = (WantedWeapon - 1) < 0 ? NUM_WEAPONS - 1 : WantedWeapon - 1;
@@ -254,7 +254,7 @@ void CCharacter::FireWeapon()
 			if (rands == 15)
 				new CMine(GameWorld(), m_Pos, m_pPlayer->GetCID());
 
-			if (!m_pPlayer->m_LifeActives && !m_HeartTick && (m_TypeHealthCh && g_Config.m_SvNewHearth || !g_Config.m_SvNewHearth))
+			if (!m_pPlayer->m_LifeActives && !m_HeartTick && (m_TypeHealthCh && g_Config.m_SvNewHealth || !g_Config.m_SvNewHealth))
 				m_pPlayer->m_LifeActives = true;
 
 			CTurret *pClosest = (CTurret *)GameWorld()->FindFirst(CGameWorld::ENTTYPE_TURRET);

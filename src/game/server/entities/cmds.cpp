@@ -6,7 +6,7 @@
 #include <game/version.h>
 #include "cmds.h"
 #include "account.h"
-#include "hearth.h"
+#include "health.h"
 
 #include <teeothers/components/localization.h>
 
@@ -508,7 +508,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		m_pPlayer->m_Score -= 10;
 		m_pPlayer->m_ActivesLife = false;
 		m_pPlayer->m_LifeActives = false;
-		new CLifeHearth(&GameServer()->m_World, vec2(0, 0), m_pPlayer->GetCID());
+		new CLifeHealth(&GameServer()->m_World, vec2(0, 0), m_pPlayer->GetCID());
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/jump"))

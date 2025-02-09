@@ -2,7 +2,7 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include "wall.h"
-#include "hearth.h"
+#include "health.h"
 #include <teeothers/components/localization.h>
 
 CWall::CWall(CGameWorld *pGameWorld, vec2 From, vec2 To, int Owner, int Time)
@@ -80,8 +80,8 @@ void CWall::Tick()
 	if (!GameServer()->GetPlayerChar(m_Owner) || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_RED || GameServer()->m_apPlayers[m_Owner]->GetTeam() == TEAM_SPECTATORS || !m_Time)
 		return Reset();
 
-	CLifeHearth *pClosest = (CLifeHearth *)GameWorld()->FindFirst(CGameWorld::ENTTYPE_FLAG);
-	for (; pClosest; pClosest = (CLifeHearth *)pClosest->TypeNext())
+	CLifeHealth *pClosest = (CLifeHealth *)GameWorld()->FindFirst(CGameWorld::ENTTYPE_FLAG);
+	for (; pClosest; pClosest = (CLifeHealth *)pClosest->TypeNext())
 	{
 		vec2 IntersectPoss = closest_point_on_line(m_Pos, m_From, pClosest->m_Pos);
 		if (distance(pClosest->m_Pos, IntersectPoss) < 50)

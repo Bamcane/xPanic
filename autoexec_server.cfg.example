@@ -1,5 +1,5 @@
 #STANDARD SETTINGS
-sv_name "SERVER_NAME"
+sv_name "Server name"
 sv_max_clients 64
 sv_max_clients_per_ip 2
 sv_port 8303
@@ -9,54 +9,50 @@ sv_register 1
 
 
 #RCON PASSWORD
-sv_rcon_password "PASSWORD"
-sv_rcon_mod_password "MOD_PASSWORD"
-sv_rcon_helper_password "HELPER_PASSWORD"
-
+sv_rcon_password "rcon password"
+sv_rcon_mod_password "mod password"
+sv_rcon_helper_password "helper password"
 
 #OTHER SETTINGS
-sv_exp_bonus 5
+sv_exp_bonus 3
 sv_emoticon_delay 0
 sv_test_cmds 1
-sv_warmup 1
+sv_warmup 30
 sv_inactivekick 4
 sv_spectator_votes 0
-sv_timelimit 1
-sv_new_hearth 0
-logfile "autoexec_server.log"
-sv_motd "Register with /register - PASSWORDS ARE STORED IN PLAINTEXT. DO NOT USE ANY PASSWORD YOU HAVE USED FOR OTHER SERVICES."
+sv_timelimit 7
+sv_new_health 1
+logfile "xPanic.log"
+sv_motd ""
 
 
 # VOTES SETTINGS
-add_vote "|settings| Hearth crash wall on" "sv_destroywall 1"
-add_vote "|settings| Hearth crash wall off" "sv_destroywall 0"
-add_vote "|settings| Hearth new on" "sv_new_hearth 1"
-add_vote "|settings| Hearth new off" "sv_new_hearth 0"
-add_vote "|settings| Grenade jump on" "sv_grenade_jump 1"
-add_vote "|settings| Grenade jump off" "sv_grenade_jump 0"
-add_vote "|settings| Show your W/L end round on" "sv_show_statsendround 1"
-add_vote "|settings| Show your W/L end round off" "sv_show_statsendround 0"
+add_vote "|设置| 打开爱心摧毁墙" "sv_destroywall 1"
+add_vote "|设置| 关闭爱心摧毁墙" "sv_destroywall 0"
+add_vote "|设置| 开启榴弹跳" "sv_grenade_jump 1"
+add_vote "|设置| 关闭榴弹炮" "sv_grenade_jump 0"
+add_vote "|设置| 打开结束时显示你的W/L" "sv_show_statsendround 1"
+add_vote "|设置| 关闭结束时显示你的W/L" "sv_show_statsendround 0"
 
-add_vote "|map| 4Ways" "change_map 4Ways"
-add_vote "|map| Area-51" "change_map Area-51"
-add_vote "|map| 4Ways" "change_map 4Ways"
-add_vote "|map| Area-51" "change_map Area-51"
-add_vote "|map| Beach-House" "change_map Beach-House"
-add_vote "|map| china-town" "change_map china-town"
-add_vote "|map| Desert-panic" "change_map Desert-panic"
-add_vote "|map| Depot2" "change_map Depot2"
-add_vote "|map| ExtPanic" "change_map ExtPanic"
-add_vote "|map| Final" "change_map Final"
-add_vote "|map| Hallowen Castle" "change_map Hallowen Castle"
-add_vote "|map| Ice-house" "change_map Ice-house"
-add_vote "|map| littlePanic" "change_map littlePanic"
-add_vote "|map| panic_minecraft" "change_map panic_minecraft"
-add_vote "|map| panic_run" "change_map panic_run"
-add_vote "|map| Pharao-Pyramid" "change_map Pharao-Pyramid"
-add_vote "|map| Shelter by Rio" "change_map Shelter by Rio"
-add_vote "|map| Tunnel" "change_map Tunnel"
-add_vote "|map| xPanic life" "change_map xPanic life"
-add_vote "|map| Zombierunx15" "change_map Zumbierunx15"
+add_vote "|地图| 4条路" "change_map 4Ways"
+add_vote "|地图| 外星51区" "change_map Area-51"
+add_vote "|地图| 沙滩小屋" "change_map Beach-House"
+add_vote "|地图| 中国街" "change_map china-town"
+add_vote "|地图| 沙漠惊魂" "change_map Desert-panic"
+add_vote "|地图| 2号仓库" "change_map Depot2"
+add_vote "|地图| 灵魂提取" "change_map ExtPanic"
+add_vote "|地图| 终焉" "change_map Final"
+add_vote "|地图| 万圣节城堡" "change_map Hallowen Castle"
+add_vote "|地图| 冰屋" "change_map Ice-house"
+add_vote "|地图| 小小惊吓" "change_map littlePanic"
+add_vote "|地图| MC惊魂" "change_map panic_minecraft"
+add_vote "|地图| 在你身后" "change_map panic_run"
+add_vote "|地图| 法老金字塔" "change_map Pharao-Pyramid"
+add_vote "|地图| Rioの避难所" "change_map Shelter by Rio"
+add_vote "|地图| 隧道" "change_map Tunnel"
+add_vote "|地图| X人生" "change_map xPanic life"
+add_vote "|地图| Zombie Run X15" "change_map Zombierunx15"
+add_vote "|地图| Dio的『世 界』" "change_map THE_WORLD"
 
 
 # ACCESS DDNET
@@ -93,6 +89,3 @@ access_level bans 1
 access_level bans_save 1
 access_level kick 1
 access_level force_vote 1
-
-sv_maprotation 4Ways Area-51 Beach-House china-town Depot2 Desert-panic Dio-House ExtPanic Final "Hallowen Castle" Ice-house littlePanic panic_minecraft Pharao-Pyramid "Shelter by Rio" THE_WORLD Tunnel xPanic-life Zombierunx15
-sv_rounds_per_map 6
