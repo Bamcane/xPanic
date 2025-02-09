@@ -626,10 +626,10 @@ void IGameController::Snap(int SnappingClient)
 	if (!pGameDataObj)
 		return;
 
-	if (m_aTeamscore[TEAM_RED] >= 100 || m_aTeamscore[TEAM_BLUE] >= 100)
+	if(SnappingClient != -1 && GameServer()->m_apPlayers[SnappingClient])
 	{
-		pGameDataObj->m_TeamscoreRed = m_aTeamscore[TEAM_RED];
-		pGameDataObj->m_TeamscoreBlue = m_aTeamscore[TEAM_BLUE];
+		pGameDataObj->m_TeamscoreRed = GameServer()->m_apPlayers[SnappingClient]->m_AccData.m_UserID ? GameServer()->m_apPlayers[SnappingClient]->m_AccData.m_Level : 0;
+		pGameDataObj->m_TeamscoreBlue = GameServer()->m_apPlayers[SnappingClient]->m_AccData.m_UserID ? GameServer()->m_apPlayers[SnappingClient]->m_AccData.m_TurretLevel : 0;
 	}
 	else
 	{

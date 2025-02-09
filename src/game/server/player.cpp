@@ -226,30 +226,7 @@ void CPlayer::Snap(int SnappingClient)
 	if (!pClientInfo)
 		return;
 
-	char pSendName[22];
-	if (m_AccData.m_UserID)
-	{
-		if (m_AccData.m_UserID == g_Config.m_SvOwnerAccID && m_Prefix)
-			str_format(pSendName, sizeof(pSendName), "[O]%s", Server()->ClientName(m_ClientID));
-		else if (Server()->IsAuthed(GetCID()) && m_Prefix)
-			str_format(pSendName, sizeof(pSendName), "[A]%s", Server()->ClientName(m_ClientID));
-		else if (m_AccData.m_PlayerState == 1)
-			str_format(pSendName, sizeof(pSendName), "[P-%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
-		else if (IsVIP() && m_Prefix)
-			str_format(pSendName, sizeof(pSendName), "[VIP]%s", Server()->ClientName(m_ClientID));
-		else if (IsSVIP() && m_Prefix)
-			str_format(pSendName, sizeof(pSendName), "[SVIP]%s", Server()->ClientName(m_ClientID));
-		else if (IsFSVIP() && m_Prefix)
-			str_format(pSendName, sizeof(pSendName), "[FSVIP]%s", Server()->ClientName(m_ClientID));
-		else if (m_AccData.m_PlayerState == 3)
-			str_format(pSendName, sizeof(pSendName), "[H-%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
-		else
-			str_format(pSendName, sizeof(pSendName), "[%d]%s", m_AccData.m_Level, Server()->ClientName(m_ClientID));
-
-		if (m_AccData.m_Freeze)
-			str_format(pSendName, sizeof(pSendName), "[BAN]%s", Server()->ClientName(m_ClientID));
-	}
-	StrToInts(&pClientInfo->m_Name0, 4, m_AccData.m_UserID ? pSendName : Server()->ClientName(m_ClientID));
+	StrToInts(&pClientInfo->m_Name0, 4, Server()->ClientName(m_ClientID));
 	StrToInts(&pClientInfo->m_Clan0, 3, Server()->ClientClan(m_ClientID));
 	pClientInfo->m_Country = Server()->ClientCountry(m_ClientID);
 	if (m_StolenSkin && SnappingClient != m_ClientID && g_Config.m_SvSkinStealAction == 1)
