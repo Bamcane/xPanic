@@ -582,7 +582,7 @@ void IGameController::Tick()
 		if (!GameServer()->IsClientPlayer(i))
 			continue;
 
-		if (!GameServer()->m_apPlayers[i]->m_ZombClass == CPlayer::ZOMB_WITCH)
+		if (GameServer()->m_apPlayers[i]->m_ZombClass != CPlayer::ZOMB_WITCH)
 			continue;
 
 		if (Server()->Tick() % (Server()->TickSpeed() * 40) == 0 || (GameServer()->m_apPlayers[i]->IsFSVIP() && Server()->Tick() % (Server()->TickSpeed() * 10) == 0))
