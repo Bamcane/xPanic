@@ -380,24 +380,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("===== 购买VIP？ ====="));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- VIP功能 ---"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 升级时获得的技能/炮塔点翻倍"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 获取的经验值翻倍"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 价格: 17元"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- SVIP功能 ---"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 被感染后一定会成为TANK或女巫"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 被僵尸打中三次后才会死亡"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 被僵尸打中后无敌隐身3秒"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 增加跳跃次数(无法重复购买)"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 价格: 24元"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- FSVIP功能 ---"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 炮塔能够穿墙放置"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 任何炮塔被摧毁后都可以重复放置"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 激光墙停留时间翻倍"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("- 价格: 34元"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("SVIP包含VIP所有功能，FSVIP包含SVIP和VIP的所有功能"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("获得的技能/炮塔点和经验值随着VIP等级增加而增加"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("联系QQ：1562151175购买"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("甘箨: 买什么啊qw?不要买aw!"));
 
 		return;
 	}
@@ -405,25 +388,21 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- 购买经验值？ ---"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("1元 = 10经验"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("联系QQ：1562151175购买"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("甘箨: 买什么啊qw?不要买aw!"));
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/tdonate"))
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("--- 购买炮塔点数？ ---"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("2元 = 3炮塔点"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("联系QQ：1562151175购买"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("甘箨: 买什么啊qw?不要买aw!"));
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/info"))
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("~~~~~~~~ 欢迎来到服务器介绍 ~~~~~~~~"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("服主: Flower|QQ号:1562151175"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("管理员: Huaxia new、火锅Dio、骨头小哲"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("Panic mod by Kurosio"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("看公告哦aw~"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("~~~~~~~~ 欢迎来到服务器介绍 ~~~~~~~~"));
 		return;
 	}
@@ -436,9 +415,9 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/rules - 查看xPanic的规则"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/pm - 给别人发送私信"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/cmdlist - 查看服务器指令列表"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/vip - 购买VIP"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/donate - 购买经验值"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/tdonate - 购买炮塔点"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/vip - 购买VIP?"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/donate - 购买经验值?"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/tdonate - 购买炮塔点?"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/turret info - 关于炮台"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/levels - 关于等级"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/shop - 分数商店"));
@@ -474,7 +453,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	else if (!strcmp(Msg->m_pMessage, "/news"))
 	{
 		LastChat();
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你知道吗，MidFun是Mid·Night和TeeFun的联合组织"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你知道吗, 甘箨把vip内容基本删了, 虽然代码里还留了一部分"));
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/policehelp"))
@@ -548,7 +527,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("完成!"));
 		m_pPlayer->m_JumpsShop++;
-		m_pPlayer->m_Score -= 10;
+		m_pPlayer->m_Score -= 5;
 		GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_Core.m_Jumps += 1;
 		return;
 	}

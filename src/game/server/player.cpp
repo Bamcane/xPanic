@@ -594,7 +594,6 @@ void CPlayer::SetZomb(int From)
 			GameServer()->SendChat(-1, CGameContext::CHAT_ALL, aBuf);
 		}
 		m_LifeActives = false;
-		new CLifeHearth(&GameServer()->m_World, m_pCharacter->m_Pos, m_ClientID);
 		m_pCharacter->Die(m_ClientID, WEAPON_WORLD);
 	}
 	m_pCharacter->SetZomb();
