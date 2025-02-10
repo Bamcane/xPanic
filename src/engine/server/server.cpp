@@ -1349,19 +1349,19 @@ void CServer::SendServerInfo(const NETADDR *pAddr, int Token, int Type, bool Sen
 
 	if(Type != SERVERINFO_VANILLA)
 	{
-		p.AddString(aBuf, 256);
+		p.AddString(g_Config.m_SvName, 256);
 	}
 	else
 	{
 		if(m_NetServer.MaxClients() <= VANILLA_MAX_CLIENTS)
 		{
-			p.AddString(aBuf, 64);
+			p.AddString(g_Config.m_SvName, 64);
 		}
 		else
 		{
 			char aNameBuf[64];
-			str_format(aNameBuf, sizeof(aNameBuf), "%s [%d/%d]", aBuf, ClientCount, m_NetServer.MaxClients());
-			p.AddString(aBuf, 64);
+			str_format(aNameBuf, sizeof(aNameBuf), "%s [%d/%d]", g_Config.m_SvName, ClientCount, m_NetServer.MaxClients());
+			p.AddString(aNameBuf, 64);
 		}
 	}
 	p.AddString(pMapName, 32);
