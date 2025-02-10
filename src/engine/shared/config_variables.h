@@ -314,5 +314,6 @@ MACRO_CONFIG_INT(ClDemoShowSpeed, cl_demo_show_speed, 0, 0, 1, CFGFLAG_SAVE | CF
 
 MACRO_CONFIG_INT(SvNumWitch, cl_demo_show_speed, 1, 0, 64, CFGFLAG_SERVER, "Num witch.")
 MACRO_CONFIG_INT(SvNumTank, cl_demo_show_speed, 1, 0, 64, CFGFLAG_SERVER, "Num tank.")
+MACRO_CONFIG_INT(SvServerInfoPerSecond, sv_server_info_per_second, 10, 1, 1000, CFGFLAG_SERVER, "Maximum number of complete server info responses that are sent out per second")
 
 #endif
