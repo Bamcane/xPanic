@@ -33,6 +33,9 @@
 #include <engine/shared/linereader.h>
 #include <game/server/gamecontext.h>
 
+// DDNet
+#include <engine/shared/uuid.h>
+
 #include "register.h"
 #include "server.h"
 
@@ -795,6 +798,7 @@ int CServer::NewClientNoAuthCallback(int ClientID, bool Reset, void *pUser)
 		pThis->m_aClients[ClientID].Reset();
 	}
 
+	pThis->SendCapabilities(ClientID);
 	pThis->SendMap(ClientID);
 
 	return 0;
@@ -993,6 +997,7 @@ void CServer::ProcessClientPacket(CNetChunk *pPacket)
 				}
 
 				m_aClients[ClientID].m_State = CClient::STATE_CONNECTING;
+				SendCapabilities(ClientID);
 				SendMap(ClientID);
 			}
 		}
@@ -2407,4 +2412,26 @@ int *CServer::GetIdMap(int ClientID)
 int CServer::GetClientNbRound(int ClientID)
 {
 	return m_aClients[ClientID].m_NbRound;
+}
+
+// DDNet
+enum
+{
+	SERVERCAP_CURVERSION = 5,
+	SERVERCAPFLAG_DDNET = 1 << 0,
+	SERVERCAPFLAG_CHATTIMEOUTCODE = 1 << 1,
+	SERVERCAPFLAG_ANYPLAYERFLAG = 1 << 2,
+	SERVERCAPFLAG_PINGEX = 1 << 3,
+	SERVERCAPFLAG_ALLOWDUMMY = 1 << 4,
+	SERVERCAPFLAG_SYNCWEAPONINPUT = 1 << 5,
+};
+
+void CServer::SendCapabilities(int ClientID)
+{
+	CMsgPacker Msg(0);
+	CUuid Uuid = CalculateUuid("capabilities@ddnet.tw");
+    Msg.AddRaw(&Uuid, sizeof(Uuid));
+	Msg.AddInt(SERVERCAP_CURVERSION); // version
+	Msg.AddInt(SERVERCAPFLAG_DDNET | SERVERCAPFLAG_ANYPLAYERFLAG); // flags no dummy
+	SendMsgEx(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, ClientID, true);
 }

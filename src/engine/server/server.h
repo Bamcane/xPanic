@@ -294,6 +294,8 @@ public:
 
 	virtual int *GetIdMap(int ClientID);
 	virtual int GetClientNbRound(int ClientID);
+	// DDNet
+	void SendCapabilities(int ClientID);
 };
 
 #endif

@@ -21,6 +21,7 @@
 #include <string.h>
 
 #include <teeothers/components/localization.h>
+#include <engine/shared/uuid.h>
 
 enum
 {
@@ -1170,6 +1171,12 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			pPlayer->m_Vote = pMsg->m_Vote;
 			pPlayer->m_VotePos = ++m_VotePos;
 			m_VoteUpdate = true;
+
+			CMsgPacker Msg(0);
+			CUuid Uuid = CalculateUuid("yourvote@netmsg.ddnet.org");
+			Msg.AddRaw(&Uuid, sizeof(Uuid));
+			Msg.AddInt(pMsg->m_Vote);
+			Server()->SendMsg(&Msg, MSGFLAG_VITAL|MSGFLAG_NORECORD, ClientID);
 		}
 		else if (MsgID == NETMSGTYPE_CL_SETTEAM && !m_World.m_Paused)
 		{
