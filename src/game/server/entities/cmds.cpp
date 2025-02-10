@@ -445,9 +445,9 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 	{
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("----- 商店 -----"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/range [10 分数] - 购买大范围僵尸锤"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/range [35 分数] - 购买大范围僵尸锤"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/heart [10 分数] - 购买自动跟踪人类的地雷"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/jump [5 分数] - 购买一次多余的跳跃"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/jump [10 分数] - 购买一次多余的跳跃"));
 		return;
 	}
 	else if (!strcmp(Msg->m_pMessage, "/news"))
@@ -520,14 +520,14 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能在活着的时候使用!"));
 		if (GameServer()->m_World.m_Paused)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("稍等片刻."));
-		if (GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_Core.m_Jumps >= 3)
-			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你最多只能买3个."));
-		if (m_pPlayer->m_Score < 5)
-			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (5分)."));
+		if (GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_Core.m_Jumps >= 4)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你最多只能买4个."));
+		if (m_pPlayer->m_Score < 10)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (10分)."));
 
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("完成!"));
 		m_pPlayer->m_JumpsShop++;
-		m_pPlayer->m_Score -= 5;
+		m_pPlayer->m_Score -= 10;
 		GameServer()->GetPlayerChar(m_pPlayer->GetCID())->m_Core.m_Jumps += 1;
 		return;
 	}
@@ -547,15 +547,15 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		if (m_pPlayer->GetTeam() != TEAM_RED)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能僵尸用!"));
 
-		if (m_pPlayer->m_Score < 10)
-			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (10分)."));
+		if (m_pPlayer->m_Score < 35)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (35分)."));
 
 		if (m_pPlayer->m_RangeShop)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能购买一次! (生效直到切换地图)"));
 
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("完成!"));
 		m_pPlayer->m_RangeShop = true;
-		m_pPlayer->m_Score -= 10;
+		m_pPlayer->m_Score -= 35;
 		return;
 	}
 	else if (!strncmp(Msg->m_pMessage, "/prefix", 7) && m_pPlayer->m_AccData.m_UserID &&
