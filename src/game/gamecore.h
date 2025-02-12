@@ -200,6 +200,7 @@ public:
 	int m_ActiveWeapon;
 
 	bool m_NewHook;
+	bool m_Zombie;
 
 	int m_Jumped;
 	int m_JumpedTotal;

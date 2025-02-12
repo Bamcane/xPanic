@@ -279,13 +279,15 @@ void CCharacterCore::Tick(bool UseInput, bool IsClient)
 		}
 
 		// Check against other players first
-		if(this->m_Hook && m_pWorld && m_pWorld->m_Tuning[g_Config.m_ClDummy].m_PlayerHooking)
+		if(this->m_Hook && m_pWorld)
 		{
 			float Distance = 0.0f;
 			for(int i = 0; i < MAX_CLIENTS; i++)
 			{
 				CCharacterCore *pCharCore = m_pWorld->m_apCharacters[i];
 				if(!pCharCore || pCharCore == this || !m_pTeams->CanCollide(i, m_Id))
+					continue;
+				if(pCharCore->m_Zombie == m_Zombie && !m_pWorld->m_Tuning[g_Config.m_ClDummy].m_PlayerHooking)
 					continue;
 
 				vec2 ClosestPoint = closest_point_on_line(m_HookPos, NewPos, pCharCore->m_Pos);
@@ -339,7 +341,7 @@ void CCharacterCore::Tick(bool UseInput, bool IsClient)
 		if(m_HookedPlayer != -1)
 		{
 			CCharacterCore *pCharCore = m_pWorld->m_apCharacters[m_HookedPlayer];
-			if(pCharCore && (IsClient || m_pTeams->CanKeepHook(m_Id, pCharCore->m_Id)))
+			if(pCharCore && (pCharCore->m_Zombie != m_Zombie) && (IsClient || m_pTeams->CanKeepHook(m_Id, pCharCore->m_Id)))
 				m_HookPos = pCharCore->m_Pos;
 			else
 			{
@@ -420,7 +422,7 @@ void CCharacterCore::Tick(bool UseInput, bool IsClient)
 			}
 
 			// handle hook influence
-			if(m_Hook && m_HookedPlayer == i && m_pWorld->m_Tuning[g_Config.m_ClDummy].m_PlayerHooking)
+			if(m_Hook && m_HookedPlayer == i)
 			{
 				if(Distance > PhysSize*1.50f) // TODO: fix tweakable variable
 				{
