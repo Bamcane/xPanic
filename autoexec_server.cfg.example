@@ -46,7 +46,6 @@ add_vote "|地图| 万圣节城堡" "change_map Hallowen Castle"
 add_vote "|地图| 冰屋" "change_map Ice-house"
 add_vote "|地图| 小小惊吓" "change_map littlePanic"
 add_vote "|地图| MC惊魂" "change_map panic_minecraft"
-add_vote "|地图| 在你身后" "change_map panic_run"
 add_vote "|地图| 法老金字塔" "change_map Pharao-Pyramid"
 add_vote "|地图| Rioの避难所" "change_map Shelter by Rio"
 add_vote "|地图| 隧道" "change_map Tunnel"
@@ -54,6 +53,7 @@ add_vote "|地图| X人生" "change_map xPanic life"
 add_vote "|地图| Zombie Run X15" "change_map Zombierunx15"
 add_vote "|地图| Dio的『世 界』" "change_map THE_WORLD"
 add_vote "|地图| TM的房屋人生" "change_map WTF House Life"
+add_vote "|地图| 熔岩惊魂" "change_map Lava Panic"
 
 
 # ACCESS DDNET
