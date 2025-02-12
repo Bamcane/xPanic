@@ -536,7 +536,6 @@ void CCharacter::Tick()
 {
 	DDRaceTick();
 
-	m_Core.m_Zombie = m_pPlayer->GetTeam() == TEAM_RED;
 	m_Core.m_Input = m_Input;
 	m_Core.Tick(true, false);
 

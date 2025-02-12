@@ -410,7 +410,7 @@ void IGameController::OnCharacterSpawn(class CCharacter *pChr)
 		break;
 
 	case CPlayer::ZOMB_TANK:
-		pChr->IncreaseHealth(5000);
+		pChr->IncreaseHealth(7000);
 		break;
 
 	default:
@@ -553,7 +553,7 @@ void IGameController::Tick()
 		}
 	}
 
-	if ((Server()->Tick() - m_RoundStartTick) >= (g_Config.m_SvTimelimit - 1) * Server()->TickSpeed() * 60 && m_TankSpawn < g_Config.m_SvNumTank)
+	if ((Server()->Tick() - m_RoundStartTick) >= Server()->TickSpeed() * 60 && m_TankSpawn < g_Config.m_SvNumTank)
 	{
 		int ZombCID = rand() % MAX_CLIENTS, WTF = 50;
 		while (!GameServer()->m_apPlayers[ZombCID] || (GameServer()->m_apPlayers[ZombCID] && GameServer()->m_apPlayers[ZombCID]->GetTeam() == TEAM_SPECTATORS) || !GameServer()->m_apPlayers[ZombCID]->GetCharacter() ||
@@ -566,7 +566,7 @@ void IGameController::Tick()
 		}
 		m_TankSpawn++;
 		GameServer()->m_apPlayers[ZombCID]->SetClass(CPlayer::ZOMB_TANK);
-		GameServer()->m_apPlayers[ZombCID]->GetCharacter()->IncreaseHealth(5000);
+		GameServer()->m_apPlayers[ZombCID]->GetCharacter()->IncreaseHealth(7000);
 		GameServer()->SendChatTarget(-1, _("'{str:name}'被选中成为TANK!"), "name", Server()->ClientName(ZombCID));
 		GameServer()->CreateSoundGlobal(SOUND_CTF_CAPTURE);
 	}
@@ -582,10 +582,10 @@ void IGameController::Tick()
 		if (!GameServer()->IsClientPlayer(i))
 			continue;
 
-		if (GameServer()->m_apPlayers[i]->m_ZombClass != CPlayer::ZOMB_WITCH)
+		if (GameServer()->m_apPlayers[i]->m_ZombClass == CPlayer::ZOMB_DEFAULT)
 			continue;
 
-		if (Server()->Tick() % (Server()->TickSpeed() * 40) == 0 || (GameServer()->m_apPlayers[i]->IsFSVIP() && Server()->Tick() % (Server()->TickSpeed() * 10) == 0))
+		if(Server()->Tick() % (Server()->TickSpeed() * ((GameServer()->m_apPlayers[i]->m_ZombClass == CPlayer::ZOMB_TANK) ? 30 : 40)) == 0)
 		{
 			new CLifeHealth(&GameServer()->m_World, GameServer()->GetPlayerChar(i)->m_Pos, i);
 			GameServer()->m_apPlayers[i]->m_ActivesLife = true;
