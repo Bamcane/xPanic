@@ -446,7 +446,7 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 		LastChat();
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("----- 商店 -----"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/range [35 分数] - 购买大范围僵尸锤"));
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/heart [10 分数] - 购买自动跟踪人类的地雷"));
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/heart [5 分数] - 购买突破激光墙的炸弹"));
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("/jump [10 分数] - 购买一次多余的跳跃"));
 		return;
 	}
@@ -501,11 +501,11 @@ void CCmd::ChatCmd(CNetMsg_Cl_Say *Msg)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("请等待回合结束"));
 		if (m_pPlayer->GetTeam() != TEAM_RED)
 			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("只能僵尸用"));
-		if (m_pPlayer->m_Score < 10)
-			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (10分)."));
+		if (m_pPlayer->m_Score < 5)
+			return GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("你没有足够的分数 (5分)."));
 
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), _("完成!"));
-		m_pPlayer->m_Score -= 10;
+		m_pPlayer->m_Score -= 5;
 		m_pPlayer->m_ActivesLife = false;
 		m_pPlayer->m_LifeActives = false;
 		new CLifeHealth(&GameServer()->m_World, vec2(0, 0), m_pPlayer->GetCID());
