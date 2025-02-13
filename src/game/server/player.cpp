@@ -555,7 +555,7 @@ void CPlayer::SetZomb(int From)
 		Msg.m_Killer = From;
 		Msg.m_Victim = m_ClientID;
 		Msg.m_Weapon = WEAPON_HAMMER;
-		GameServer()->m_apPlayers[From]->m_Score += 3;
+		GameServer()->m_apPlayers[From]->m_Score += 4;
 		if (GameServer()->GetPlayerChar(From) && From != m_ClientID)
 			GameServer()->GetPlayerChar(From)->ExperienceAdd(g_Config.m_SvExpBonus, From);
 	}
@@ -574,8 +574,6 @@ void CPlayer::SetZomb(int From)
 		m_pCharacter->Die(m_ClientID, WEAPON_WORLD);
 	}
 	m_pCharacter->SetZomb();
-	if (GameServer()->m_apPlayers[m_ClientID]->IsSVIP() && GameServer()->m_apPlayers[m_ClientID]->m_ZombClass != CPlayer::ZOMB_WITCH)
-		GameServer()->m_apPlayers[m_ClientID]->m_ZombClass = CPlayer::ZOMB_TANK;
 	GameServer()->m_pController->OnPlayerInfoChange(GameServer()->m_apPlayers[m_ClientID]);
 	GameServer()->m_pController->CheckZomb();
 	GameServer()->SendChatTarget(m_ClientID, _("你被感染成了僵尸! 吃掉他们的脑子! ."));

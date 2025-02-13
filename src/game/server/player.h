@@ -86,7 +86,11 @@ public:
 	class CAccount *m_pAccount;
 	int ExpNeedToNextLvl()
 	{
-		if (m_AccData.m_Level >= 50)
+		if(m_AccData.m_Level >= 300)
+			return m_AccData.m_Level * 80;
+		else if(m_AccData.m_Level >= 100)
+			return m_AccData.m_Level * 40;
+		else if (m_AccData.m_Level >= 50)
 			return m_AccData.m_Level * 20;
 		else if (m_AccData.m_Level >= 30)
 			return m_AccData.m_Level * 15;
@@ -100,7 +104,14 @@ public:
 
 	int TExpNeedToNextLvl()
 	{
-		if (m_AccData.m_TurretLevel >= 50) return m_AccData.m_TurretLevel * 15;
+		if(m_AccData.m_TurretLevel >= 800)
+			return m_AccData.m_Level * 30;
+		else if(m_AccData.m_TurretLevel >= 300)
+			return m_AccData.m_Level * 25;
+		else if(m_AccData.m_TurretLevel >= 100)
+			return m_AccData.m_Level * 20;
+		else if (m_AccData.m_TurretLevel >= 50)
+			return m_AccData.m_TurretLevel * 15;
 		else if (m_AccData.m_TurretLevel >= 30)
 			return m_AccData.m_TurretLevel * 14;
 		else if (m_AccData.m_TurretLevel >= 20)
@@ -176,7 +187,6 @@ public:
 	{
 		ZOMB_DEFAULT = 1,
 		ZOMB_WITCH,
-		ZOMB_TANK,
 	};
 
 	int m_ZombClass;

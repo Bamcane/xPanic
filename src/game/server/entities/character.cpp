@@ -718,9 +718,9 @@ void CCharacter::ExperienceAdd(int Exp, int ClientID)
 
 bool CCharacter::IncreaseHealth(int Amount)
 {
-	if (m_Health >= 12000)
+	if (m_Health >= 15000)
 		return false;
-	m_Health = clamp(m_Health + Amount, 0, 12000);
+	m_Health = clamp(m_Health + Amount, 0, 15000);
 	return true;
 }
 
@@ -774,8 +774,10 @@ bool CCharacter::TakeDamage(vec2 Force, int Dmg, int From, int Weapon)
 	if (m_pPlayer->GetTeam() == TEAM_BLUE)
 		return false;
 
-	if (GetPlayer()->m_ZombClass == CPlayer::ZOMB_TANK)
-		Force /= 10.f;
+	if (m_Health > 2500)
+		Force /= 5.f;
+	if (m_Health > 6000)
+		Force /= 2.f;
 
 	if (Weapon == WEAPON_SHOTGUN)
 		m_Core.m_Vel += Force * 3.60f;
